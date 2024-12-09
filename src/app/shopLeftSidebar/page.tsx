@@ -148,7 +148,7 @@ export default function ShopListPage() {
             <div key={index}>
               <input type="checkbox" id={`rating-${index}`} className="mr-2" />
               <label htmlFor={`rating-${index}`} className="text-sm">
-                {Array.from({ length: rating }, (_, i) => '★').join('')} ({Math.floor(Math.random() * 3000)})
+                {Array.from({ length: rating }, () => '★').join('')} ({Math.floor(Math.random() * 3000)})
               </label>
             </div>
           ))}
