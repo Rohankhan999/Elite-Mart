@@ -169,7 +169,7 @@ export default function Center() {
             <img
               src="/brown.jpeg" // Replace with your chair image path
               alt="Discount Chair"
-              layout="fill"
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               
               className="rounded-lg object-cover"
             />
