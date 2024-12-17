@@ -1,4 +1,4 @@
-import Image from "next/image";
+
 import Link from "next/link";
 
 export default function OrderCom() {
@@ -39,12 +39,12 @@ export default function OrderCom() {
 
         {/* Clock Image */}
         <div className="absolute hidden md:block top-[40] left-[8] lg:left-[56] top-[70]">
-          <Image src="/zxc.jpeg" alt="Clock Icon" width={50} height={50} />
+          <img src="/zxc.jpeg" alt="Clock Icon" width={50} height={50} />
         </div>
 
         {/* Notepad Image */}
         <div className="absolute hidden md:block bottom-0 right-[120] lg:right-20">
-          <Image src="/bnm.jpeg" alt="Notepad Icon" width={50} height={50} />
+          <img src="/bnm.jpeg" alt="Notepad Icon" width={50} height={50} />
         </div>
 
         {/* Dotted Lines */}
@@ -58,35 +58,35 @@ export default function OrderCom() {
 
       {/* Logos Section */}
       <div className="mt-12 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-8 justify-items-center px-4 mb-8">
-        <Image
+        <img
           src="/logz5.jpeg"
           alt="Logo 1"
           width={100}
           height={100}
           className="object-contain"
         />
-        <Image
+        <img
           src="/logz1.jpeg"
           alt="Logo 2"
           width={100}
           height={100}
           className="object-contain"
         />
-        <Image
+        <img
           src="/logz2.jpeg"
           alt="Logo 3"
           width={100}
           height={100}
           className="object-contain"
         />
-        <Image
+        <img
           src="/logz4.jpeg"
           alt="Logo 4"
           width={100}
           height={100}
           className="object-contain"
         />
-        <Image
+        <img
           src="/logz3.jpeg"
           alt="Logo 5"
           width={100}

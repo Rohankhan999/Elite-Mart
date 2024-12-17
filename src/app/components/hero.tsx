@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import Image from "next/image";
+
 import Link from "next/link";
 
 const slides = [
@@ -50,7 +50,7 @@ function HeroSection() {
       {/* Left Column: Lamp */}
       <div className="md:w-1/4 flex justify-center items-start relative">
         <div className="absolute top-[-350px] left-[-40px] z-10">
-          <Image
+          <img
             src={current.lampImage}
             alt="Lamp"
             width={387} // Fixed size for lamp
@@ -82,7 +82,7 @@ function HeroSection() {
       {/* Right Column: Chair Image */}
       <div className="md:w-1/3 flex justify-center items-center relative">
         <div className="relative bg-gradient-to-r from-pink-100 to-purple-200 rounded-full p-10 shadow-xl mt-10 mx-auto">
-          <Image
+          <img
             src={current.chairImage}
             alt="Furniture Chair"
             width={706}

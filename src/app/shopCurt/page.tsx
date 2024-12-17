@@ -2,8 +2,20 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 
+interface CartItem {
+  id: number;
+  title: string;
+  price: number;
+  quantity: number;
+  total: number;
+  image: string;
+  color: string;
+  size: string;
+}
+
+
 const ShopCartPage = () => {
-  const [cartItems, setCartItems] = useState<any[]>([]);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
   useEffect(() => {
     const storedCart = localStorage.getItem("cart");

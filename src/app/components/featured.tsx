@@ -1,6 +1,7 @@
 'use client'; // Ensure this file runs on the client side
 
 import React from "react";
+
 import { useRouter } from "next/navigation"; // Use Next.js router for navigation
 
 const FeaturedProducts = () => {

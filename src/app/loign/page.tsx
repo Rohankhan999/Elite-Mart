@@ -1,3 +1,4 @@
+"use client"
 export default function Login() {
   return (
     <div className="bg-white min-h-screen">
@@ -49,7 +50,7 @@ export default function Login() {
               Sign In
             </button>
             <p className="text-center text-gray-500 mt-6">
-              Don't have an Account?{" "}
+              Don&apos;t have an Account?{" "}
               <a
                 href="#"
                 className="text-pink-500 font-semibold hover:underline"

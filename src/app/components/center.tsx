@@ -166,12 +166,12 @@ export default function Center() {
         {/* Right Section - Image */}
         <div className="md:w-1/2 mt-6 md:mt-0 flex justify-center">
           <div className="relative w-[250px] h-[300px]">
-            <Image
+            <img
               src="/brown.jpeg" // Replace with your chair image path
               alt="Discount Chair"
               layout="fill"
-              objectFit="contain"
-              className="rounded-lg"
+              
+              className="rounded-lg object-cover"
             />
           </div>
         </div>

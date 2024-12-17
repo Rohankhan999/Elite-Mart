@@ -1,4 +1,4 @@
-import Image from "next/image";
+
 import {FaFacebook} from "react-icons/fa"
 import { RxInstagramLogo } from "react-icons/rx";
 import {FaLinkedin } from "react-icons/fa"
@@ -16,7 +16,7 @@ const Footer = () => {
             <div className="mt-2 sm:mt-0">
               
           {/* Logo */}
-          <Image
+          <img
             src="/lodo.00.png"
             width={98}
             height={34}

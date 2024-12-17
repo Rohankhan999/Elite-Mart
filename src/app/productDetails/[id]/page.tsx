@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useParams } from 'next/navigation';
 
+
 const products = [
   {
     id: 1,
@@ -73,10 +74,10 @@ const products = [
 export default function ProductDetails() {
   const { id } = useParams();
   const product = products.find((p) => p.id === Number(id));
-
+  const [activeTab, setActiveTab] = useState('description');
   if (!product) return <p>Product not found</p>;
 
-  const [activeTab, setActiveTab] = useState('description');
+  
 
   const renderTabContent = () => {
     switch (activeTab) {

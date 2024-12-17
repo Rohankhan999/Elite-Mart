@@ -10,7 +10,10 @@ interface Product {
   colors: string[];
   image: string;
 }
-
+interface ProductOptions {
+  color?: string;
+  size?: string;
+}
 const products: Product[] = [
   { id: 1, title: "Vel elit euismod", price: 20.0, oldPrice: 26.0, colors: ["Brown"], image: "/latest1.png" },
   { id: 2, title: "Luctus purus metus", price: 22.0, oldPrice: 28.0, colors: ["Yellow"], image: "/latest2.png" },
@@ -20,7 +23,7 @@ const products: Product[] = [
 
 export default function ShopGridPage() {
   const [cart, setCart] = useState<Product[]>([]);
-  const [selectedOptions, setSelectedOptions] = useState<any>({});
+  const [selectedOptions, setSelectedOptions] = useState<{ [key: number]: ProductOptions }>({});
 
   useEffect(() => {
     const storedCart = localStorage.getItem("cart");
@@ -29,8 +32,8 @@ export default function ShopGridPage() {
     }
   }, []);
 
-  const handleOptionChange = (id: number, type: string, value: string) => {
-    setSelectedOptions((prev: any) => ({
+  const handleOptionChange = (id: number, type: "color" | "size", value: string) => {
+    setSelectedOptions((prev: { [key: number]: ProductOptions }) => ({
       ...prev,
       [id]: {
         ...prev[id],

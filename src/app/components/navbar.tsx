@@ -49,7 +49,7 @@ export default function Header() {
             <span className="text-sm">USD</span>
             <RiArrowDropDownLine className="w-4 h-4" />
           </div>
-          <Link href="/login" className="flex items-center space-x-1">
+          <Link href="/loign" className="flex items-center space-x-1">
             <span className="hidden hover:text-white sm:inline text-sm">Login</span>
             <FiUser className="w-4 h-4 hover:text-white" />
           </Link>

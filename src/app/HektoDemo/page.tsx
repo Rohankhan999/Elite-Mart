@@ -1,4 +1,4 @@
-import Image from "next/image";
+
 import Link from "next/link";
 
 export default function HektoDemo() {
@@ -88,7 +88,7 @@ export default function HektoDemo() {
           <div className="space-y-4">
             {/* Cart Item 1 */}
             <div className="flex items-center justify-between">
-              <Image
+              <img
                 src="/chair2.png"
                 alt="Product"
                 width={60}
@@ -104,7 +104,7 @@ export default function HektoDemo() {
             </div>
             {/* Cart Item 2 */}
             <div className="flex items-center justify-between">
-              <Image
+              <img
                 src="/chair.png"
                 alt="Product"
                 width={60}
