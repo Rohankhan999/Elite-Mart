@@ -5,6 +5,7 @@ import Featured from "./components/featured";
 import Latest from "./components/latest";
 
 import Blog from "./components/blog";
+import Center from "./components/center";
 
 
 //
@@ -17,6 +18,7 @@ export default function Home() {
       <Hero/>
       <Featured/>
       <Latest/>
+      <Center/>
       <Blog/>
 
       

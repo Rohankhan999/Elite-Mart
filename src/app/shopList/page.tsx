@@ -1,160 +1,157 @@
-import { FaShoppingCart, FaHeart, FaSearch } from 'react-icons/fa';
+import { FaShoppingCart, FaHeart, FaSearch } from "react-icons/fa";
 
 export default function ShopListPage() {
   const products = [
     {
-      title: 'Accumsan tincidunt',
-      originalPrice: '59.00',
-      discountedPrice: '26.00',
+      title: "Accumsan tincidunt",
+      originalPrice: "59.00",
+      discountedPrice: "26.00",
       rating: 4,
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      image: '/q.jpeg',
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      image: "/q.jpeg",
     },
     {
-      title: 'In nulla',
-      originalPrice: '52.00',
-      discountedPrice: '26.00',
+      title: "In nulla",
+      originalPrice: "52.00",
+      discountedPrice: "26.00",
       rating: 5,
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      image: '/d.jpeg',
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      image: "/d.jpeg",
     },
     {
-      title: 'Vel sem',
-      originalPrice: '50.00',
-      discountedPrice: '26.00',
+      title: "Vel sem",
+      originalPrice: "50.00",
+      discountedPrice: "26.00",
       rating: 3,
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      image: '/a.jpeg',
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      image: "/a.jpeg",
     },
     {
-        title: 'Porttitor cum',
-        originalPrice: '59.00',
-        discountedPrice: '26.00',
-        rating: 4,
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-        image: '/b.jpeg',
-      },
-      {
-        title: 'Nunc in',
-        originalPrice: '50.00',
-        discountedPrice: '26.00',
-        rating: 4,
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-        image: '/k.jpeg',
-      },
-      {
-        title: 'Vitae facilisis',
-        originalPrice: '59.00',
-        discountedPrice: '26.00',
-        rating: 5,
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-        image: '/o.jpeg',
-      },
-      {
-        title: 'Curabitur lectus',
-        originalPrice: '59.00',
-        discountedPrice: '26.00',
-        rating: 5,
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-        image: '/p.jpeg',
-      },
+      title: "Porttitor cum",
+      originalPrice: "59.00",
+      discountedPrice: "26.00",
+      rating: 4,
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      image: "/b.jpeg",
+    },
+    {
+      title: "Nunc in",
+      originalPrice: "50.00",
+      discountedPrice: "26.00",
+      rating: 4,
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      image: "/k.jpeg",
+    },
+    {
+      title: "Vitae facilisis",
+      originalPrice: "59.00",
+      discountedPrice: "26.00",
+      rating: 5,
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      image: "/o.jpeg",
+    },
+    {
+      title: "Curabitur lectus",
+      originalPrice: "59.00",
+      discountedPrice: "26.00",
+      rating: 5,
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      image: "/p.jpeg",
+    },
   ];
 
   return (
     <div className="bg-white min-h-screen">
       {/* Header Section */}
-      <div className="w-full h-[286px] bg-[#F6F5FF] flex flex-col items-start justify-center px-6">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold text-black mb-4 ml-[158px]">Shop List</h1>
-          <p className="text-sm text-gray-500 mt-4 ml-[165px]">
-            Home &gt; Pages &gt; <span className="text-pink-500">Shop List</span>
-          </p>
-        </div>
+      <div className="w-full h-[286px] bg-[#F6F5FF] flex flex-col items-center justify-center px-6 text-center">
+        <h1 className="text-4xl font-bold text-black mb-4">Shop List</h1>
+        <p className="text-sm text-gray-500 mt-4">
+          Home &gt; Pages &gt; <span className="text-pink-500">Shop List</span>
+        </p>
       </div>
 
-
       {/* Content Section */}
-      <div className="mt-[100px] ml-[175px]">
+      <div className="mt-8 px-4 lg:px-16 text-center lg:text-left">
         <h2 className="text-2xl font-semibold mb-2">
           Ecommerce Accessories &amp; Fashion Items
         </h2>
         <p className="text-gray-600 mt-2">About 9,620 results (0.62 seconds)</p>
       </div>
+
       {/* Filters */}
-      <div className="mt-4 flex justify-between items-center">
-          <div className="flex space-x-6 ml-[720px] -mt-[123px]">
-            <div className="flex items-center space-x-2">
-              <label htmlFor="per-page" className="text-sm text-gray-700">
-                Per Page:
-              </label>
-              <input
-                type="number"
-                id="per-page"
-                className="w-16 border border-gray-300 rounded-md p-1 text-sm"
-                placeholder="10"
-              />
-            </div>
-            <div className="flex items-center space-x-2">
-              <label htmlFor="sort-by" className="text-sm text-gray-700">
-                Sort By:
-              </label>
-              <select
-                id="sort-by"
-                className="border border-gray-300 rounded-md p-1 text-sm"
-              >
-                <option>Best Match</option>
-                <option>Price Low to High</option>
-                <option>Price High to Low</option>
-              </select>
-            </div>
-            <div className="flex items-center space-x-2">
-              <label htmlFor="view" className="text-sm text-gray-700">
-                View:
-              </label>
-              <input
-                type="text"
-                id="view"
-                className="w-16 border border-gray-300 rounded-md p-1 text-sm"
-                placeholder="Grid"
-              />
-            </div>
-          </div>
-          </div>
+      <div className="mt-4 flex flex-wrap justify-between items-center gap-4 px-4 lg:px-16">
+  <div className="flex items-center space-x-4">
+    <div className="flex items-center space-x-2">
+      <label htmlFor="per-page" className="text-sm text-gray-700">
+        Per Page:
+      </label>
+      <input
+        type="number"
+        id="per-page"
+        className="w-16 border border-gray-300 rounded-md p-1 text-sm"
+        placeholder="10"
+      />
+    </div>
+    <div className="flex items-center space-x-2">
+      <label htmlFor="sort-by" className="text-sm text-gray-700">
+        Sort By:
+      </label>
+      <select
+        id="sort-by"
+        className="border border-gray-300 rounded-md p-1 text-sm"
+      >
+        <option>Best Match</option>
+        <option>Price Low to High</option>
+        <option>Price High to Low</option>
+      </select>
+    </div>
+    <div className="flex items-center space-x-2">
+      <label htmlFor="view" className="text-sm text-gray-700">
+        View:
+      </label>
+      <input
+        type="text"
+        id="view"
+        className="w-16 border border-gray-300 rounded-md p-1 text-sm"
+        placeholder="Grid"
+      />
+    </div>
+  </div>
+</div>
+
 
       {/* Product Cards Section */}
-      <div className="flex flex-col gap-6 mt-16 px-6 items-center mb-[30px]">
+      <div className="mt-12 px-4 lg:px-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {products.map((product, index) => (
           <div
             key={index}
-            className="flex items-start gap-4 p-4 border rounded-lg shadow-sm  w-[900px] "
+            className="flex flex-col items-start gap-4 p-4 border rounded-lg shadow-sm"
           >
             {/* Product Image */}
             <img
               src={product.image}
               alt={product.title}
-              className="w-64 h-30 object-cover rounded-lg"
+              className="w-full h-48 object-cover rounded-lg"
             />
 
             {/* Product Details */}
-            <div className="flex-1">
-              <h3 className="text-lg font-semibold">{product.title} 
-
-              <div className="flex justify-center items-center space-x-2 mb-2 -mt-5">
-    <div className="w-3 h-3 bg-red-500 rounded-full"></div> {/* Red Dot */}
-    <div className="w-3 h-3 bg-blue-500 rounded-full"></div> {/* Blue Dot */}
-    <div className="w-3 h-3 bg-green-500 rounded-full"></div> {/* Green Dot */}
-  </div>
-
-              </h3>
+            <div className="flex-1 w-full">
+              <h3 className="text-lg font-semibold">{product.title}</h3>
               <div className="flex items-center gap-2">
-                <span className="text-red-500 font-bold">${product.discountedPrice}</span>
-                <span className="text-gray-500 line-through">${product.originalPrice}</span>
+                <span className="text-red-500 font-bold">
+                  ${product.discountedPrice}
+                </span>
+                <span className="text-gray-500 line-through">
+                  ${product.originalPrice}
+                </span>
               </div>
               <div className="flex items-center mt-1">
                 {Array.from({ length: 5 }, (_, i) => (
                   <span
                     key={i}
-                    className={`text-yellow-400 ${i < product.rating ? 'fill-current' : 'text-gray-300'}`}
+                    className={`text-yellow-400 ${
+                      i < product.rating ? "fill-current" : "text-gray-300"
+                    }`}
                   >
                     ★
                   </span>
@@ -164,7 +161,7 @@ export default function ShopListPage() {
             </div>
 
             {/* Actions with react-icons */}
-            <div className="flex flex-col items-center gap-2">
+            <div className="flex items-center gap-2 justify-between w-full">
               <button className="p-2 bg-gray-100 rounded-full hover:bg-gray-200">
                 <FaShoppingCart className="text-gray-600 hover:text-black" />
               </button>
@@ -177,42 +174,36 @@ export default function ShopListPage() {
             </div>
           </div>
         ))}
+      </div>
 
-<div className="mt-12 flex justify-center space-x-8 mb-[30px]">
-  <img
-    src="/logz.jpeg"
-    alt="Logo 1"
-    className="w-40 h-40 object-contain"
-  />
-  <img
-    src="/logz1.jpeg"
-    alt="Logo 2"
-    className="w-40 h-40 object-contain"
-  />
-  <img
-    src="/logz2.jpeg"
-    alt="Logo 3"
-    className="w-40 h-40 object-contain"
-  />
-  <img
-    src="/logz4.jpeg"
-    alt="Logo 4"
-    className="w-40 h-40 object-contain"
-  />
-  <img
-    src="/logz3.jpeg"
-    alt="Logo 5"
-    className="w-40 h-40 object-contain"
-  />
-</div>
-
+      {/* Brand Logos Section */}
+      <div className="mt-12 flex justify-center flex-wrap gap-8 px-4 lg:px-16 mb-12">
+        <img
+          src="/logz5.jpeg"
+          alt="Logo 1"
+          className="w-32 h-32 object-contain"
+        />
+        <img
+          src="/logz1.jpeg"
+          alt="Logo 2"
+          className="w-32 h-32 object-contain"
+        />
+        <img
+          src="/logz2.jpeg"
+          alt="Logo 3"
+          className="w-32 h-32 object-contain"
+        />
+        <img
+          src="/logz4.jpeg"
+          alt="Logo 4"
+          className="w-32 h-32 object-contain"
+        />
+        <img
+          src="/logz3.jpeg"
+          alt="Logo 5"
+          className="w-32 h-32 object-contain"
+        />
       </div>
     </div>
   );
 }
-
-  
-
-
-
- 

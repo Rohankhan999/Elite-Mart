@@ -3,7 +3,7 @@
 import { RxEnvelopeClosed } from "react-icons/rx";
 import { PiPhoneCallBold } from "react-icons/pi";
 import { RiArrowDropDownLine } from "react-icons/ri";
-import { FiUser } from "react-icons/fi";
+import { FiUser, FiMenu } from "react-icons/fi";
 import { CiHeart } from "react-icons/ci";
 import { FiShoppingCart } from "react-icons/fi";
 import { CiSearch } from "react-icons/ci";
@@ -12,142 +12,136 @@ import { useState } from "react";
 
 export default function Header() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const toggleDropdown = () => {
     setIsDropdownOpen((prev) => !prev);
   };
+  const toggleMobileMenu = () => setIsMobileMenuOpen((prev) => !prev);
 
   return (
     <div>
-      {/* Header Container */}
-      <div className="h-[50px] w-full bg-[#7E33E0] flex items-center justify-between px-4 sm:px-8 md:px-16 lg:px-32 xl:px-48 space-x-4">
-        {/* Left Section: Envelope and Phone */}
-        <div className="flex items-center space-x-4">
+      {/* Top Header */}
+      <div className="h-[50px] w-full bg-[#7E33E0] flex items-center justify-between px-4 sm:px-8 md:px-16 lg:px-32">
+        {/* Left Section */}
+        <div className="flex items-center space-x-4 text-white">
           <div className="flex items-center space-x-2">
-            <RxEnvelopeClosed className="w-4 h-4 text-white" />
-            <span className="hidden sm:inline text-white font-[Josefin Sans] font-semibold text-sm md:text-base">
+            <RxEnvelopeClosed className="w-4 h-4" />
+            <span className="hidden sm:inline font-[Josefin Sans] text-sm">
               mhhasanul@gmail.com
             </span>
           </div>
-
           <div className="flex items-center space-x-2">
-            <PiPhoneCallBold className="w-4 h-4 text-white" />
-            <span className="hidden sm:inline text-white font-[Josefin Sans] font-semibold text-sm md:text-base">
+            <PiPhoneCallBold className="w-4 h-4" />
+            <span className="hidden sm:inline font-[Josefin Sans] text-sm">
               (12345)67890
             </span>
           </div>
         </div>
 
+        {/* Right Section */}
         <div className="flex items-center space-x-4">
           <div className="hidden sm:flex items-center space-x-1">
-            <span className="text-[#F1F1F1] font-[Josefin Sans] font-semibold text-sm md:text-base">
-              English
-            </span>
-            <RiArrowDropDownLine className="w-4 h-4 text-white" />
+            <span className="text-sm">English</span>
+            <RiArrowDropDownLine className="w-4 h-4" />
           </div>
-
           <div className="hidden sm:flex items-center space-x-1">
-            <span className="text-[#F1F1F1] font-[Josefin Sans] font-semibold text-sm md:text-base">
-              USD
-            </span>
-            <RiArrowDropDownLine className="w-4 h-4 text-white" />
+            <span className="text-sm">USD</span>
+            <RiArrowDropDownLine className="w-4 h-4" />
           </div>
-
-          <div className="flex items-center space-x-1">
-            <span className="hidden sm:inline text-[#F1F1F1] font-[Josefin Sans] font-semibold text-sm md:text-base">
-              Login
-            </span>
-            <FiUser className="w-4 h-4 text-white" />
-          </div>
-
-          <div className="flex items-center space-x-1">
-            <span className="hidden sm:inline text-[#F1F1F1] font-[Josefin Sans] font-semibold text-sm md:text-base">
-              Wishlist
-            </span>
-            <CiHeart className="w-4 h-4 text-white" />
-          </div>
-
-          <FiShoppingCart className="w-5 h-5 text-white" />
+          <Link href="/login" className="flex items-center space-x-1">
+            <span className="hidden hover:text-white sm:inline text-sm">Login</span>
+            <FiUser className="w-4 h-4 hover:text-white" />
+          </Link>
+          <Link href="/wishlist" className="flex items-center space-x-1">
+            <span className="hidden sm:inline text-sm">Wishlist</span>
+            <CiHeart className="w-4 h-4" />
+          </Link>
+          <Link href="/cart">
+            <FiShoppingCart className="w-5 h-5 cursor-pointer hover:text-white" />
+          </Link>
         </div>
       </div>
 
-      {/* Navbar Container */}
-      <div className="w-full h-[60px] bg-white flex items-center px-4 sm:px-8 md:px-16 lg:px-32 xl:px-48">
-        {/* Hekto Logo */}
-        <div className="text-[#0D0E43] font-[Josefin Sans] font-bold text-lg md:text-xl lg:text-2xl">
+      {/* Navbar */}
+      <div className="w-full h-[60px] bg-white flex items-center justify-between px-4 sm:px-8 md:px-16 lg:px-32">
+        {/* Logo */}
+        <div className="text-[#0D0E43] font-bold text-lg sm:text-xl">
           Hekto
         </div>
 
         {/* Navbar Links */}
-        <div className="hidden sm:flex items-center space-x-4 ml-8 relative">
-          {/* Home Link with Dropdown */}
-          <div className="relative flex items-center space-x-1">
-          <Link href="/"><span className="text-[#FB2E86] font-[Lato] text-sm md:text-base hover:text-[#e03333] cursor-pointer">
-            Home
-          </span></Link>
-            <span
-              className="text-[#FB2E86] font-[Lato] text-sm md:text-base hover:text-[#e0336a] cursor-pointer"
-              onClick={toggleDropdown}
-            >
-               <RiArrowDropDownLine className="w-5 h-5 text-[#FB2E86]" />
+        <div className="hidden sm:flex items-center space-x-4">
+          <div className="relative flex items-center ml-[10] space-x-1">
+            <Link href="/" className="text-[#FB2E86] text-sm hover:text-pink-500">
+              Home
+            </Link>
+            <span onClick={toggleDropdown} className="cursor-pointer">
+              <RiArrowDropDownLine className="w-5 h-5 text-[#FB2E86]" />
             </span>
-           
-            
-            {/* Dropdown Menu */}
+
+            {/* Dropdown */}
             {isDropdownOpen && (
-              <div className="absolute top-[100%] left-0 bg-white shadow-md rounded-md w-48 mt-2 z-50">
-                <Link href="/shopList">
-                  <span className="block px-4 py-2 text-[#0D0E43] hover:bg-gray-100 cursor-pointer">
-                    Shop List
-                  </span>
+              <div className="absolute top-full left-0 bg-white shadow-md rounded-md w-40 mt-2 z-50">
+                <Link href="/shopList" className="block px-4 py-2 hover:bg-gray-100">
+                  Shop List
                 </Link>
-                <Link href="/shopLeftSidebar">
-                  <span className="block px-4 py-2 text-[#0D0E43] hover:bg-gray-100 cursor-pointer">
-                    Shop LSB
-                  </span>
+                <Link href="/shopLeftSidebar" className="block px-4 py-2 hover:bg-gray-100">
+                  Shop LSB
                 </Link>
-                <Link href="/shopGrid">
-                  <span className="block px-4 py-2 text-[#0D0E43] hover:bg-gray-100 cursor-pointer">
-                    Shop Grid
-                  </span>
+                <Link href="/shopGrid" className="block px-4 py-2 hover:bg-gray-100">
+                  Shop Grid
                 </Link>
               </div>
             )}
           </div>
-
-          <span className="text-[#0D0E43] font-[Lato] text-sm md:text-base hover:text-[#e03333] cursor-pointer">
+          <Link href="/pages" className="text-[#0D0E43] text-sm hover:text-pink-500">
             Pages
-          </span>
-
-          <span className="text-[#0D0E43] font-[Lato] text-sm md:text-base hover:text-[#e03333] cursor-pointer">
+          </Link>
+          <Link href="/shopList" className="text-[#0D0E43] text-sm hover:text-pink-500">
             Products
-          </span>
-
-          <span className="text-[#0D0E43] font-[Lato] text-sm md:text-base hover:text-[#e03333] cursor-pointer">
+          </Link>
+          <Link href="/blog" className="text-[#0D0E43] text-sm hover:text-pink-500">
             Blog
-          </span>
-
-          <span className="text-[#0D0E43] font-[Lato] text-sm md:text-base hover:text-[#e03333] cursor-pointer">
+          </Link>
+          <Link href="/shopList" className="text-[#0D0E43] text-sm hover:text-pink-500">
             Shop
-          </span>
-
-          <span className="text-[#0D0E43] font-[Lato] text-sm md:text-base hover:text-[#e03333] cursor-pointer">
+          </Link>
+          <Link href="/contact" className="text-[#0D0E43] text-sm hover:text-pink-500">
             Contact
-          </span>
+          </Link>
         </div>
 
-        {/* Search Bar */}
+        {/* Search */}
         <div className="flex items-center ml-auto">
           <input
             type="text"
             placeholder="Search"
-            className="hidden md:inline-block w-[200px] lg:w-[300px] h-[40px] border border-[#aea6a6] px-4 text-sm md:text-base rounded-l"
+            className="hidden md:block w-[150px] lg:w-[300px] h-[40px] border px-4 text-sm rounded-l"
           />
-          <div className="w-[40px] h-[40px] bg-[#FB2E86] flex items-center justify-center rounded-r">
+          <button className="w-[40px] h-[40px] bg-[#FB2E86] flex items-center justify-center rounded-r">
             <CiSearch className="w-5 h-5 text-white" />
-          </div>
+          </button>
         </div>
       </div>
-    </div>
+
+       {/* Mobile Menu Button */}
+        <button onClick={toggleMobileMenu} className="sm:hidden">
+          <FiMenu className="w-6 h-6 text-[#0D0E43]" />
+        </button>
+      
+
+      {/* Mobile Menu */}
+      {isMobileMenuOpen && (
+        <div className="sm:hidden bg-white shadow-md flex flex-col items-start px-4 py-4 space-y-3">
+          <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="text-[#FB2E86]">Home</Link>
+          <Link href="/pages" onClick={() => setIsMobileMenuOpen(false)} className="text-[#0D0E43]">Pages</Link>
+          <Link href="/shopList" onClick={() => setIsMobileMenuOpen(false)} className="text-[#0D0E43]">Products</Link>
+          <Link href="/blog" onClick={() => setIsMobileMenuOpen(false)} className="text-[#0D0E43]">Blog</Link>
+          <Link href="/shopList" onClick={() => setIsMobileMenuOpen(false)} className="text-[#0D0E43]">Shop</Link>
+          <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)} className="text-[#0D0E43]">Contact</Link>
+        </div>
+      )}
+      </div>
   );
 }

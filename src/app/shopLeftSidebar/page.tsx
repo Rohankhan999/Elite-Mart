@@ -8,7 +8,7 @@ export default function ShopListPage() {
       discountedPrice: '26.00',
       rating: 4,
       description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      image: '/q.jpeg',
+      image: '/as.jpeg',
     },
     {
       title: 'In nulla',
@@ -16,7 +16,7 @@ export default function ShopListPage() {
       discountedPrice: '26.00',
       rating: 5,
       description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      image: '/d.jpeg',
+      image: '/er.jpeg',
     },
     {
       title: 'Vel sem',
@@ -24,7 +24,7 @@ export default function ShopListPage() {
       discountedPrice: '26.00',
       rating: 3,
       description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      image: '/a.jpeg',
+      image: '/uj.jpeg',
     },
     {
         title: 'Porttitor cum',
@@ -32,7 +32,7 @@ export default function ShopListPage() {
         discountedPrice: '26.00',
         rating: 4,
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-        image: '/b.jpeg',
+        image: '/jk.jpeg',
       },
       {
         title: 'Nunc in',
@@ -40,7 +40,7 @@ export default function ShopListPage() {
         discountedPrice: '26.00',
         rating: 4,
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-        image: '/k.jpeg',
+        image: '/km.jpeg',
       },
       {
         title: 'Vitae facilisis',
@@ -48,7 +48,7 @@ export default function ShopListPage() {
         discountedPrice: '26.00',
         rating: 5,
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-        image: '/o.jpeg',
+        image: '/qq.jpeg',
       },
       {
         title: 'Curabitur lectus',
@@ -56,31 +56,30 @@ export default function ShopListPage() {
         discountedPrice: '26.00',
         rating: 5,
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-        image: '/p.jpeg',
+        image: '/xc.jpeg',
       },
   ];
 
   return (
     <div className="bg-white min-h-screen">
       {/* Hero Section */}
-      <div className="w-full h-[286px] bg-[#F6F5FF] flex flex-col items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold text-black mb-4 mr-[720px]">Shop List</h1>
-          <p className="text-sm text-gray-500 mr-[720px]">
-            Home &gt; Pages &gt; <span className="text-pink-500">Shop List</span>
-          </p>
-        </div>
+      <div className="w-full h-[286px] bg-[#F6F5FF] flex flex-col items-center justify-center text-center">
+        <h1 className="text-4xl font-bold text-black mb-4">Shop Left Sidebar</h1>
+        <p className="text-sm text-gray-500">
+          Home &gt; Pages &gt; <span className="text-pink-500">Shop Left Sidebar</span>
+        </p>
       </div>
 
-      <div className="mt-[100px] ml-[175px]">
-          <h2 className="text-2xl font-semibold mb-2">
-            Ecommerce Accessories &amp; Fashion Items
-          </h2>
-          <p className="text-gray-600 mt-2">About 9,620 results (0.62 seconds)</p>
-        </div>
+      {/* Intro Section */}
+      <div className="px-6 md:px-12 lg:px-20 mt-8">
+        <h2 className="text-2xl font-semibold mb-2">
+          Ecommerce Accessories &amp; Fashion Items
+        </h2>
+        <p className="text-gray-600 mt-2">About 9,620 results (0.62 seconds)</p>
 
-        <div className="mt-4 flex justify-between items-center">
-          <div className="flex space-x-6 ml-[720px] -mt-[123px]">
+        {/* Filters */}
+        <div className="mt-4 flex flex-wrap justify-between items-center gap-4">
+          <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-2">
               <label htmlFor="per-page" className="text-sm text-gray-700">
                 Per Page:
@@ -117,12 +116,15 @@ export default function ShopListPage() {
               />
             </div>
           </div>
-          </div>
+        </div>
+      </div>
 
-    <div className="bg-white min-h-screen flex">
-      {/* Sidebar */}
-      <div className="w-1/4 bg-gray-100 p-6 mt-[65px] mb-[35px] ml-[166px]">
-        <h2 className="text-lg font-semibold mb-4">Product Brand</h2>
+      {/* Content */}
+      <div className="flex flex-col lg:flex-row mt-8 gap-8 px-6 md:px-12 lg:px-20">
+        {/* Sidebar */}
+        <div className="lg:w-1/4 bg-gray-100 p-6 rounded-lg">
+          {/* Sidebar Filters */}
+          <h2 className="text-lg font-semibold mb-4">Product Brand</h2>
         <div className="space-y-2">
           {['Coaster Furniture', 'Fusion Dot High Fashion', 'Unique Furniture Restor', 'Dream Furniture Flipping', 'Young Repurposed', 'Green DIY furniture'].map((brand, index) => (
             <div key={index}>
@@ -183,104 +185,75 @@ export default function ShopListPage() {
             </div>
           ))}
         </div>
-      </div>
-
-      
-     
-
-       
-
-        {/* Products Section */}
-        <div className="grid grid-cols-1 gap-6 mt-16 px-5 items-center mb-[35px]">
-          {products.map((product, index) => (
-            <div
-              key={index}
-              className="flex items-start gap-4 p-4 border rounded-lg shadow-sm"
-            >
-              <img
-                src={product.image}
-                alt={product.title}
-                className="w-64 h-30 object-cover rounded-lg"
-              />
-              <div className="flex-1">
-                <h3 className="text-lg font-semibold">{product.title}
-
-                <div className="flex justify-center items-center space-x-2 mb-2 -mt-5 ml-[60px]">
-    <div className="w-3 h-3 bg-red-500 rounded-full"></div> {/* Red Dot */}
-    <div className="w-3 h-3 bg-blue-500 rounded-full"></div> {/* Blue Dot */}
-    <div className="w-3 h-3 bg-green-500 rounded-full"></div> {/* Green Dot */}
-  </div>
-
-                </h3>
-                <div className="flex items-center gap-2">
-                  <span className="text-red-500 font-bold">${product.discountedPrice}</span>
-                  <span className="text-gray-500 line-through">${product.originalPrice}</span>
-                </div>
-                <div className="flex items-center mt-1">
-                  {Array.from({ length: 5 }, (_, i) => (
-                    <span
-                      key={i}
-                      className={`text-yellow-400 ${i < product.rating ? 'fill-current' : 'text-gray-300'}`}
-                    >
-                      ★
-                    </span>
-                  ))}
-                </div>
-                <p className="text-sm text-gray-600 mt-2">{product.description}</p>
-              </div>
-              <div className="flex flex-col items-center gap-2">
-                <button className="p-2 bg-gray-100 rounded-full hover:bg-gray-200">
-                  <FaShoppingCart className="text-gray-600 hover:text-black" />
-                </button>
-                <button className="p-2 bg-gray-100 rounded-full hover:bg-gray-200">
-                  <FaHeart className="text-red-400 hover:text-red-600" />
-                </button>
-                <button className="p-2 bg-gray-100 rounded-full hover:bg-gray-200">
-                  <FaSearch className="text-gray-600 hover:text-black" />
-                </button>
-              </div>
-            </div>
-          ))}
         </div>
 
+        {/* Product Section */}
+        <div className="lg:w-3/4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-x-2 gap-y-px ">
+  {products.map((product, index) => (
+    <div
+      key={index}
+      className="flex flex-col items-center h-[320] bg-white p-1 border  gap-1 shadow-sm w-56" // Reduced padding from `p-4` to `p-2`
+    >
+      <img
+        src={product.image}
+        alt={product.title}
+        className="w-full h-50 object-cover rounded-lg mb-2" // Reduced height from `h-48` to `h-36` and margin from `mb-4` to `mb-2`
+      />
+      <h3 className="text-sm font-semibold text-center"> {/* Changed text size from `text-lg` to `text-base` */}
+        {product.title}
+      </h3>
+      <div className="flex items-center justify-center mt-1"> {/* Reduced margin from `mt-2` to `mt-1` */}
+        <span className="text-red-500 font-bold text-sm">${product.discountedPrice}</span> {/* Changed text size from `text-lg` to `text-md` */}
+        <span className="text-gray-500 line-through ml-1">${product.originalPrice}</span>
       </div>
-      <div className="mt-12 flex justify-center space-x-8 mb-[30px]">
-  <img
-    src="/logz.jpeg"
-    alt="Logo 1"
-    className="w-40 h-40 object-contain"
-  />
-  <img
-    src="/logz1.jpeg"
-    alt="Logo 2"
-    className="w-40 h-40 object-contain"
-  />
-  <img
-    src="/logz2.jpeg"
-    alt="Logo 3"
-    className="w-40 h-40 object-contain"
-  />
-  <img
-    src="/logz4.jpeg"
-    alt="Logo 4"
-    className="w-40 h-40 object-contain"
-  />
-  <img
-    src="/logz3.jpeg"
-    alt="Logo 5"
-    className="w-40 h-40 object-contain"
-  />
+      <div className="flex justify-center mt-1"> {/* Reduced margin from `mt-2` to `mt-1` */}
+        {Array.from({ length: 5 }).map((_, i) => (
+          <span
+            key={i}
+            className={`${
+              i < product.rating ? 'text-yellow-400' : 'text-gray-300'
+            }`}
+          >
+            ★
+          </span>
+        ))}
+      </div>
+      <div className="flex space-x-2 mt-2"> {/* Reduced margin from `mt-4` to `mt-2` */}
+        <button className="p-1 bg-gray-100 rounded-full hover:bg-gray-200">
+          <FaShoppingCart />
+        </button>
+        <button className="p-1 bg-gray-100 rounded-full hover:bg-gray-200">
+          <FaHeart />
+        </button>
+        <button className="p-1 bg-gray-100 rounded-full hover:bg-gray-200">
+          <FaSearch />
+        </button>
+      </div>
+    </div>
+  ))}
 </div>
 
+      </div>
+
+      {/* Logos Section */}
+      <div className="mt-12 flex justify-center flex-wrap gap-4 px-6">
+        {[5, 1, 2, 4, 3].map((i) => (
+          <img
+            key={i}
+            src={`/logz${i}.jpeg`}
+            alt={`Logo ${i}`}
+            className="w-20 h-20 sm:w-32 sm:h-32 object-contain"
+          />
+        ))}
+      </div>
     </div>
-
-
-
   );
 }
+
 
   
 
 
 
  
+  

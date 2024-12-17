@@ -2,6 +2,7 @@ import Image from "next/image";
 import {FaFacebook} from "react-icons/fa"
 import { RxInstagramLogo } from "react-icons/rx";
 import {FaLinkedin } from "react-icons/fa"
+import Link from "next/link";
 
 const Footer = () => {
     return (
@@ -74,8 +75,8 @@ const Footer = () => {
             <div className="mt-4 leading-6">
               <h3 className="text-[18px] text-black">Pages</h3>
               <ul className="mt-2 space-y-2 text-sm">
-                <li>Blog</li>
-                <li>Browse the Shop</li>
+              <Link href="/faq"><li className="text-blue-600 cursor-pointer hover:text-black">FAQs</li></Link>
+                <Link href="/aboutus"><li className="text-blue-600 cursor-pointer hover:text-black">About Us</li></Link>
                 <li>Category</li>
                 <li>Pre-Built Pages</li>
                 <li>Visual Composer Elements</li>
