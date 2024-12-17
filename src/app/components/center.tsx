@@ -1,4 +1,4 @@
-import Image from 'next/image';
+
 export default function Center() {
     return (
       <div className="font-sans text-gray-900">
