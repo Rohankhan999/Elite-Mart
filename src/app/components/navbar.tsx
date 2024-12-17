@@ -57,7 +57,7 @@ export default function Header() {
             <span className="hidden sm:inline text-sm">Wishlist</span>
             <CiHeart className="w-4 h-4" />
           </Link>
-          <Link href="/cart">
+          <Link href="/shopCurt">
             <FiShoppingCart className="w-5 h-5 cursor-pointer hover:text-white" />
           </Link>
         </div>
