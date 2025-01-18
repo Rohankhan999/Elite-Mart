@@ -40,7 +40,7 @@ Sanity Setup
   ```bash
    npm create sanity@latest -- --project 84ovqw5z --dataset production --template clean
    ```
-- Schema Folder Structure:
+Schema Folder Structure:
 - schemaTypes/index.ts:
 ```bash
 import { type SchemaTypeDefinition } from 'sanity';
@@ -129,17 +129,17 @@ export default {
 
 2. Image Upload to Sanity:
 
-- Used ```bash @sanity/client ``` to upload product images to Sanity.
+- Used ``` @sanity/client ``` to upload product images to Sanity.
 - Images were fetched from URLs, converted into buffers, and uploaded to Sanity's assets.
 
 3.Product Data Transformation:
 
 - API data fields were mapped to the Sanity schema fields.
-- For example, the ```bash category ```,```bash price ```, and ```bash description ``` fields from the API were mapped directly to the corresponding Sanity fields.
+- For example, the ``` category ```,``` price ```, and ``` description ``` fields from the API were mapped directly to the corresponding Sanity fields.
 
 4.Sanity Client Setup:
 
-- Configured the Sanity client in ```bash importData.js ```:
+- Configured the Sanity client in ``` importData.js ```:
 ```bash
 const client = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
@@ -158,7 +158,7 @@ const client = createClient({
 
 ## Code for Data Import
 
-The complete ```bash importData.js ``` script is as follows:
+The complete ``` importData.js ``` script is as follows:
 ```bash
 import { createClient } from '@sanity/client';
 import axios from 'axios';
