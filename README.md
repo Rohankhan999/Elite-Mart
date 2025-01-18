@@ -35,6 +35,8 @@ API Used
 - API Endpoint: https://next-ecommerce-template-4.vercel.app/api/product
 - Purpose: To fetch product data, including name, price, image, description, category, and other attributes.
 
+Sanity Setup
+- Command Used for Setup: ```bash npm create sanity@latest -- --project 84ovqw5z --dataset production --template clean ```
 
 ## Deploy on Vercel
 
