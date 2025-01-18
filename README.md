@@ -233,7 +233,7 @@ async function importData() {
 importData();
 ```
 
-API calls in Browser
+## API calls in Browser
 - Using fetch API:
 ```bash
 // This will make a GET request to your Next.js API route
