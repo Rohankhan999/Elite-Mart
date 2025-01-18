@@ -233,6 +233,11 @@ async function importData() {
 importData();
 ```
 
+## Sanity Fields
+![Sanity Fields](https://github.com/MrAfoo/hackhton/blob/master/public/hekto-shot-sanity.png?raw=true "Sanity Fields")
+
+## Frontend View
+![Frontend View]([URL_TO_IMAGE](https://github.com/MrAfoo/hackhton/blob/master/public/hekto-shot.png?raw=true) "Frontend View")
 
 
 ## Deploy on Vercel
