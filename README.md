@@ -41,7 +41,7 @@ Sanity Setup
    npm create sanity@latest -- --project 84ovqw5z --dataset production --template clean
    ```
 - Schema Folder Structure:
-schemaTypes/index.ts:
+- schemaTypes/index.ts:
 ```bash
 import { type SchemaTypeDefinition } from 'sanity';
 import ProductSchema from './product';
@@ -51,7 +51,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
 };
 ```
 
-schemaTypes/product.ts:
+- schemaTypes/product.ts:
 ```bash
 export default { 
   name: 'product',
@@ -119,100 +119,6 @@ export default {
   ],
 };
 ```
-
-
-Thanks for providing the details. Based on this, here's how you can structure your Day 3 API Integration Report:
-
-Day 3 - API Integration Report
-API Used
-API Endpoint: https://next-ecommerce-template-4.vercel.app/api/product
-Purpose: To fetch product data, including name, price, image, description, category, and other attributes.
-Sanity Setup
-Command Used for Setup:
-sql
-Copy
-Edit
-npm create sanity@latest -- --project 84ovqw5z --dataset production --template clean
-Schema Folder Structure:
-schemaTypes/index.ts:
-typescript
-Copy
-Edit
-import { type SchemaTypeDefinition } from 'sanity';
-import ProductSchema from './product';
-
-export const schema: { types: SchemaTypeDefinition[] } = {
-  types: [ProductSchema],
-};
-schemaTypes/product.ts:
-typescript
-Copy
-Edit
-export default { 
-  name: 'product',
-  type: 'document',
-  title: 'Product',
-  fields: [
-    {
-      name: 'name',
-      type: 'string',
-      title: 'Name',
-      validation: (Rule: any) => Rule.required().error('Name is required'),
-    },
-    {
-      name: 'image',
-      type: 'image',
-      title: 'Image',
-      options: {
-        hotspot: true,
-      },
-      description: 'Upload an image of the product.',
-    },
-    {
-      name: 'price',
-      type: 'string',
-      title: 'Price',
-      validation: (Rule: any) => Rule.required().error('Price is required'),
-    },
-    {
-      name: 'description',
-      type: 'text',
-      title: 'Description',
-      validation: (Rule: any) =>
-        Rule.max(150).warning('Keep the description under 150 characters.'),
-    },
-    {
-      name: 'discountPercentage',
-      type: 'number',
-      title: 'Discount Percentage',
-      validation: (Rule: any) =>
-        Rule.min(0).max(100).warning('Discount must be between 0 and 100.'),
-    },
-    {
-      name: 'isFeaturedProduct',
-      type: 'boolean',
-      title: 'Is Featured Product',
-    },
-    {
-      name: 'stockLevel',
-      type: 'number',
-      title: 'Stock Level',
-      validation: (Rule: any) => Rule.min(0).error('Stock level must be a positive number.'),
-    },
-    {
-      name: 'category',
-      type: 'string',
-      title: 'Category',
-      options: {
-        list: [
-          { title: 'Chair', value: 'Chair' },
-          { title: 'Sofa', value: 'Sofa' },
-        ],
-      },
-      validation: (Rule: any) => Rule.required().error('Category is required'),
-    },
-  ],
-};
 
 ## Integration Process
 
