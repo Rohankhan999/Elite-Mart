@@ -233,12 +233,30 @@ async function importData() {
 importData();
 ```
 
+API calls in Browser
+- Using fetch API:
+```bash
+// This will make a GET request to your Next.js API route
+fetch('/api/your-endpoint') // Replace with the correct endpoint path
+  .then((response) => response.json()) // Parse the response as JSON
+  .then((data) => {
+    console.log('Data from API:', data); // Handle the data
+  })
+  .catch((error) => {
+    console.error('Error fetching data:', error); // Handle any errors
+  });
+```
+
+## API Call
+![API Call](https://github.com/MrAfoo/hackhton/blob/master/public/api-call-shot.png?raw=true "API Call")
+
+
+
 ## Sanity Fields
 ![Sanity Fields](https://github.com/MrAfoo/hackhton/blob/master/public/hekto-shot-sanity.png?raw=true "Sanity Fields")
 
 ## Frontend View
 ![Frontend View](https://github.com/MrAfoo/hackhton/blob/master/public/hekto-shot.png?raw=true "Frontend View")
-
 
 ## Deploy on Vercel
 
