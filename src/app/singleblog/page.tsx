@@ -1,8 +1,11 @@
+'use client';
+import React, { Suspense } from "react";
+
 import { FaPenNib } from "react-icons/fa";
 import { MdOutlineCalendarMonth } from "react-icons/md";
 import { FaFacebookF, FaTwitter, FaInstagram } from "react-icons/fa";
 
-export default function SingleBlog() {
+function BlogContent() {
   return (
     <div className="bg-white min-h-screen">
       {/* Hero Section */}
@@ -451,3 +454,10 @@ export default function SingleBlog() {
     );
   }
   
+  export default function SingleBlog() {
+    return (
+      <Suspense fallback={<div>Loading blog content...</div>}>
+        <BlogContent />
+      </Suspense>
+    );
+  }
