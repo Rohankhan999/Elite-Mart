@@ -1,0 +1,10 @@
+/* Breakpoint system */
+@media (max-width: 640px) {
+  .grid { grid-template-columns: 1fr; }
+}
+@media (min-width: 641px) and (max-width: 1024px) {
+  .grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 1025px) {
+  .grid { grid-template-columns: repeat(4, 1fr); }
+}
