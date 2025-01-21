@@ -15,3 +15,8 @@
    Resolution: Implemented lazy loading
 2. Issue: API timeout
    Resolution: Added retry mechanism
+## CSV
+![Excel Dashboard](/public/xcel.png)
+
+![Excel Dashboard](/public/xcell.png)
+
