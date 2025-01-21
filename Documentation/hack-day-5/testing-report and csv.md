@@ -16,7 +16,9 @@
 2. Issue: API timeout
    Resolution: Added retry mechanism
 ## CSV
-![Excel Dashboard](/public/xcel.png)
+![Excel Dashboard](/public/xce.png)
+
+![Excel Dashboard](/public/xcsl.png)
 
 ![Excel Dashboard](/public/xcell.png)
 
