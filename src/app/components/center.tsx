@@ -1,9 +1,56 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { client } from '../../sanity/lib/client';
+import imageUrlBuilder from '@sanity/image-url';
+import { useRouter } from 'next/navigation';
+
+const builder = imageUrlBuilder(client);
+
+function urlFor(source: any) {
+  return builder.image(source);
+}
 
 export default function Center() {
+  const [products, setProducts] = useState([]);
+  const router = useRouter();
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const query = `*[_type == "product"][0...4]{
+        _id,
+        name,
+        price,
+        image
+      }`;
+      const result = await client.fetch(query);
+      setProducts(result);
+    };
+
+    fetchProducts();
+  }, []);
+  
+
+  const handleAddToCart = () => {
+    const newItem = {
+      id: Date.now(),
+      title: "B&B Italian Sofa",
+      price: 32.00,
+      quantity: 1,
+      total: 32.00,
+      image: "/blues.jpeg",
+      color: "Default",
+      size: "Standard"
+    };
+
+    const existingCart = JSON.parse(localStorage.getItem("cart") || "[]");
+    const updatedCart = [...existingCart, newItem];
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+    alert("Product added to cart successfully!");
+
+  };
     return (
       <div className="font-sans text-gray-900">
-        {/* Section 1: What Shopex Offer */}
-        {/* Section 1: What Shopex Offer */}
 <section className="bg-gray-50 py-10 text-center">
   <h2 className="text-3xl font-bold mb-8 text-indigo-800">What Shopex Offer!</h2>
   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 px-8">
@@ -17,15 +64,14 @@ export default function Center() {
         key={index}
         className="p-6 bg-white shadow-md rounded-md text-center flex flex-col items-center"
       >
-        {/* Add Image */}
         <img
           src={item.imgSrc}
           alt={item.title}
           className="w-16 h-16 mb-4 object-contain"
         />
-        {/* Title */}
+       
         <p className="text-lg font-semibold mb-2">{item.title}</p>
-        {/* Description */}
+        
         <p className="text-sm text-gray-500">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         </p>
@@ -35,108 +81,78 @@ export default function Center() {
 </section>
 
   
-        {/* Section 2: Unique Features */}
+       
         <section className="py-10 px-8 bg-gray-100">
-          <div className="flex flex-col lg:flex-row items-center">
-            <img
-              src="/blues.jpeg"
-              alt="Blue Chair"
-              className="w-full lg:w-1/2 rounded-lg"
-            />
-            <div className="lg:w-1/2 lg:pl-12 mt-6 lg:mt-0">
-              <h3 className="text-2xl font-semibold mb-4 text-indigo-800">
-                Unique Features Of Latest & Trending Products
-              </h3>
-              <ul className="flex flex-col text-gray-700 space-y-3 mb-4">
-  {/* First item - takes the full line */}
-  <li className="flex items-center space-x-2 mb-2 w-full">
-    <div className="w-2 h-2 bg-pink-500 rounded-full"></div>
-    <span>All types of furniture available</span>
-  </li>
-  
-  {/* Second item - wraps to the second line */}
-  <li className="flex items-center space-x-2 mb-2 w-full">
-    <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-    <span>Exclusive designs and latest arrivals</span>
-  </li>
-  
-  {/* Third item - wraps to the second line */}
-  <li className="flex items-center space-x-2 mb-2 w-full">
-    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-    <span>Special discount offers</span>
-  </li>
-</ul>
-
-
-              <div className="flex mt-[150]">
-              <button className="px-6 py-2 bg-pink-500 text-white rounded-md">
-                Add To Cart
-              </button>
-              <p className="text-blue-700 ml-[10] font-bold block">B&B Italian Sofa</p>
-             <div className="mt-[20] -ml-[125]"> <p className="text-blue-800 ">$32.00</p></div>
-              </div>
+      <div className="flex flex-col lg:flex-row items-center">
+        <img
+          src="/blues.jpeg"
+          alt="Blue Chair"
+          className="w-full lg:w-1/2 rounded-lg"
+        />
+        <div className="lg:w-1/2 lg:pl-12 mt-6 lg:mt-0">
+          <h3 className="text-2xl font-semibold mb-4 text-indigo-800">
+            Unique Features Of Latest & Trending Products
+          </h3>
+          <ul className="flex flex-col text-gray-700 space-y-3 mb-4">
+            <li className="flex items-center space-x-2 mb-2 w-full">
+              <div className="w-2 h-2 bg-pink-500 rounded-full"></div>
+              <span>All types of furniture available</span>
+            </li>
+            <li className="flex items-center space-x-2 mb-2 w-full">
+              <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+              <span>Exclusive designs and latest arrivals</span>
+            </li>
+            <li className="flex items-center space-x-2 mb-2 w-full">
+              <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+              <span>Special discount offers</span>
+            </li>
+          </ul>
+          <div className="flex mt-[150]">
+            <button 
+              onClick={handleAddToCart}
+              className="px-6 py-2 bg-pink-500 text-white rounded-md hover:bg-pink-600"
+            >
+              Add To Cart
+            </button>
+            <p className="text-blue-700 ml-[10] font-bold block">B&B Italian Sofa</p>
+            <div className="mt-[20] -ml-[125]">
+              <p className="text-blue-800 ">$32.00</p>
             </div>
           </div>
-        </section>
-  
-        {/* Section 3: Trending Products */}
-        <section className="py-10 bg-gray-50 ">
-          <h3 className="text-3xl font-bold text-center mb-8 text-indigo-800">
-            Trending Products
-          </h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 px-8">
-            {["Chair 1", "Chair 2", "Chair 3", "Chair 4"].map((item, index) => (
-              <div
-                key={index}
-                className="bg-white shadow-md  p-2 text-center group relative"
-              >
-                <div className="bg-gray-300 border  flex items-center justify-center w-30 h-40 mx-auto relative">
-        
-        
-        {/* Image */}
-        <img 
-          src={
-            index === 0
-              ? '/chair.png'       
-              : index === 1
-              ? '/chair2.png'        
-              : index === 2
-              ? '/chair3.png'        
-              : '/latest1.png'       
-          }
-          alt={item}
-          className="h-32 w-28  "
-        />
-        
-        {/* Button inside circle */}
-        <button className="absolute bg-green-500 text-white text-sm px-2 py-1 rounded-md opacity-0 group-hover:opacity-100">
-          View Shop
-        </button>
-        
-      </div>
-                  {/* Title */}
-      <p className="font-semibold mt-2">{item}</p>
-
-{/* Price */}
-<p className="text-gray-700 text-sm mt-1">$49.99</p>
-              </div>
-            ))}
-          </div>
-        </section>
-  
-        {/* Section 4: Discount Item */}
-        {/* Discount Section */}
-      <section className="py-10 px-8">
-        <div className="text-center">
-          <h1 className="text-3xl font-bold  text-indigo-800 mb-4">
-            Discount Item
-          </h1>
-          <div className='flex gap-[20] text-blue-800   justify-center'><p className='hover:text-pink-500 hover:underline'>Wood Chair</p>
-          <p className='hover:text-pink-500 hover:underline'>Plastic Chair</p>
-          <p className='hover:text-pink-500 hover:underline'>Sofa Collection</p></div>
-          
         </div>
-      </section>
+      </div>
+    </section>
+  
+    <section className="py-16 bg-gray-50">
+  <h3 className="text-3xl font-bold text-center mb-12 text-indigo-800">
+    Trending Products
+  </h3>
+  <div className="grid grid-cols-2 md:grid-cols-4 gap-8 px-12">
+    {products.map((product: any) => (
+      <div
+        key={product._id}
+        className="bg-white shadow-lg rounded-lg p-4 text-center group relative transform transition-all duration-300 hover:scale-105"
+      >
+        <div className="bg-gray-100 flex items-center justify-center h-56 mx-auto relative rounded-lg overflow-hidden">
+          <img
+            src={urlFor(product.image).width(300).url()}
+            alt={product.name}
+            className="h-48 w-48 object-contain transition-transform duration-300 group-hover:scale-110"
+          />
+          <button 
+            onClick={() => router.push(`/productDetails/${product._id}`)}
+            className="absolute bg-green-500 text-white px-4 py-2 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300"
+          >
+            View Details
+          </button>
+        </div>
+        <p className="font-semibold mt-4 text-lg">{product.name}</p>
+        <p className="text-pink-600 font-medium text-lg">${product.price}</p>
+      </div>
+    ))}
+  </div>
+</section>
+
 
       {/* Existing Discount Item Section */}
       <div className="flex flex-col md:flex-row items-center justify-center bg-white p-6 md:p-12 ml-[20]">
@@ -150,20 +166,17 @@ export default function Center() {
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique.
           </p>
 
-          {/* Bullet Points */}
           <ul className="text-gray-700 mb-6 space-y-2">
             <li>✅ Material exposed like metals</li>
             <li>✅ Simple lines and geometric figures</li>
             <li>✅ Industrial materials like woods</li>
           </ul>
 
-          {/* Button */}
           <button className="bg-pink-500 text-white px-6 py-2 rounded-lg hover:bg-pink-600 transition duration-300">
             Shop Now
           </button>
         </div>
 
-        {/* Right Section - Image */}
         <div className="md:w-1/2 mt-6 md:mt-0 flex justify-center">
           <div className="relative w-[250px] h-[300px]">
             <img
@@ -178,55 +191,51 @@ export default function Center() {
       </div>
   
         {/* Section 5: Top Categories */}
-        <section className="py-10 gap-[90]">
-          <h3 className="text-3xl font-bold text-center mb-8 text-indigo-800">
-            Top Categories
-          </h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 px-8">
-  {["Minki Chair 1", "Mini Chair 2", "Mini Chair", "Mini Chair"].map((item, index) => (
-    <div
-      key={index}
-      className="bg-white  p-4 text-center group relative"
-    >
-      {/* Image container */}
-      <div className="bg-gray-300 border rounded-full flex items-center justify-center w-24 h-24 mx-auto relative">
-        {/* Purple circle on hover */}
-        
-        {/* Image */}
-        <img 
-          src={
-            index === 0
-              ? '/chair.png'       
-              : index === 1
-              ? '/chair2.png'        
-              : index === 2
-              ? '/chair3.png'        
-              : '/latest1.png'       
-          }
-          alt={item}
-          className="h-16 w-16  object-cover"
-        />
-        
-        {/* Button inside circle */}
-        <button className="absolute bg-green-500 text-white text-sm px-2 py-1 rounded-md opacity-0 group-hover:opacity-100">
-          View Shop
-        </button>
-        
+        <section className="py-16 bg-gradient-to-b from-gray-50 to-white">
+  <h3 className="text-3xl font-bold text-center mb-12 text-indigo-800 relative after:content-[''] after:block after:w-24 after:h-1 after:bg-pink-500 after:mx-auto after:mt-4">
+    Top Categories
+  </h3>
+  <div className="grid grid-cols-2 md:grid-cols-4 gap-8 px-12 max-w-7xl mx-auto">
+    {["Minki Chair 1", "Mini Chair 2", "Mini Chair", "Mini Chair"].map((item, index) => (
+      <div
+        key={index}
+        className="bg-white p-6 text-center group relative rounded-xl shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2"
+      >
+        <div className="flex items-center justify-center h-48 mx-auto relative overflow-hidden bg-gradient-to-b from-gray-50 to-white rounded-lg">
+          <div className="absolute inset-0 bg-pink-500 opacity-0 group-hover:opacity-5 transition-opacity duration-300"></div>
+          <img
+            src={
+              index === 0
+                ? '/chair.png'      
+                : index === 1
+                ? '/chair2.png'        
+                : index === 2
+                ? '/chair3.png'        
+                : '/latest1.png'      
+            }
+            alt={item}
+            className="h-40 w-40 object-contain transform transition-transform duration-300 group-hover:scale-110 drop-shadow-lg"
+          />
+          <button className="absolute bottom-4 bg-green-500 text-white px-6 py-2 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-green-600 transform -translate-y-2 group-hover:translate-y-0">
+            View Details
+          </button>
+        </div>
+        <p className="font-semibold text-lg mt-4 text-gray-800 group-hover:text-indigo-800 transition-colors">{item}</p>
+        <div className="flex items-center justify-center gap-2 mt-2">
+          <span className="text-pink-600 font-medium text-lg">$49.99</span>
+          <span className="text-sm text-gray-500 line-through">$69.99</span>
+        </div>
+        <div className="mt-3 flex justify-center gap-1">
+          {[1, 2, 3, 4, 5].map((star) => (
+            <svg key={star} className="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+            </svg>
+          ))}
+        </div>
       </div>
-      
-
-      {/* Title */}
-      <p className="font-semibold mt-2">{item}</p>
-
-      {/* Price */}
-      <p className="text-gray-700 text-sm mt-1">$49.99</p>
-    </div>
-  ))}
-</div>
-
-
-
-        </section>
+    ))}
+  </div>
+</section>
   
         {/* Section 6: Newsletter */}
         <section className="py-10 px-8 text-center bg-gray-100">

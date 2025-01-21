@@ -1,46 +1,48 @@
-'use client'; // Ensure this file runs on the client side
+'use client';
 
-import React from "react";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import { client } from '../../sanity/lib/client';
 
-import { useRouter } from "next/navigation"; // Use Next.js router for navigation
+interface Product {
+  _id: string;
+  name: string;
+  code: string;
+  price: number;
+  image: {
+    asset: {
+      url: string | { _type: "image"; asset: { _ref: string } }
+    };
+  };
+  description: string;
+  category: string;
+}
 
-const FeaturedProducts = () => {
+interface FeaturedProductsProps {
+  products: Product[];
+}
+
+const FeaturedProducts = ({ products = [] }: FeaturedProductsProps) => {
   const router = useRouter();
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [visibleProducts, setVisibleProducts] = useState(4);
 
-  const products = [
-    {
-      id: 1, // Unique identifier
-      name: "Cantilever chair",
-      code: "Code - Y523201",
-      price: "$42.00",
-      image: "/feature1.png",
-    },
-    {
-      id: 2,
-      name: "Cantilever chair",
-      code: "Code - Y523202",
-      price: "$42.00",
-      image: "/feature2.png",
-    },
-    {
-      id: 3,
-      name: "Cantilever chair",
-      code: "Code - Y523203",
-      price: "$42.00",
-      image: "/feature3.png",
-    },
-    {
-      id: 4,
-      name: "Cantilever chair",
-      code: "Code - Y523204",
-      price: "$42.00",
-      image: "/feature4.png",
-    },
-  ];
+  React.useEffect(() => {
+    if (products.length > 0) {
+      setIsLoading(false);
+    }
+  }, [products]);
 
-  const handleViewDetails = (id: number) => {
-    // Navigate to the dynamic Product Details Page
+  if (isLoading) {
+    return <div className="text-center py-10">Loading products...</div>;
+  }
+
+  const handleViewDetails = (id: string) => {
     router.push(`/productDetails/${id}`);
+  };
+
+  const handleViewMore = () => {
+    setVisibleProducts(prev => prev + 4);
   };
 
   return (
@@ -49,17 +51,16 @@ const FeaturedProducts = () => {
         <h2 className="text-2xl font-bold text-center text-gray-800 mb-8">
           Featured Products
         </h2>
-        {/* Responsive grid layout */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {products.map((product) => (
+          {products.slice(0, visibleProducts).map((product) => (
             <div
-              key={product.id}
+              key={product._id}
               className="relative border rounded-xl p-4 bg-white shadow-md hover:shadow-lg transition duration-300"
-              style={{ height: "361px" }} // Optional height for consistent card size
+              style={{ height: "361px" }}
             >
               <div className="w-full h-40 flex items-center justify-center overflow-hidden rounded-lg">
                 <img
-                  src={product.image}
+                  src={typeof product.image.asset.url === 'string' ? product.image.asset.url : ''}
                   alt={product.name}
                   className="object-contain w-full h-full"
                 />
@@ -69,15 +70,14 @@ const FeaturedProducts = () => {
                   {product.name}
                 </h3>
                 <p className="text-sm text-gray-500">{product.code}</p>
-                <p className="text-lg font-bold text-gray-800 mt-2">
+                <p className="text-lg font-bold text-gray-800 mt-2">$
                   {product.price}
                 </p>
               </div>
-              {/* Overlay with View Details button */}
               <div className="absolute inset-0 bg-purple-500 text-white opacity-0 hover:opacity-100 flex items-center justify-center rounded-xl transition duration-300">
                 <button
                   className="py-2 px-4 bg-white text-purple-500 font-bold rounded-md shadow-md"
-                  onClick={() => handleViewDetails(product.id)} // Call the navigation function
+                  onClick={() => handleViewDetails(product._id)}
                 >
                   View Details
                 </button>
@@ -85,6 +85,17 @@ const FeaturedProducts = () => {
             </div>
           ))}
         </div>
+        
+        {visibleProducts < products.length && (
+          <div className="text-center mt-8">
+            <button
+              onClick={handleViewMore}
+              className="bg-purple-500 text-white px-6 py-2 rounded-md hover:bg-purple-600 transition duration-300"
+            >
+              View More
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );

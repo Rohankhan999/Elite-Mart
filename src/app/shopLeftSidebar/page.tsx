@@ -1,67 +1,187 @@
+'use client';
+
+import React from 'react';
+import { useState, useEffect } from 'react';
+import { client } from '../../sanity/lib/client';
+import imageUrlBuilder from '@sanity/image-url';
 import { FaShoppingCart, FaHeart, FaSearch } from 'react-icons/fa';
 
-export default function ShopListPage() {
-  const products = [
-    {
-      title: 'Accumsan tincidunt',
-      originalPrice: '59.00',
-      discountedPrice: '26.00',
-      rating: 4,
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      image: '/as.jpeg',
-    },
-    {
-      title: 'In nulla',
-      originalPrice: '52.00',
-      discountedPrice: '26.00',
-      rating: 5,
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      image: '/er.jpeg',
-    },
-    {
-      title: 'Vel sem',
-      originalPrice: '50.00',
-      discountedPrice: '26.00',
-      rating: 3,
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      image: '/uj.jpeg',
-    },
-    {
-        title: 'Porttitor cum',
-        originalPrice: '59.00',
-        discountedPrice: '26.00',
-        rating: 4,
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-        image: '/jk.jpeg',
-      },
-      {
-        title: 'Nunc in',
-        originalPrice: '50.00',
-        discountedPrice: '26.00',
-        rating: 4,
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-        image: '/km.jpeg',
-      },
-      {
-        title: 'Vitae facilisis',
-        originalPrice: '59.00',
-        discountedPrice: '26.00',
-        rating: 5,
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-        image: '/qq.jpeg',
-      },
-      {
-        title: 'Curabitur lectus',
-        originalPrice: '59.00',
-        discountedPrice: '26.00',
-        rating: 5,
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-        image: '/xc.jpeg',
-      },
-  ];
+
+const builder = imageUrlBuilder(client);
+
+function urlFor(source: any) {
+  return builder.image(source);
+}
+interface Product {
+  _id: string;
+  name: string;
+  price: string;
+  image: any;
+  category: string;
+}
+interface Filters {
+  brands: string[];
+  offers: string[];
+  ratings: number[];
+  categories: string[];
+  priceRanges: string[];
+  colors: string[];
+}
+interface PriceRange {
+  min: number;
+  max: number;
+}
+
+const ShopListPage: React.FC = () => {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [selectedPriceRange, setSelectedPriceRange] = useState<PriceRange | null>(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [visibleProducts, setVisibleProducts] = useState(6); 
+  const [hasMore, setHasMore] = useState(true); // Track if more products are available
+
+
+   
+  const [filters, setFilters] = useState<Filters>({
+    brands: [],
+    offers: [],
+    ratings: [],
+    categories: [],
+    priceRanges: [],
+    colors: [],
+  });
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const handleLoadMore = async () => {
+    const nextBatch = visibleProducts + 6; // Load 6 more products
+    setVisibleProducts(nextBatch);
+    
+    
+    if (nextBatch >= filteredProducts.length) {
+      
+      const query = `*[_type == "product"]`; // Modify this query based on your needs
+      const newProducts = await client.fetch(query);
+      
+      if (newProducts.length <= nextBatch) {
+        setHasMore(false);
+      }
+    }
+  };
+
+  
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setIsLoading(true); // Set loading to true before fetching
+        const query = `*[_type == "product"]`;
+        const fetchedProducts = await client.fetch(query);
+        setProducts(fetchedProducts);
+        setFilteredProducts(fetchedProducts); // Set initial filtered products
+        setHasMore(fetchedProducts.length > visibleProducts);
+        setIsLoading(false); // Set loading to false after fetching
+      } catch (error) {
+        console.error('Error fetching products:', error);
+        setIsLoading(false); // Make sure to set loading to false even if there's an error
+      }
+    };
+  
+    fetchProducts();
+  }, []);
+  
+  
+
+  useEffect(() => {
+    const applyFilters = () => {
+      let filtered = [...products];
+  
+      // Price filter
+      if (selectedPriceRange) {
+        filtered = filtered.filter(product => {
+          const price = parseFloat(product.price);
+          return price >= selectedPriceRange.min && price <= selectedPriceRange.max;
+        });
+      }
+  
+      setFilteredProducts(filtered);
+    };
+  
+    applyFilters();
+  }, [filters, products, selectedPriceRange]);
+   
+
+  const handlePriceRangeChange = (min: number, max: number) => {
+    setSelectedPriceRange({ min, max });
+  };
+  
+  const handleAddToCart = (product: Product) => {
+    const cartItem = {
+      id: product._id,
+      title: product.name,
+      price: product.price,
+      quantity: 1,
+      total: product.price,
+      image: urlFor(product.image).url(),
+    };
+
+    const existingCart = JSON.parse(localStorage.getItem("cart") || "[]");
+    const updatedCart = [...existingCart, cartItem];
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+    alert("Product added to cart successfully!");
+  };
+  
+  const handleFilterChange = (type: keyof Filters, value: string | number) => {
+    setFilters(prev => {
+      const updatedFilters = { ...prev };
+      
+      if (type === 'ratings') {
+        const ratingsArray = updatedFilters[type];
+        if (typeof value === 'number') {
+          if (ratingsArray.includes(value)) {
+            updatedFilters[type] = ratingsArray.filter(item => item !== value);
+          } else {
+            updatedFilters[type] = [...ratingsArray, value];
+          }
+        }
+      } else {
+        const stringArray = updatedFilters[type] as string[];
+        if (typeof value === 'string') {
+          if (stringArray.includes(value)) {
+            updatedFilters[type] = stringArray.filter(item => item !== value);
+          } else {
+            updatedFilters[type] = [...stringArray, value];
+          }
+        }
+      }
+      
+      return updatedFilters;
+    });
+  };
+  
+  
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-2xl">Loading...</div>
+      </div>
+    );
+  }
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="bg-white min-h-screen">
+       {/* Mobile Sidebar Toggle */}
+       <button 
+        onClick={toggleSidebar}
+        className="md:hidden fixed top-4 left-4 z-20 p-2 bg-pink-500 text-white rounded"
+      >
+        ☰
+      </button>
       {/* Hero Section */}
       <div className="w-full h-[286px] bg-[#F6F5FF] flex flex-col items-center justify-center text-center">
         <h1 className="text-4xl font-bold text-black mb-4">Shop Left Sidebar</h1>
@@ -120,140 +240,157 @@ export default function ShopListPage() {
       </div>
 
       {/* Content */}
-      <div className="flex flex-col lg:flex-row mt-8 gap-8 px-6 md:px-12 lg:px-20">
+      <div className="flex flex-col md:flex-row mt-8 gap-8 px-6 md:px-12 lg:px-20">
         {/* Sidebar */}
-        <div className="lg:w-1/4 bg-gray-100 p-6 rounded-lg">
-          {/* Sidebar Filters */}
-          <h2 className="text-lg font-semibold mb-4">Product Brand</h2>
-        <div className="space-y-2">
-          {['Coaster Furniture', 'Fusion Dot High Fashion', 'Unique Furniture Restor', 'Dream Furniture Flipping', 'Young Repurposed', 'Green DIY furniture'].map((brand, index) => (
-            <div key={index}>
-              <input type="checkbox" id={`brand-${index}`} className="mr-2" />
-              <label htmlFor={`brand-${index}`} className="text-sm">{brand}</label>
-            </div>
-          ))}
+        <div className={`
+    fixed md:relative w-64 h-full bg-white shadow-lg 
+    transform transition-transform duration-300 ease-in-out z-10
+    ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} 
+    md:translate-x-0
+  `}>
+  <div className="p-4 overflow-y-auto h-full">
+    {/* Product Brand */}
+    <h2 className="text-lg font-semibold mb-4">Product Brand</h2>
+    <div className="space-y-2">
+      {['Coaster Furniture', 'Fusion Dot High Fashion', 'Unique Furniture Restor', 'Dream Furniture Flipping', 'Young Repurposed', 'Green DIY furniture'].map((brand, index) => (
+        <div key={index}>
+          <input type="checkbox" id={`brand-${index}`} className="mr-2" />
+          <label htmlFor={`brand-${index}`} className="text-sm">{brand}</label>
         </div>
+      ))}
+    </div>
 
-        <h2 className="text-lg font-semibold mt-6 mb-4">Discount Offer</h2>
-        <div className="space-y-2">
-          {['20% Cashback', '5% Cashback Offer', '25% Discount Offer'].map((offer, index) => (
-            <div key={index}>
-              <input type="checkbox" id={`offer-${index}`} className="mr-2" />
-              <label htmlFor={`offer-${index}`} className="text-sm">{offer}</label>
-            </div>
-          ))}
+    {/* Discount Offer */}
+    <h2 className="text-lg font-semibold mt-6 mb-4">Discount Offer</h2>
+    <div className="space-y-2">
+      {['20% Cashback', '5% Cashback Offer', '25% Discount Offer'].map((offer, index) => (
+        <div key={index}>
+          <input type="checkbox" id={`offer-${index}`} className="mr-2" />
+          <label htmlFor={`offer-${index}`} className="text-sm">{offer}</label>
         </div>
+      ))}
+    </div>
 
-        <h2 className="text-lg font-semibold mt-6 mb-4">Rating Item</h2>
-        <div className="space-y-2">
-          {[5, 4, 3, 2].map((rating, index) => (
-            <div key={index}>
-              <input type="checkbox" id={`rating-${index}`} className="mr-2" />
-              <label htmlFor={`rating-${index}`} className="text-sm">
-                {Array.from({ length: rating }, () => '★').join('')} ({Math.floor(Math.random() * 3000)})
-              </label>
-            </div>
-          ))}
+    {/* Rating Item */}
+    <h2 className="text-lg font-semibold mt-6 mb-4">Rating Item</h2>
+    <div className="space-y-2">
+      {[5, 4, 3, 2].map((rating, index) => (
+        <div key={index}>
+          <input type="checkbox" id={`rating-${index}`} className="mr-2" />
+          <label htmlFor={`rating-${index}`} className="text-sm">
+            {Array.from({ length: rating }, () => '★').join('')} ({Math.floor(Math.random() * 3000)})
+          </label>
         </div>
+      ))}
+    </div>
 
-        <h2 className="text-lg font-semibold mt-6 mb-4">Categories</h2>
-        <div className="space-y-2">
-          {['Prestashop', 'Magento', 'Bigcommerce', 'osCommerce', '3dcart', 'Bags', 'Accessories', 'Jewellery', 'Watches'].map((category, index) => (
-            <div key={index}>
-              <input type="checkbox" id={`category-${index}`} className="mr-2" />
-              <label htmlFor={`category-${index}`} className="text-sm">{category}</label>
-            </div>
-          ))}
+    {/* Categories */}
+    <h2 className="text-lg font-semibold mt-6 mb-4">Categories</h2>
+    <div className="space-y-2">
+      {['Prestashop', 'Magento', 'Bigcommerce', 'osCommerce', '3dcart', 'Bags', 'Accessories', 'Jewellery', 'Watches'].map((category, index) => (
+        <div key={index}>
+          <input type="checkbox" id={`category-${index}`} className="mr-2" />
+          <label htmlFor={`category-${index}`} className="text-sm">{category}</label>
         </div>
+      ))}
+    </div>
 
-        <h2 className="text-lg font-semibold mt-6 mb-4">Price Filter</h2>
-        <div className="space-y-2">
-          {['$0.00 - $150.00', '$150.00 - $350.00', '$150.00 - $504.00', '$450.00+'].map((price, index) => (
-            <div key={index}>
-              <input type="checkbox" id={`price-${index}`} className="mr-2" />
-              <label htmlFor={`price-${index}`} className="text-sm">{price}</label>
-            </div>
-          ))}
-        </div>
-
-        <h2 className="text-lg font-semibold mt-6 mb-4">Filter By Color</h2>
-        <div className="space-y-2">
-          {['Blue', 'Orange', 'Brown', 'Green', 'Purple', 'Sky'].map((color, index) => (
-            <div key={index}>
-              <input type="checkbox" id={`color-${index}`} className="mr-2" />
-              <label htmlFor={`color-${index}`} className="text-sm">{color}</label>
-            </div>
-          ))}
-        </div>
-        </div>
-
-        {/* Product Section */}
-        <div className="lg:w-3/4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-x-2 gap-y-px ">
-  {products.map((product, index) => (
-    <div
-      key={index}
-      className="flex flex-col items-center h-[320] bg-white p-1 border  gap-1 shadow-sm w-56" // Reduced padding from `p-4` to `p-2`
-    >
-      <img
-        src={product.image}
-        alt={product.title}
-        className="w-full h-50 object-cover rounded-lg mb-2" // Reduced height from `h-48` to `h-36` and margin from `mb-4` to `mb-2`
+    {/* Price Filter */}
+    <h2 className="text-lg font-semibold mt-6 mb-4">Price Filter</h2>
+<div className="space-y-2">
+  {[
+    { label: '$0.00 - $150.00', min: 0, max: 150 },
+    { label: '$150.00 - $350.00', min: 150, max: 350 },
+    { label: '$350.00 - $504.00', min: 350, max: 504 },
+    { label: '$450.00+', min: 450, max: 99999 }
+  ].map((range, index) => (
+    <div key={index}>
+      <input 
+        type="checkbox" 
+        id={`price-${index}`} 
+        className="mr-2"
+        checked={selectedPriceRange?.min === range.min && selectedPriceRange?.max === range.max}
+        onChange={() => handlePriceRangeChange(range.min, range.max)}
       />
-      <h3 className="text-sm font-semibold text-center"> {/* Changed text size from `text-lg` to `text-base` */}
-        {product.title}
-      </h3>
-      <div className="flex items-center justify-center mt-1"> {/* Reduced margin from `mt-2` to `mt-1` */}
-        <span className="text-red-500 font-bold text-sm">${product.discountedPrice}</span> {/* Changed text size from `text-lg` to `text-md` */}
-        <span className="text-gray-500 line-through ml-1">${product.originalPrice}</span>
-      </div>
-      <div className="flex justify-center mt-1"> {/* Reduced margin from `mt-2` to `mt-1` */}
-        {Array.from({ length: 5 }).map((_, i) => (
-          <span
-            key={i}
-            className={`${
-              i < product.rating ? 'text-yellow-400' : 'text-gray-300'
-            }`}
-          >
-            ★
-          </span>
-        ))}
-      </div>
-      <div className="flex space-x-2 mt-2"> {/* Reduced margin from `mt-4` to `mt-2` */}
-        <button className="p-1 bg-gray-100 rounded-full hover:bg-gray-200">
-          <FaShoppingCart />
-        </button>
-        <button className="p-1 bg-gray-100 rounded-full hover:bg-gray-200">
-          <FaHeart />
-        </button>
-        <button className="p-1 bg-gray-100 rounded-full hover:bg-gray-200">
-          <FaSearch />
-        </button>
-      </div>
+      <label htmlFor={`price-${index}`} className="text-sm">{range.label}</label>
     </div>
   ))}
 </div>
 
-      </div>
-
-      {/* Logos Section */}
-      <div className="mt-12 flex justify-center flex-wrap gap-4 px-6">
-        {[5, 1, 2, 4, 3].map((i) => (
-          <img
-            key={i}
-            src={`/logz${i}.jpeg`}
-            alt={`Logo ${i}`}
-            className="w-20 h-20 sm:w-32 sm:h-32 object-contain"
-          />
+   {/* Filter By Color */}
+<h2 className="text-lg font-semibold mt-6 mb-4">Filter By Color</h2>
+<div className="space-y-2">
+  {['Blue', 'Orange', 'Brown', 'Green', 'Purple', 'Sky'].map((color, index) => (
+    <div key={index}>
+      <input 
+        type="checkbox" 
+        id={`color-${index}`} 
+        className="mr-2"
+        checked={filters.colors.includes(color)}
+        onChange={() => handleFilterChange('colors', color)}
+      />
+      <label htmlFor={`color-${index}`} className="text-sm">{color}</label>
+    </div>
+  ))}
+</div>
+</div>
+</div>
+      {/* Product Section */}
+      <div className="flex-1">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {filteredProducts.slice(0, visibleProducts).map((product) => (
+          <div key={product._id} className="border rounded-lg p-4 shadow-sm">
+            <div className="relative group">
+              <img
+                src={urlFor(product.image).width(300).url()}
+                alt={product.name}
+                className="w-full h-48 object-contain mb-4"
+              />
+              {/* Icons overlay */}
+              <div className="absolute top-4 right-4 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                <button
+                  onClick={() => handleAddToCart(product)}
+                  className="p-2 bg-white rounded-full shadow-md hover:bg-pink-500 hover:text-white transition-colors"
+                >
+                  <FaShoppingCart className="w-5 h-5" />
+                </button>
+                <button className="p-2 bg-white rounded-full shadow-md hover:bg-pink-500 hover:text-white transition-colors">
+                  <FaHeart className="w-5 h-5" />
+                </button>
+                <button className="p-2 bg-white rounded-full shadow-md hover:bg-pink-500 hover:text-white transition-colors">
+                  <FaSearch className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+            <div className="text-center">
+              <h3 className="font-semibold text-lg">{product.name}</h3>
+              <p className="text-gray-600 mt-1">{product.category}</p>
+              <p className="text-pink-500 font-bold text-lg mt-2">${product.price}</p>
+            </div>
+          </div>
         ))}
+</div>
+
+{/* View More Button in a separate container */}
+{/* View More Button */}
+{/* View More Button */}
+{hasMore && filteredProducts.length > visibleProducts && (
+          <div className="w-full flex justify-center mt-8 mb-8">
+            <button
+              onClick={handleLoadMore}
+              className="bg-pink-500 text-white px-8 py-3 rounded-md hover:bg-pink-600 transition-colors text-lg font-semibold"
+            >
+              View More
+            </button>
+          </div>
+        )}
+</div>
       </div>
     </div>
   );
 }
-
-
-  
+export default ShopListPage;
 
 
 
- 
   

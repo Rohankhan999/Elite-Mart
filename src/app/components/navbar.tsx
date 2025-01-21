@@ -9,10 +9,31 @@ import { FiShoppingCart } from "react-icons/fi";
 import { CiSearch } from "react-icons/ci";
 import Link from "next/link";
 import { useState } from "react";
+import { client } from '../../sanity/lib/client';
+
 
 export default function Header() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleSearch = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!searchQuery.trim()) return;
+  
+    const query = `*[_type == "product" && (name match "*${searchQuery}*" || description match "*${searchQuery}*")]`;
+    
+    try {
+      const results = await client.fetch(query);
+      
+      window.location.href = `/search?q=${encodeURIComponent(searchQuery)}`;
+
+    } catch (error) {
+      console.error('Search error:', error);
+    }
+  };
+  
 
   const toggleDropdown = () => {
     setIsDropdownOpen((prev) => !prev);
@@ -113,16 +134,22 @@ export default function Header() {
         </div>
 
         {/* Search */}
-        <div className="flex items-center ml-auto">
-          <input
-            type="text"
-            placeholder="Search"
-            className="hidden md:block w-[150px] lg:w-[300px] h-[40px] border px-4 text-sm rounded-l"
-          />
-          <button className="w-[40px] h-[40px] bg-[#FB2E86] flex items-center justify-center rounded-r">
-            <CiSearch className="w-5 h-5 text-white" />
-          </button>
-        </div>
+        <form onSubmit={handleSearch} className="flex items-center ml-auto">
+  <input
+    type="text"
+    value={searchQuery}
+    onChange={(e) => setSearchQuery(e.target.value)}
+    placeholder="Search"
+    className="hidden md:block w-[150px] lg:w-[300px] h-[40px] border px-4 text-sm rounded-l"
+  />
+  <button 
+    type="submit"
+    className="w-[40px] h-[40px] bg-[#FB2E86] flex items-center justify-center rounded-r"
+  >
+    <CiSearch className="w-5 h-5 text-white" />
+  </button>
+</form>
+
       </div>
 
        {/* Mobile Menu Button */}

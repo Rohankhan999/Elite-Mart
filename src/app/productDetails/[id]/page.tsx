@@ -1,83 +1,63 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
+import { client } from '../../../sanity/lib/client';
+import imageUrlBuilder from '@sanity/image-url';
 
 
-const products = [
-  {
-    id: 1,
-    name: "Cantilever chair",
-    code: "Code - Y523201",
-    price: "$42.00",
-    image: "/feature1.png",
-    discountPrice: 4500,
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi euismod metus non lectus viverra, sit amet facilisis magna congue.',
-    relatedProducts: [
-      { id: 1, name: 'Men Fashion Wear', price: 1400, image: '/z.jpeg' },
-      { id: 2, name: 'Women Fashion', price: 1200, image: '/ty.jpeg' },
-      { id: 3, name: 'Women Fashion', price: 1200, image: '/kp.jpeg' },
-      { id: 4, name: 'Women Fashion', price: 1200, image: '/wtr.jpeg' },
-    ],
-  },
-  {
-    id: 2,
-    name: "Another Chair",
-    code: "Code - X12345",
-    price: "$50.00",
-    image: "/feature2.png",
-    discountPrice: 4800,
-    description:
-      'Another chair description.',
-    relatedProducts: [
-      { id: 1, name: 'Men Fashion Wear', price: 1400, image: '/z.jpeg' },
-      { id: 2, name: 'Women Fashion', price: 1200, image: '/ty.jpeg' },
-      { id: 3, name: 'Women Fashion', price: 1200, image: '/kp.jpeg' },
-      { id: 4, name: 'Women Fashion', price: 1200, image: '/wtr.jpeg' },
-    ],
-  },
-  {
-    id: 3,
-    name: "the Chair",
-    code: "Code - X12345",
-    price: "$50.00",
-    image: "/feature3.png",
-    discountPrice: 4800,
-    description:
-      'Another chair description.',
-    relatedProducts: [
-      { id: 1, name: 'Men Fashion Wear', price: 1400, image: '/z.jpeg' },
-      { id: 2, name: 'Women Fashion', price: 1200, image: '/ty.jpeg' },
-      { id: 3, name: 'Women Fashion', price: 1200, image: '/kp.jpeg' },
-      { id: 4, name: 'Women Fashion', price: 1200, image: '/wtr.jpeg' },
-    ],
-  },
-  {
-    id: 4,
-    name: "Anotherss Chair",
-    code: "Code - X12345",
-    price: "$50.00",
-    image: "/feature4.png",
-    discountPrice: 4800,
-    description:
-      'Another chair description.',
-    relatedProducts: [
-      { id: 1, name: 'Men Fashion Wear', price: 1400, image: '/z.jpeg' },
-      { id: 2, name: 'Women Fashion', price: 1200, image: '/ty.jpeg' },
-      { id: 3, name: 'Women Fashion', price: 1200, image: '/kp.jpeg' },
-      { id: 4, name: 'Women Fashion', price: 1200, image: '/wtr.jpeg' },
-    ],
-  }
+interface RelatedProduct {
+  id: number;
+  name: string;
+  price: number;
+  image: string;
+}
+
+const builder = imageUrlBuilder(client);
+
+function urlFor(source: any) {
+  return builder.image(source);
+}
+
+// Keep your static related products data
+const relatedProducts = [
+  { id: 1, name: 'Men Fashion Wear', price: 1400, image: '/z.jpeg' },
+  { id: 2, name: 'Women Fashion', price: 1200, image: '/ty.jpeg' },
+  { id: 3, name: 'Women Fashion', price: 1200, image: '/kp.jpeg' },
+  { id: 4, name: 'Women Fashion', price: 1200, image: '/wtr.jpeg' },
 ];
 
 export default function ProductDetails() {
   const { id } = useParams();
-  const product = products.find((p) => p.id === Number(id));
+  const [product, setProduct] = useState<any>(null);
   const [activeTab, setActiveTab] = useState('description');
-  if (!product) return <p>Product not found</p>;
+  const [loading, setLoading] = useState(true);
 
-  
+  useEffect(() => {
+    const fetchProduct = async () => {
+      const query = `*[_type == "product" && _id == $id][0]{
+        _id,
+        name,
+        price,
+        description,
+        image,
+        category,
+        stockLevel,
+        discountPercentage
+      }`;
+
+      const result = await client.fetch(query, { id });
+      setProduct({ ...result, relatedProducts });
+      setLoading(false);
+    };
+
+    if (id) {
+      fetchProduct();
+    }
+  }, [id]);
+
+  if (loading) return <div>Loading...</div>;
+  if (!product) return <p>Product not found</p>;
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -112,9 +92,9 @@ export default function ProductDetails() {
           {/* Product Images */}
           <div>
             <img
-              src={product.image}
+              src={urlFor(product.image).width(600).url()}
               alt={product.name}
-              className="w-full  rounded-lg shadow-md"
+              className="w-full rounded-lg shadow-md"
             />
             <div className="grid grid-cols-4 gap-2 mt-4">
               {['/chair3.png', '/chair.png', '/chair2.png', '/chair.png'].map((img, index) => (
@@ -132,78 +112,85 @@ export default function ProductDetails() {
           <div>
             <h1 className="text-3xl font-bold">{product.name}</h1>
             <p className="text-xl text-gray-600 mt-2">
-              <del>${product.price}</del>{' '}
-              <span className="text-red-500">${product.discountPrice}</span>
+              <span className="text-red-500">${product.price}</span>
+              {product.discountPercentage > 0 && (
+                <span className="ml-2 text-green-500">
+                  {product.discountPercentage}% OFF
+                </span>
+              )}
             </p>
             <p className="mt-4">{product.description}</p>
             <button className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
               Add to Cart
             </button>
             <div className="mt-4">
-              <p><strong>Categories:</strong> Furniture</p>
-              <p><strong>Tags:</strong> Chair, Modern</p>
+              <p><strong>Category:</strong> {product.category}</p>
+              <p><strong>Stock Level:</strong> {product.stockLevel}</p>
             </div>
           </div>
         </div>
       </div>
 
+      {/* Rest of your existing code remains the same */}
       {/* Tabs Section */}
       <div className="bg-[#F6F5FF] mt-8 px-4 py-6">
-        <div className="flex justify-center space-x-6 border-b pb-2">
-          {['description', 'additionalInfo', 'reviews'].map((tab) => (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`py-2 ${
-                activeTab === tab
-                  ? 'border-b-2 border-blue-600 font-bold'
-                  : 'text-gray-600'
-              }`}
-            >
-              {tab.charAt(0).toUpperCase() + tab.slice(1)}
-            </button>
-          ))}
-        </div>
-        <div className="mt-6 text-center">{renderTabContent()}</div>
+      <div className="flex justify-center space-x-6 border-b pb-2">
+   {['description', 'additionalInfo', 'reviews'].map((tab) => (
+     <button
+       key={tab}
+       onClick={() => setActiveTab(tab)}
+       className={`py-2 ${
+         activeTab === tab
+           ? 'border-b-2 border-blue-600 font-bold'
+           : 'text-gray-600'
+       }`}
+     >
+       {tab.charAt(0).toUpperCase() + tab.slice(1)}
+     </button>
+   ))}
+ </div>
+ <div className="mt-6 text-center">{renderTabContent()}</div>
       </div>
 
       {/* Related Products Section */}
       <div className="max-w-7xl mx-auto px-4 py-8">
-        <h2 className="text-2xl font-bold mb-4">Related Products</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {product.relatedProducts.map((item) => (
-            <div key={item.id} className="p-4 border rounded-lg shadow-md hover:shadow-lg">
-              <img
-                src={item.image}
-                alt={item.name}
-                className="w-full h-48 object-cover rounded-md"
-              />
-              <h3 className="mt-2 font-semibold">{item.name}</h3>
-              <p className="text-gray-600">${item.price}</p>
-              <button className="mt-2 px-3 py-1 bg-blue-600 text-white rounded-md hover:bg-blue-700">
-                View Details
-              </button>
-            </div>
-          ))}
-        </div>
+      <h2 className="text-2xl font-bold mb-4">Related Products</h2>
+ <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+ {product.relatedProducts.map((item: RelatedProduct) => (
+  <div key={item.id} className="p-4 border rounded-lg shadow-md hover:shadow-lg">
+    <img
+      src={item.image}
+      alt={item.name}
+      className="w-full h-48 object-cover rounded-md"
+    />
+    <h3 className="mt-2 font-semibold">{item.name}</h3>
+    <p className="text-gray-600">${item.price}</p>
+    <button className="mt-2 px-3 py-1 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+      View Details
+    </button>
+  </div>
+))}
+
+ </div>
       </div>
 
       {/* Brand Logos */}
       <div className="flex flex-wrap justify-center items-center gap-8 mt-8 mb-8">
-        {['/logz.jpeg', '/logz1.jpeg', '/logz2.jpeg', '/logz4.jpeg', '/logz3.jpeg'].map(
-          (logo, index) => (
-            <img
-              key={index}
-              src={logo}
-              alt={`Logo ${index}`}
-              className="w-24 md:w-40 h-auto object-contain"
-            />
-          )
-        )}
+      {['/logz.jpeg', '/logz1.jpeg', '/logz2.jpeg', '/logz4.jpeg', '/logz3.jpeg'].map(
+   (logo, index) => (
+     <img
+       key={index}
+       src={logo}
+       alt={`Logo ${index}`}
+       className="w-24 md:w-40 h-auto object-contain"
+     />
+   )
+ )}
       </div>
     </div>
   );
 }
 
 
-
+     
+  

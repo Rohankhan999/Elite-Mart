@@ -1,14 +1,17 @@
 import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {
+const config: NextConfig = {
+  images: {
+    domains: ['cdn.sanity.io']
+  },
   async rewrites() {
     return [
       {
-        source: '/api/:path*', // Match any request starting with /api/
-        destination: 'https://next-ecommerce-template-4.vercel.app/api/:path*', // Forward the request to this external API
+        source: '/api/:path*',
+        destination: 'https://next-ecommerce-template-4.vercel.app/api/:path*',
       },
     ];
   },
 };
 
-export default nextConfig;
+export default config;

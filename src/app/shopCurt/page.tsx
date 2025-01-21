@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 
 interface CartItem {
-  id: number;
+  id: string;
   title: string;
   price: number;
   quantity: number;
@@ -24,13 +24,13 @@ const ShopCartPage = () => {
     }
   }, []);
 
-  const handleQuantityChange = (id: number, value: number) => {
+  const handleQuantityChange = (id: string, value: number) => {
     const updatedCart = cartItems.map((item) =>
       item.id === id
         ? {
             ...item,
             quantity: value,
-            total: parseFloat(((value || 1) * (item.price || 0)).toFixed(2)),
+            total: Number(item.price) * value
           }
         : item
     );
@@ -38,7 +38,7 @@ const ShopCartPage = () => {
     localStorage.setItem("cart", JSON.stringify(updatedCart));
   };
 
-  const handleRemoveItem = (id: number) => {
+  const handleRemoveItem = (id: string) => {
     const updatedCart = cartItems.filter((item) => item.id !== id);
     setCartItems(updatedCart);
     localStorage.setItem("cart", JSON.stringify(updatedCart));
@@ -50,7 +50,8 @@ const ShopCartPage = () => {
   };
 
   const calculateSubtotal = () =>
-    cartItems.reduce((sum, item) => sum + (item.total || 0), 0).toFixed(2);
+    cartItems.reduce((sum, item) => sum + Number(item.total), 0).toFixed(2);
+
 
   return (
     <div className="bg-white min-h-screen">
@@ -106,7 +107,7 @@ const ShopCartPage = () => {
                           </p>
                         </div>
                       </td>
-                      <td className="p-4">${(item.price || 0).toFixed(2)}</td>
+                      <td className="p-4">${Number(item.price|| 0).toFixed(2)}</td>
                       <td className="p-4">
                         <input
                           type="number"
@@ -121,7 +122,7 @@ const ShopCartPage = () => {
                           className="w-12 md:w-16 border rounded p-1 text-center"
                         />
                       </td>
-                      <td className="p-4">${(item.total || 0).toFixed(2)}</td>
+                      <td className="p-4">${Number(item.total || 0).toFixed(2)}</td>
                       <td className="p-4">
                         <button
                           onClick={() => handleRemoveItem(item.id)}

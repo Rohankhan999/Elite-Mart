@@ -1,132 +1,68 @@
-export default function Home() {
-    return (
-      <div
-        className="container mx-auto px-4 py-8"
-        style={{ backgroundColor: "white" }}
-      >
-        <h1 className="text-3xl font-bold text-center mb-8">Latest Products</h1>
-  
-        {/* Static Navigation */}
-        <div className="flex justify-center space-x-8 text-[#151875]">
-          <a href="#" className="text-[#FB4997] font-semibold">
-            New Arrival
-          </a>
-          <a href="#" className="hover:text-[#FB4997]">Best Seller</a>
-          <a href="#" className="hover:text-[#FB4997]">Featured</a>
-          <a href="#" className="hover:text-[#FB4997]">Special Offer</a>
-        </div>
-  
-        {/* Static Grid with 6 Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mt-8">
-          {/* Card 1 */}
-          <div className="border rounded-lg shadow-md p-4 bg-[#f7f7f7]">
-            <div className="w-360 h-270 mx-auto">
+'use client';
+
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { client } from '../../sanity/lib/client';
+import imageUrlBuilder from '@sanity/image-url';
+
+const builder = imageUrlBuilder(client);
+
+function urlFor(source: any) {
+  return builder.image(source);
+}
+
+export default function LatestProducts() {
+  const [products, setProducts] = useState([]);
+  const router = useRouter();
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const query = `*[_type == "product"][0...6]{
+        _id,
+        name,
+        price,
+        image,
+        description,
+        category
+      }`;
+      const result = await client.fetch(query);
+      setProducts(result);
+    };
+
+    fetchProducts();
+  }, []);
+
+  const handleViewDetails = (id: string) => {
+    router.push(`/productDetails/${id}`);
+  };
+
+  return (
+    <section className="py-8 px-4">
+      <h2 className="text-2xl font-bold text-center mb-6">Latest Products</h2>
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+        {products.map((product: any) => (
+          <div key={product._id} className="bg-white rounded-lg shadow-xl hover:shadow-md transition-shadow relative group">
+            <div className="h-48 overflow-hidden rounded-t-lg flex items-center justify-center">
               <img
-                src="latest1.png"
-                alt="Comfort Handy Craft"
-                className="w-full h-250 object-cover rounded-t-lg mb-4"
+                src={urlFor(product.image).width(300).url()}
+                alt={product.name}
+                className="w-[420] h-[220] object-contain"
               />
             </div>
-            <div className="bg-white p-4 rounded-b-lg">
-              <h2 className="text-lg font-semibold mb-2">Comfort Handy Craft</h2>
-              <div className="flex items-center">
-                <span className="text-pink-500 font-bold mr-2">$42.00</span>
-                <span className="text-gray-400 line-through">$65.00</span>
-              </div>
+            <div className="p-4 flex flex-col items-center text-center">
+              <h3 className="text-sm font-semibold truncate">{product.name}</h3>
+              <p className="text-xs text-gray-600 mt-1">{product.category}</p>
+              <p className="text-sm font-bold text-blue-600 mt-1">${product.price}</p>
+              <button
+                onClick={() => handleViewDetails(product._id)}
+                className="mt-2 w-[150] bg-pink-500 text-white py-1 px-3 rounded text-sm hover:bg-pink-600 transition-colors"
+              >
+                View Details
+              </button>
             </div>
           </div>
-  
-          {/* Card 2 */}
-          <div className="border rounded-lg shadow-md p-4 bg-[#f7f7f7]">
-            <div className="w-360 h-270 mx-auto">
-              <img
-                src="/latest3.png"
-                alt="Comfort Handy Craft"
-                className="w-full h-250 object-cover rounded-t-lg mb-4"
-              />
-            </div>
-            <div className="bg-white p-4 rounded-b-lg">
-              <h2 className="text-lg font-semibold mb-2">Comfort Handy Craft</h2>
-              <div className="flex items-center">
-                <span className="text-pink-500 font-bold mr-2">$42.00</span>
-                <span className="text-gray-400 line-through">$65.00</span>
-              </div>
-            </div>
-          </div>
-  
-          {/* Card 3 */}
-          <div className="border rounded-lg shadow-md p-4 bg-[#f7f7f7]">
-            <div className="w-360 h-270 mx-auto">
-              <img
-                src="/latest3.0.png"
-                alt="Comfort Handy Craft"
-                className="w-full h-250 object-cover rounded-t-lg mb-4"
-              />
-            </div>
-            <div className="bg-white p-4 rounded-b-lg">
-              <h2 className="text-lg font-semibold mb-2">Comfort Handy Craft</h2>
-              <div className="flex items-center">
-                <span className="text-pink-500 font-bold mr-2">$77.00</span>
-                <span className="text-gray-400 line-through">$65.00</span>
-              </div>
-            </div>
-          </div>
-  
-          {/* Card 4 */}
-          <div className="border rounded-lg shadow-md p-4 bg-[#f7f7f7]">
-            <div className="w-360 h-270 mx-auto">
-              <img
-                src="/latest6.png"
-                alt="Comfort Handy Craft"
-                className="w-full h-250 object-cover rounded-t-lg mb-4"
-              />
-            </div>
-            <div className="bg-white p-4 rounded-b-lg">
-              <h2 className="text-lg font-semibold mb-2">Comfort Handy Craft</h2>
-              <div className="flex items-center">
-                <span className="text-pink-500 font-bold mr-2">$42.00</span>
-                <span className="text-gray-400 line-through">$65.00</span>
-              </div>
-            </div>
-          </div>
-  
-          {/* Card 5 */}
-          <div className="border rounded-lg shadow-md p-4 bg-[#f7f7f7]">
-            <div className="w-360 h-270 mx-auto">
-              <img
-                src="/latest6.png"
-                alt="Comfort Handy Craft"
-                className="w-full h-250 object-cover rounded-t-lg mb-4"
-              />
-            </div>
-            <div className="bg-white p-4 rounded-b-lg">
-              <h2 className="text-lg font-semibold mb-2">Comfort Handy Craft</h2>
-              <div className="flex items-center">
-                <span className="text-pink-500 font-bold mr-2">$42.00</span>
-                <span className="text-gray-400 line-through">$65.00</span>
-              </div>
-            </div>
-          </div>
-  
-          {/* Card 6 */}
-          <div className="border rounded-lg shadow-md p-4 bg-[#f7f7f7]">
-            <div className="w-360 h-270 mx-auto">
-              <img
-                src="latest6.png"
-                alt="Comfort Handy Craft"
-                className="w-full h-250 object-cover rounded-t-lg mb-4"
-              />
-            </div>
-            <div className="bg-white p-4 rounded-b-lg">
-              <h2 className="text-lg font-semibold mb-2">Comfort Handy Craft</h2>
-              <div className="flex items-center">
-                <span className="text-pink-500 font-bold mr-2">$42.00</span>
-                <span className="text-gray-400 line-through">$65.00</span>
-              </div>
-            </div>
-          </div>
-        </div>
+        ))}
       </div>
-    );
-  }
-  
+    </section>
+  );
+}

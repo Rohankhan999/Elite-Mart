@@ -50,6 +50,21 @@ export default {
       validation: (Rule: any) => Rule.min(0).error('Stock level must be a positive number.'),
     },
     {
+      name: 'rating',
+      type: 'number',
+      title: 'Rating',
+      validation: (Rule: any) => Rule.min(1).max(5).warning('Rating must be between 1 and 5 stars'),
+      options: {
+        list: [
+          {title: '1 Star', value: 1},
+          {title: '2 Stars', value: 2},
+          {title: '3 Stars', value: 3},
+          {title: '4 Stars', value: 4},
+          {title: '5 Stars', value: 5},
+        ]
+      }
+    },    
+    {
       name: 'category',
       type: 'string',
       title: 'Category',
