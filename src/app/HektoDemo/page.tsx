@@ -1,7 +1,35 @@
-
-import Link from "next/link";
+'use client';
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function HektoDemo() {
+  const router = useRouter();
+  
+  const [cartItems, setCartItems] = useState<any[]>([]);
+  
+  useEffect(() => {
+    const storedCart = localStorage.getItem("cart");
+    if (storedCart) {
+      setCartItems(JSON.parse(storedCart));
+    }
+  }, []);
+
+  const subtotal = cartItems.reduce((sum, item) => sum + parseFloat(item.price), 0);
+  const tax = subtotal * 0.1;
+  const total = subtotal + tax;
+
+  if (cartItems.length === 0) {
+    return (
+      <div className="min-h-screen bg-[#F6F5FF] flex items-center justify-center">
+        <div className="bg-white p-8 rounded-lg shadow-md">
+          <h2 className="text-2xl font-bold text-[#FB2E86] mb-4">Your Cart is Empty</h2>
+          <p className="text-gray-600">Start shopping to add products to your cart!</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-white min-h-screen">
       {/* Hero Section */}
@@ -79,54 +107,39 @@ export default function HektoDemo() {
           </div>
 
           <button className="bg-pink-500 text-white py-3 px-6 rounded w-full hover:bg-pink-600 transition">
-            Continue Shipping
-          </button>
+           <Link href="/" >Continue Shipping</Link>
+          </button> 
         </div>
 
         {/* Right Section: Cart Summary */}
         <div className="w-full md:w-1/3 bg-white p-6 md:p-8 rounded-lg shadow-md">
           <div className="space-y-4">
-            {/* Cart Item 1 */}
-            <div className="flex items-center justify-between">
-              <img
-                src="/chair2.png"
-                alt="Product"
-                width={60}
-                height={60}
-                className="rounded border"
-              />
-              <div className="flex-1 mx-4">
-                <p className="font-semibold">Ullam Consequat</p>
-                <p className="text-gray-500 text-sm">Color: Brown</p>
-                <p className="text-gray-500 text-sm">Size: XL</p>
+            {cartItems.map((item, index) => (
+              <div key={index} className="flex items-center justify-between">
+                <img
+                  src={item.image}
+                  alt={item.name}
+                  width={60}
+                  height={60}
+                  className="rounded border"
+                />
+                <div className="flex-1 mx-4">
+                  <p className="font-semibold">{item.name}</p>
+                  <p className="text-gray-500 text-sm">Color: {item.color}</p>
+                  <p className="text-gray-500 text-sm">Size: {item.size}</p>
+                </div>
+                <p className="font-semibold">${item.price}</p>
               </div>
-              <p className="font-semibold">$32.00</p>
-            </div>
-            {/* Cart Item 2 */}
-            <div className="flex items-center justify-between">
-              <img
-                src="/chair.png"
-                alt="Product"
-                width={60}
-                height={60}
-                className="rounded border"
-              />
-              <div className="flex-1 mx-4">
-                <p className="font-semibold">Ullam Consequat</p>
-                <p className="text-gray-500 text-sm">Color: Brown</p>
-                <p className="text-gray-500 text-sm">Size: XL</p>
-              </div>
-              <p className="font-semibold">$32.00</p>
-            </div>
+            ))}
           </div>
 
           {/* Cart Totals */}
           <div className="bg-[#F6F5FF] p-4 rounded-lg mt-6">
             <p className="flex justify-between text-lg font-semibold mb-2">
-              Subtotal: <span>£219.00</span>
+              Subtotal: <span>${subtotal.toFixed(2)}</span>
             </p>
             <p className="flex justify-between text-lg font-semibold">
-              Total: <span>£325.00</span>
+              Total: <span>${total.toFixed(2)}</span>
             </p>
             <p className="text-gray-500 text-sm mt-4">
               <span className="w-2 h-2 bg-green-500 rounded-full inline-block mr-2"></span>
@@ -134,9 +147,13 @@ export default function HektoDemo() {
             </p>
           </div>
 
-          <button className="w-full bg-green-500 text-white py-3 mt-6 rounded hover:bg-green-600 transition">
-            <Link href="/ordercompleted">Proceed To Checkout</Link>
-          </button>
+          
+<button 
+  className="w-full bg-green-500 text-white py-3 mt-6 rounded hover:bg-green-600 transition"
+  onClick={() => router.push('/ordercompleted')}
+>
+  Proceed To Payment
+</button>
         </div>
       </div>
     </div>

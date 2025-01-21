@@ -9,9 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@paypal/react-paypal-js": "^8.8.1",
     "@sanity/client": "^6.25.0",
     "@sanity/image-url": "^1.1.0",
     "@sanity/vision": "^3.70.0",
+    "@types/paypal__paypal-js": "^1.0.2",
     "next": "15.0.4",
     "next-sanity": "^9.8.38",
     "react": "^19.0.0",
