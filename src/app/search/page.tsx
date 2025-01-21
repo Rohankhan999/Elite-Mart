@@ -1,12 +1,13 @@
 'use client';
 
+import { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { client } from '../../sanity/lib/client';
 import { urlFor } from '../../sanity/lib/image';
 import Image from 'next/image';
 
-export default function SearchResults() {
+function SearchContent() {
   const searchParams = useSearchParams();
   const query = searchParams.get('q');
   const [results, setResults] = useState([]);
@@ -70,5 +71,13 @@ export default function SearchResults() {
         <p className="text-center text-gray-500">No products found matching your search.</p>
       )}
     </div>
+  );
+}
+
+export default function SearchResults() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <SearchContent />
+    </Suspense>
   );
 }
