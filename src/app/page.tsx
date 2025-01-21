@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { client } from '../sanity/lib/client';
 import Hero from "./components/hero";
 import FeaturedProducts from './components/featured';
@@ -24,16 +24,22 @@ async function getProducts() {
   return await client.fetch(query);
 }
 
+function LoadingFallback() {
+  return <div>Loading...</div>;
+}
+
 export default async function Home() {
   const products = await getProducts();
-  
+ 
   return (
     <div>
-      <Hero/>
-      <FeaturedProducts products={products} />
-      <Latest/>
-      <Center/>
-      <Blog/>
+      <Suspense fallback={<LoadingFallback />}>
+        <Hero/>
+        <FeaturedProducts products={products} />
+        <Latest/>
+        <Center/>
+        <Blog/>
+      </Suspense>
     </div>
   );
 }
