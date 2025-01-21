@@ -21,18 +21,17 @@ export default function Header() {
     e.preventDefault();
     
     if (!searchQuery.trim()) return;
-  
+
     const query = `*[_type == "product" && (name match "*${searchQuery}*" || description match "*${searchQuery}*")]`;
     
     try {
-      const results = await client.fetch(query);
-      
-      window.location.href = `/search?q=${encodeURIComponent(searchQuery)}`;
-
+        // Since we're directly redirecting, we don't need to store the results
+        window.location.href = `/search?q=${encodeURIComponent(searchQuery)}`;
     } catch (error) {
-      console.error('Search error:', error);
+        console.error('Search error:', error);
     }
-  };
+};
+
   
 
   const toggleDropdown = () => {
