@@ -1,10 +1,39 @@
 'use client';
-import React, { Suspense } from "react";
+import React, { Suspense, useState } from "react";
 import { FaPenNib } from "react-icons/fa";
 import { MdOutlineCalendarMonth } from "react-icons/md";
 import { FaFacebookF, FaTwitter, FaInstagram } from "react-icons/fa";
 
 function BlogContent() {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    comment: ''
+  });
+
+  const validateInput = (value: string, type: 'name' | 'email' | 'comment') => {
+    switch(type) {
+      case 'name':
+        return value.replace(/[^a-zA-Z\s]/g, '').slice(0, 50);
+      case 'email':
+        return value.slice(0, 100).toLowerCase();
+      case 'comment':
+        return value.slice(0, 500);
+      default:
+        return value;
+    }
+  };
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    type: 'name' | 'email' | 'comment'
+  ) => {
+    const safeValue = validateInput(e.target.value, type);
+    setFormData(prev => ({
+      ...prev,
+      [e.target.name]: safeValue
+    }));
+  };
   return (
     <div className="bg-white min-h-screen">
       {/* Hero Section */}
@@ -446,29 +475,38 @@ function BlogContent() {
             </div>
   
           {/* Comment Section */}
-<div className="mt-8 max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-sm">
+          <div className="mt-8 max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-sm">
   <h3 className="text-2xl font-bold mb-6 text-gray-800">Leave a Comment</h3>
   <form className="space-y-6">
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       <input
         type="text"
+        name="name"
+        value={formData.name}
+        onChange={(e) => handleInputChange(e, 'name')}
         placeholder="Your Name"
         className="w-full border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-500 transition-all"
       />
       <input
         type="email"
+        name="email"
+        value={formData.email}
+        onChange={(e) => handleInputChange(e, 'email')}
         placeholder="Your Email"
         className="w-full border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-500 transition-all"
       />
     </div>
     <textarea
+      name="comment"
+      value={formData.comment}
+      onChange={(e) => handleInputChange(e, 'comment')}
       rows={6}
       placeholder="Write your comment..."
       className="w-full border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-500 transition-all resize-none"
     ></textarea>
     <div className="flex items-center">
-      <input 
-        type="checkbox" 
+      <input
+        type="checkbox"
         className="w-4 h-4 text-pink-500 border-gray-300 rounded focus:ring-pink-500"
       />
       <span className="ml-2 text-gray-600">
@@ -483,6 +521,7 @@ function BlogContent() {
     </button>
   </form>
 </div>
+
 
 
 </div>
