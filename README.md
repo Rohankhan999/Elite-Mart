@@ -52,23 +52,6 @@ A modern e-commerce platform(Elite Mart) built with Next.js 13, Tailwind CSS, an
 - Framer Motion
 - Vercel Deployment
 
-## Project Structure
-
-```bash
-my-app/
-├── src/
-│   ├── app/
-│   │   ├── components/
-│   │   ├── shopCurt/
-│   │   ├── shopLeftSidebar/
-│   │   └── singleblog/
-│   ├── sanity/
-│   │   ├── lib/
-│   │   └── schemaTypes/
-│   └── utils/
-└── public/
-```
-
 ## Deployment Steps
 
  1. Set up a Sanity project and connect it to your Next.js app.
