@@ -2,7 +2,8 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { client } from '../../sanity/lib/client';
+import { useCart } from '../context/CartContext';
+import toast from 'react-hot-toast';
 
 interface Product {
   _id: string;
@@ -24,6 +25,7 @@ interface FeaturedProductsProps {
 
 const FeaturedProducts = ({ products = [] }: FeaturedProductsProps) => {
   const router = useRouter();
+  const { addToCart } = useCart();
   const [isLoading, setIsLoading] = React.useState(true);
   const [visibleProducts, setVisibleProducts] = useState(4);
 
@@ -44,6 +46,22 @@ const FeaturedProducts = ({ products = [] }: FeaturedProductsProps) => {
   const handleViewMore = () => {
     setVisibleProducts(prev => prev + 4);
   };
+
+  const handleAddToCart = (product: Product) => {
+    const cartProduct = {
+      ...product,
+      image: {
+        asset: {
+          url: typeof product.image.asset.url === 'string' 
+            ? product.image.asset.url 
+            : ''
+        }
+      }
+    };
+    addToCart(cartProduct);
+    toast.success('Added to cart!');
+  };
+  
 
   return (
     <section className="py-10 px-6">
@@ -74,12 +92,18 @@ const FeaturedProducts = ({ products = [] }: FeaturedProductsProps) => {
                   {product.price}
                 </p>
               </div>
-              <div className="absolute inset-0 bg-purple-500 text-white opacity-0 hover:opacity-100 flex items-center justify-center rounded-xl transition duration-300">
+              <div className="absolute inset-0 bg-purple-500 text-white opacity-0 hover:opacity-100 flex flex-col items-center justify-center gap-3 rounded-xl transition duration-300">
                 <button
-                  className="py-2 px-4 bg-white text-purple-500 font-bold rounded-md shadow-md"
+                  className="py-2 px-4 bg-white text-purple-500 font-bold rounded-md shadow-md hover:bg-gray-100"
                   onClick={() => handleViewDetails(product._id)}
                 >
                   View Details
+                </button>
+                <button
+                  className="py-2 px-4 bg-white text-purple-500 font-bold rounded-md shadow-md hover:bg-gray-100"
+                  onClick={() => handleAddToCart(product)}
+                >
+                  Add to Cart
                 </button>
               </div>
             </div>

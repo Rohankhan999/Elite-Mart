@@ -9,13 +9,13 @@ import { FiShoppingCart } from "react-icons/fi";
 import { CiSearch } from "react-icons/ci";
 import Link from "next/link";
 import { useState } from "react";
-import { client } from '../../sanity/lib/client';
-
+import { useCart } from '../context/CartContext';
 
 export default function Header() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const { cart } = useCart();
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,19 +25,19 @@ export default function Header() {
     const query = `*[_type == "product" && (name match "*${searchQuery}*" || description match "*${searchQuery}*")]`;
     
     try {
-        // Since we're directly redirecting, we don't need to store the results
         window.location.href = `/search?q=${encodeURIComponent(searchQuery)}`;
     } catch (error) {
         console.error('Search error:', error);
     }
-};
-
-  
+  };
 
   const toggleDropdown = () => {
     setIsDropdownOpen((prev) => !prev);
   };
+  
   const toggleMobileMenu = () => setIsMobileMenuOpen((prev) => !prev);
+
+  const cartTotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
 
   return (
     <div>
@@ -62,27 +62,89 @@ export default function Header() {
         {/* Right Section */}
         <div className="flex items-center space-x-4">
           <div className="hidden sm:flex items-center space-x-1">
-            <span className="text-sm">English</span>
-            <RiArrowDropDownLine className="w-4 h-4" />
+            <span className="text-sm text-white">English</span>
+            <RiArrowDropDownLine className="w-4 h-4 text-white" />
           </div>
           <div className="hidden sm:flex items-center space-x-1">
-            <span className="text-sm">USD</span>
-            <RiArrowDropDownLine className="w-4 h-4" />
+            <span className="text-sm text-white">USD</span>
+            <RiArrowDropDownLine className="w-4 h-4 text-white" />
           </div>
-          <Link href="/loign" className="flex items-center space-x-1">
-            <span className="hidden hover:text-white sm:inline text-sm">Login</span>
-            <FiUser className="w-4 h-4 hover:text-white" />
+          <Link href="/login" className="flex items-center space-x-1">
+            <span className="hidden hover:text-white sm:inline text-sm text-white">Login</span>
+            <FiUser className="w-4 h-4 text-white hover:text-gray-200" />
           </Link>
           <Link href="/wishlist" className="flex items-center space-x-1">
-            <span className="hidden sm:inline text-sm">Wishlist</span>
-            <CiHeart className="w-4 h-4" />
+            <span className="hidden sm:inline text-sm text-white">Wishlist</span>
+            <CiHeart className="w-4 h-4 text-white" />
           </Link>
-          <Link href="/shopCurt">
-            <FiShoppingCart className="w-5 h-5 cursor-pointer hover:text-white" />
-          </Link>
+          <div className="relative group">
+            <Link href="/shopCurt" className="relative">
+              <FiShoppingCart className="w-5 h-5 cursor-pointer text-white hover:text-gray-200" />
+              {cart.length > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+                  {cart.length}
+                </span>
+              )}
+            </Link>
+
+            {/* Mini Cart Preview */}
+            <div className="absolute right-0 mt-2 w-72 bg-white rounded-md shadow-lg hidden group-hover:block z-50">
+              <div className="p-4">
+                <h3 className="text-lg font-semibold mb-2 text-gray-800">Cart ({cart.length} items)</h3>
+                <div className="max-h-60 overflow-auto">
+                {cart.map((item) => (
+                    <div key={item._id} className="flex items-center gap-2 mb-2 pb-2 border-b">
+                      {item.image?.asset?.url ? (
+                        <img 
+                          src={item.image.asset.url} 
+                          alt={item.name} 
+                          className="w-12 h-12 object-cover rounded"
+                        />
+                      ) : (
+                        <div className="w-12 h-12 bg-gray-200 rounded flex items-center justify-center">
+                          <span className="text-gray-400 text-xs">No image</span>
+                        </div>
+                      )}
+                      <div className="flex-1">
+                        <p className="text-sm font-medium text-gray-800">{item.name}</p>
+                        <p className="text-xs text-gray-500">
+                          {item.quantity} × ${item.price}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                {cart.length > 0 ? (
+                  <>
+                    <div className="mt-2 pt-2 border-t">
+                      <div className="flex justify-between font-semibold text-gray-800">
+                        <span>Total:</span>
+                        <span>${cartTotal.toFixed(2)}</span>
+                      </div>
+                    </div>
+                    <div className="mt-4 space-y-2">
+                      <Link 
+                        href="/shopCurt"
+                        className="block text-center bg-purple-600 text-white py-2 rounded hover:bg-purple-700 transition-colors"
+                      >
+                        View Cart
+                      </Link>
+                      <Link 
+                        href="/checkout"
+                        className="block text-center bg-green-600 text-white py-2 rounded hover:bg-green-700 transition-colors"
+                      >
+                        Checkout
+                      </Link>
+                    </div>
+                  </>
+                ) : (
+                  <p className="text-center text-gray-500 py-4">Your cart is empty</p>
+                )}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-
       {/* Navbar */}
       <div className="w-full h-[60px] bg-white flex items-center justify-between px-4 sm:px-8 md:px-16 lg:px-32">
         {/* Logo */}
@@ -134,40 +196,50 @@ export default function Header() {
 
         {/* Search */}
         <form onSubmit={handleSearch} className="flex items-center ml-auto">
-  <input
-    type="text"
-    value={searchQuery}
-    onChange={(e) => setSearchQuery(e.target.value)}
-    placeholder="Search"
-    className="hidden md:block w-[150px] lg:w-[300px] h-[40px] border px-4 text-sm rounded-l"
-  />
-  <button 
-    type="submit"
-    className="w-[40px] h-[40px] bg-[#FB2E86] flex items-center justify-center rounded-r"
-  >
-    <CiSearch className="w-5 h-5 text-white" />
-  </button>
-</form>
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search"
+            className="hidden md:block w-[150px] lg:w-[300px] h-[40px] border px-4 text-sm rounded-l"
+          />
+          <button 
+            type="submit"
+            className="w-[40px] h-[40px] bg-[#FB2E86] flex items-center justify-center rounded-r"
+          >
+            <CiSearch className="w-5 h-5 text-white" />
+          </button>
+        </form>
 
-      </div>
-
-       {/* Mobile Menu Button */}
+        {/* Mobile Menu Button */}
         <button onClick={toggleMobileMenu} className="sm:hidden">
           <FiMenu className="w-6 h-6 text-[#0D0E43]" />
         </button>
-      
+      </div>
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
         <div className="sm:hidden bg-white shadow-md flex flex-col items-start px-4 py-4 space-y-3">
-          <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="text-[#FB2E86]">Home</Link>
-          <Link href="/pages" onClick={() => setIsMobileMenuOpen(false)} className="text-[#0D0E43]">Pages</Link>
-          <Link href="/shopList" onClick={() => setIsMobileMenuOpen(false)} className="text-[#0D0E43]">Products</Link>
-          <Link href="/blog" onClick={() => setIsMobileMenuOpen(false)} className="text-[#0D0E43]">Blog</Link>
-          <Link href="/shopList" onClick={() => setIsMobileMenuOpen(false)} className="text-[#0D0E43]">Shop</Link>
-          <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)} className="text-[#0D0E43]">Contact</Link>
+          <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="text-[#FB2E86]">
+            Home
+          </Link>
+          <Link href="/pages" onClick={() => setIsMobileMenuOpen(false)} className="text-[#0D0E43]">
+            Pages
+          </Link>
+          <Link href="/shopList" onClick={() => setIsMobileMenuOpen(false)} className="text-[#0D0E43]">
+            Products
+          </Link>
+          <Link href="/blog" onClick={() => setIsMobileMenuOpen(false)} className="text-[#0D0E43]">
+            Blog
+          </Link>
+          <Link href="/shopList" onClick={() => setIsMobileMenuOpen(false)} className="text-[#0D0E43]">
+            Shop
+          </Link>
+          <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)} className="text-[#0D0E43]">
+            Contact
+          </Link>
         </div>
       )}
-      </div>
+    </div>
   );
 }

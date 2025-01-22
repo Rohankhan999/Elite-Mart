@@ -2,7 +2,19 @@ import type { NextConfig } from "next";
 
 const config: NextConfig = {
   images: {
-    domains: ['cdn.sanity.io']
+    domains: ['cdn.sanity.io'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'next-ecommerce-template-4.vercel.app',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'cdn.sanity.io',
+        pathname: '/**',
+      }
+    ]
   },
   async rewrites() {
     return [
@@ -45,7 +57,6 @@ const config: NextConfig = {
   // Performance optimizations
   poweredByHeader: false,
   reactStrictMode: true,
-  swcMinify: true,
 };
 
 export default config;

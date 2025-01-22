@@ -1,57 +1,32 @@
+// src/app/shopCurt/page.tsx
 "use client";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Link from "next/link";
-
-interface CartItem {
-  id: string;
-  title: string;
-  price: number;
-  quantity: number;
-  total: number;
-  image: string;
-  color: string;
-  size: string;
-}
+import { useCart } from "../context/CartContext";
+import toast from 'react-hot-toast';
+import Image from 'next/image'; 
+import { urlFor } from '@/sanity/lib/image';
 
 
 const ShopCartPage = () => {
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const { cart, updateQuantity, removeFromCart, clearCart, getCartTotal } = useCart();
 
-  useEffect(() => {
-    const storedCart = localStorage.getItem("cart");
-    if (storedCart) {
-      setCartItems(JSON.parse(storedCart));
+  const handleQuantityChange = (productId: string, newQuantity: number) => {
+    if (newQuantity > 0) {
+      updateQuantity(productId, newQuantity);
+      toast.success('Cart updated!');
     }
-  }, []);
-
-  const handleQuantityChange = (id: string, value: number) => {
-    const updatedCart = cartItems.map((item) =>
-      item.id === id
-        ? {
-            ...item,
-            quantity: value,
-            total: Number(item.price) * value
-          }
-        : item
-    );
-    setCartItems(updatedCart);
-    localStorage.setItem("cart", JSON.stringify(updatedCart));
   };
 
-  const handleRemoveItem = (id: string) => {
-    const updatedCart = cartItems.filter((item) => item.id !== id);
-    setCartItems(updatedCart);
-    localStorage.setItem("cart", JSON.stringify(updatedCart));
+  const handleRemoveItem = (productId: string) => {
+    removeFromCart(productId);
+    toast.success('Item removed from cart!');
   };
 
   const handleClearCart = () => {
-    setCartItems([]);
-    localStorage.removeItem("cart");
+    clearCart();
+    toast.success('Cart cleared!');
   };
-
-  const calculateSubtotal = () =>
-    cartItems.reduce((sum, item) => sum + Number(item.total), 0).toFixed(2);
-
 
   return (
     <div className="bg-white min-h-screen">
@@ -59,10 +34,10 @@ const ShopCartPage = () => {
       <div className="w-full h-[200px] md:h-[286px] bg-[#F6F5FF] flex flex-col items-center justify-center">
         <div className="text-center">
           <h1 className="text-3xl md:text-4xl font-bold text-black mb-2 md:mb-4">
-            Shop Cart
+            Shopping Cart
           </h1>
           <p className="text-xs md:text-sm text-gray-500">
-            Home &gt; Pages &gt; <span className="text-pink-500">Shop Cart</span>
+            Home &gt; Pages &gt; <span className="text-pink-500">Shopping Cart</span>
           </p>
         </div>
       </div>
@@ -82,50 +57,60 @@ const ShopCartPage = () => {
                 </tr>
               </thead>
               <tbody>
-                {cartItems.length === 0 ? (
+                {cart.length === 0 ? (
                   <tr>
                     <td colSpan={5} className="text-center p-4">
                       Your cart is empty
                     </td>
                   </tr>
                 ) : (
-                  cartItems.map((item) => (
+                  cart.map((item) => (
                     <tr
-                      key={item.id}
+                      key={item._id}
                       className="border-b hover:bg-gray-50 text-sm md:text-base"
                     >
                       <td className="p-4 flex items-center gap-2 md:gap-4">
-                        <img
-                          src={item.image}
-                          alt={item.title}
-                          className="w-14 h-14 md:w-20 md:h-20 rounded object-cover"
-                        />
-                        <div>
-                          <p className="font-semibold">{item.title}</p>
-                          <p className="text-xs md:text-sm text-gray-500">
-                            Color: {item.color} | Size: {item.size}
-                          </p>
+  {item.image ? (
+    <Image
+      src={urlFor(item.image).url()}
+      alt={item.name}
+      width={80}
+      height={80}
+      className="rounded object-cover"
+    />
+  ) : (
+    <div className="w-20 h-20 bg-gray-200 rounded flex items-center justify-center">
+      <span className="text-gray-400">No image</span>
+    </div>
+  )}
+  <div>
+    <p className="font-semibold">{item.name}</p>
+  </div>
+</td>
+                      <td className="p-4">${Number(item.price).toFixed(2)}</td>
+                      <td className="p-4">
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() => handleQuantityChange(item._id, item.quantity - 1)}
+                            className="px-2 py-1 bg-gray-200 rounded"
+                          >
+                            -
+                          </button>
+                          <span className="w-8 text-center">{item.quantity}</span>
+                          <button
+                            onClick={() => handleQuantityChange(item._id, item.quantity + 1)}
+                            className="px-2 py-1 bg-gray-200 rounded"
+                          >
+                            +
+                          </button>
                         </div>
                       </td>
-                      <td className="p-4">${Number(item.price|| 0).toFixed(2)}</td>
                       <td className="p-4">
-                        <input
-                          type="number"
-                          min="1"
-                          value={item.quantity || 1}
-                          onChange={(e) =>
-                            handleQuantityChange(
-                              item.id,
-                              parseInt(e.target.value) || 1
-                            )
-                          }
-                          className="w-12 md:w-16 border rounded p-1 text-center"
-                        />
+                        ${(item.price * item.quantity).toFixed(2)}
                       </td>
-                      <td className="p-4">${Number(item.total || 0).toFixed(2)}</td>
                       <td className="p-4">
                         <button
-                          onClick={() => handleRemoveItem(item.id)}
+                          onClick={() => handleRemoveItem(item._id)}
                           className="text-red-500 hover:text-red-700"
                         >
                           Remove
@@ -137,15 +122,18 @@ const ShopCartPage = () => {
               </tbody>
             </table>
             <div className="flex flex-col md:flex-row justify-between p-4 gap-4">
-              <button className="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600">
-                Update Cart
-              </button>
               <button
                 onClick={handleClearCart}
-                className="bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600"
+                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors"
               >
                 Clear Cart
               </button>
+              <Link
+                href="/products"
+                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors text-center"
+              >
+                Continue Shopping
+              </Link>
             </div>
           </div>
 
@@ -156,16 +144,19 @@ const ShopCartPage = () => {
               <h3 className="text-center text-lg font-bold mb-4">Cart Totals</h3>
               <div className="flex justify-between">
                 <p>Subtotal:</p>
-                <p className="font-semibold">${calculateSubtotal()}</p>
+                <p className="font-semibold">${getCartTotal().toFixed(2)}</p>
               </div>
               <hr className="my-4 border-t border-gray-200" />
               <div className="flex justify-between mt-2">
                 <p>Total:</p>
-                <p className="font-semibold">${calculateSubtotal()}</p>
+                <p className="font-semibold">${getCartTotal().toFixed(2)}</p>
               </div>
-              <button className="bg-green-500 text-white w-full mt-4 py-2 rounded hover:bg-green-600">
-                <Link href="/HektoDemo">Proceed To Checkout</Link>
-              </button>
+              <Link
+                href="/checkout"
+                className="bg-green-500 text-white w-full mt-4 py-2 rounded hover:bg-green-600 transition-colors block text-center"
+              >
+                Proceed To Checkout
+              </Link>
             </div>
 
             {/* Calculate Shipping */}
@@ -175,12 +166,12 @@ const ShopCartPage = () => {
               </h3>
               <input
                 type="text"
-                placeholder="Bangladesh"
+                placeholder="Country"
                 className="w-full border rounded p-2 mb-4"
               />
               <input
                 type="text"
-                placeholder="Mirpur Dhaka - 1200"
+                placeholder="City"
                 className="w-full border rounded p-2 mb-4"
               />
               <input
@@ -188,7 +179,7 @@ const ShopCartPage = () => {
                 placeholder="Postal Code"
                 className="w-full border rounded p-2 mb-4"
               />
-              <button className="bg-pink-500 text-white w-full py-2 rounded hover:bg-pink-600">
+              <button className="bg-pink-500 text-white w-full py-2 rounded hover:bg-pink-600 transition-colors">
                 Calculate Shipping
               </button>
             </div>

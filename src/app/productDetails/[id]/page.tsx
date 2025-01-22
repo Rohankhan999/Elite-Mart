@@ -4,7 +4,8 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { client } from '../../../sanity/lib/client';
 import imageUrlBuilder from '@sanity/image-url';
-
+import { useCart } from '@/app/context/CartContext';
+import toast from 'react-hot-toast'; // Optional: for notifications
 
 interface RelatedProduct {
   id: number;
@@ -13,13 +14,23 @@ interface RelatedProduct {
   image: string;
 }
 
+interface Product {
+  _id: string;
+  name: string;
+  price: number;
+  description: string;
+  image: any;
+  category: string;
+  stockLevel: number;
+  discountPercentage: number;
+}
+
 const builder = imageUrlBuilder(client);
 
 function urlFor(source: any) {
   return builder.image(source);
 }
 
-// Keep your static related products data
 const relatedProducts = [
   { id: 1, name: 'Men Fashion Wear', price: 1400, image: '/z.jpeg' },
   { id: 2, name: 'Women Fashion', price: 1200, image: '/ty.jpeg' },
@@ -29,9 +40,10 @@ const relatedProducts = [
 
 export default function ProductDetails() {
   const { id } = useParams();
-  const [product, setProduct] = useState<any>(null);
+  const [product, setProduct] = useState<Product | null>(null);
   const [activeTab, setActiveTab] = useState('description');
   const [loading, setLoading] = useState(true);
+  const { addToCart, cart } = useCart(); // Add cart context
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -55,6 +67,24 @@ export default function ProductDetails() {
       fetchProduct();
     }
   }, [id]);
+
+  // Handle Add to Cart
+  const handleAddToCart = () => {
+    if (product) {
+      addToCart({
+        _id: product._id,
+        name: product.name,
+        price: product.price,
+        image: product.image,
+      });
+      
+      // Optional: Add toast notification
+      toast.success('Added to cart!');
+    }
+  };
+
+  // Check if item is in cart
+  const isInCart = product && cart.some(item => item._id === product._id);
 
   if (loading) return <div>Loading...</div>;
   if (!product) return <p>Product not found</p>;
@@ -120,9 +150,21 @@ export default function ProductDetails() {
               )}
             </p>
             <p className="mt-4">{product.description}</p>
-            <button className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
-              Add to Cart
+            <button 
+              onClick={handleAddToCart}
+              className={`mt-4 px-6 py-2 rounded-md transition-all duration-300 ${
+                isInCart 
+                  ? 'bg-green-600 hover:bg-green-700' 
+                  : 'bg-blue-600 hover:bg-blue-700'
+              } text-white`}
+            >
+              {isInCart ? 'Added to Cart' : 'Add to Cart'}
             </button>
+            {product.stockLevel < 10 && product.stockLevel > 0 && (
+              <p className="mt-2 text-orange-500">
+                Only {product.stockLevel} items left!
+              </p>
+            )}
             <div className="mt-4">
               <p><strong>Category:</strong> {product.category}</p>
               <p><strong>Stock Level:</strong> {product.stockLevel}</p>
@@ -131,65 +173,63 @@ export default function ProductDetails() {
         </div>
       </div>
 
-      {/* Rest of your existing code remains the same */}
       {/* Tabs Section */}
       <div className="bg-[#F6F5FF] mt-8 px-4 py-6">
-      <div className="flex justify-center space-x-6 border-b pb-2">
-   {['description', 'additionalInfo', 'reviews'].map((tab) => (
-     <button
-       key={tab}
-       onClick={() => setActiveTab(tab)}
-       className={`py-2 ${
-         activeTab === tab
-           ? 'border-b-2 border-blue-600 font-bold'
-           : 'text-gray-600'
-       }`}
-     >
-       {tab.charAt(0).toUpperCase() + tab.slice(1)}
-     </button>
-   ))}
- </div>
- <div className="mt-6 text-center">{renderTabContent()}</div>
+        <div className="flex justify-center space-x-6 border-b pb-2">
+          {['description', 'additionalInfo', 'reviews'].map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`py-2 ${
+                activeTab === tab
+                  ? 'border-b-2 border-blue-600 font-bold'
+                  : 'text-gray-600'
+              }`}
+            >
+              {tab.charAt(0).toUpperCase() + tab.slice(1)}
+            </button>
+          ))}
+        </div>
+        <div className="mt-6 text-center">{renderTabContent()}</div>
       </div>
 
       {/* Related Products Section */}
       <div className="max-w-7xl mx-auto px-4 py-8">
-      <h2 className="text-2xl font-bold mb-4">Related Products</h2>
- <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
- {product.relatedProducts.map((item: RelatedProduct) => (
-  <div key={item.id} className="p-4 border rounded-lg shadow-md hover:shadow-lg">
-    <img
-      src={item.image}
-      alt={item.name}
-      className="w-full h-48 object-cover rounded-md"
-    />
-    <h3 className="mt-2 font-semibold">{item.name}</h3>
-    <p className="text-gray-600">${item.price}</p>
-    <button className="mt-2 px-3 py-1 bg-blue-600 text-white rounded-md hover:bg-blue-700">
-      View Details
-    </button>
-  </div>
-))}
-
- </div>
+        <h2 className="text-2xl font-bold mb-4">Related Products</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {relatedProducts.map((item) => (
+            <div key={item.id} className="p-4 border rounded-lg shadow-md hover:shadow-lg">
+              <img
+                src={item.image}
+                alt={item.name}
+                className="w-full h-48 object-cover rounded-md"
+              />
+              <h3 className="mt-2 font-semibold">{item.name}</h3>
+              <p className="text-gray-600">${item.price}</p>
+              <button className="mt-2 px-3 py-1 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                View Details
+              </button>
+            </div>
+          ))}
+        </div>
       </div>
-
-      {/* Brand Logos */}
-      <div className="flex flex-wrap justify-center items-center gap-8 mt-8 mb-8">
-      {['/logz.jpeg', '/logz1.jpeg', '/logz2.jpeg', '/logz4.jpeg', '/logz3.jpeg'].map(
-   (logo, index) => (
-     <img
-       key={index}
-       src={logo}
-       alt={`Logo ${index}`}
-       className="w-24 md:w-40 h-auto object-contain"
-     />
-   )
- )}
-      </div>
+       {/* Brand Logos */}
+   <div className="flex flex-wrap justify-center items-center gap-8 mt-8 mb-8">
+   {['/logz5.jpeg', '/logz1.jpeg', '/logz2.jpeg', '/logz4.jpeg', '/logz3.jpeg'].map(
+(logo, index) => (
+  <img
+    key={index}
+    src={logo}
+    alt={`Logo ${index}`}
+    className="w-24 md:w-40 h-auto object-contain"
+  />
+)
+)}
+   </div>
     </div>
   );
 }
+
 
 
      

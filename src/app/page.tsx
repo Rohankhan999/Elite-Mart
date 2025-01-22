@@ -26,15 +26,12 @@ async function getProducts() {
 
   return client.fetch(query, {}, {
     cache: isEnabled ? 'no-store' : 'force-cache',
-
-
   });
 }
 
 export default async function Home() {
   const products = await getProducts();
   
- 
   return (
     <main>
       <Hero/>
@@ -42,7 +39,6 @@ export default async function Home() {
       <Latest/>
       <Center/>
       <Blog/>
-    
     </main>
   );
 }
