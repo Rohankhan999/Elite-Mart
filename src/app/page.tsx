@@ -6,6 +6,24 @@ import Latest from "./components/latest";
 import Blog from "./components/blog";
 import Center from "./components/center";
 
+function LoadingState() {
+  return <div>Loading...</div>;
+}
+
+async function HomeContent() {
+  const products = await getProducts();
+  
+  return (
+    <div>
+      <Hero/>
+      <FeaturedProducts products={products} />
+      <Latest/>
+      <Center/>
+      <Blog/>
+    </div>
+  );
+}
+
 async function getProducts() {
   const query = `*[_type == "product"]{
     _id,
@@ -24,22 +42,10 @@ async function getProducts() {
   return await client.fetch(query);
 }
 
-function LoadingFallback() {
-  return <div>Loading...</div>;
-}
-
-export default async function Home() {
-  const products = await getProducts();
- 
+export default function Home() {
   return (
-    <div>
-      <Suspense fallback={<LoadingFallback />}>
-        <Hero/>
-        <FeaturedProducts products={products} />
-        <Latest/>
-        <Center/>
-        <Blog/>
-      </Suspense>
-    </div>
+    <Suspense fallback={<LoadingState />}>
+      <HomeContent />
+    </Suspense>
   );
 }
