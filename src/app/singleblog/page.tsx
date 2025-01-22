@@ -19,8 +19,10 @@ function BlogContent() {
       </div>
 
       {/* Blog Content */}
-      <div className="max-w-6xl mx-auto p-4 md:p-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Main Content */}
+      <div className="max-w-7xl mx-auto p-4 md:p-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+      {/* Main Content */}
         <div className="lg:col-span-2 space-y-6">
           <img
             src="/iu.jpeg"
@@ -149,12 +151,12 @@ function BlogContent() {
       </div>
 
      {/* Blog Cards */}
-<div className="space-y-8 mt-12">
-  <h3 className="text-2xl font-bold mb-6 text-gray-800">Related Posts</h3>
+     <div className="space-y-8 mt-12 w-[800]">
+     <h3 className="text-2xl font-bold mb-6 text-gray-800">Related Posts</h3>
   
   {/* First Post */}
-  <div className="bg-white w-[600] shadow-lg rounded-xl hover:shadow-xl transition-shadow duration-300 overflow-hidden">
-    <div className="flex flex-col md:flex-row">
+  <div className="bg-white w-[800] shadow-lg rounded-xl hover:shadow-xl transition-shadow duration-300 overflow-hidden">
+  <div className="flex flex-col md:flex-row">
       <div className="md:w-1/3">
         <img
           src="/hn.jpeg"
@@ -162,7 +164,7 @@ function BlogContent() {
           className="w-full h-64 md:h-full object-cover transform hover:scale-105 transition-transform duration-300"
         />
       </div>
-      <div className="md:w-2/3 p-6">
+      <div className="md:w-2/3 p-8">
         <div className="flex items-center mb-2">
           <span className="text-pink-500">
             <MdOutlineCalendarMonth className="inline mr-2" />
@@ -184,7 +186,7 @@ function BlogContent() {
   </div>
 
   {/* Second Post */}
-  <div className="bg-white w-[600] shadow-lg rounded-xl hover:shadow-xl transition-shadow duration-300 overflow-hidden">
+  <div className="bg-white w-[800] shadow-lg rounded-xl hover:shadow-xl transition-shadow duration-300 overflow-hidden">
     <div className="flex flex-col md:flex-row">
       <div className="md:w-1/3 ">
         <img
@@ -193,7 +195,7 @@ function BlogContent() {
           className="w-full h-64 md:h-full object-cover transform hover:scale-105 transition-transform duration-300"
         />
       </div>
-      <div className="md:w-2/3 p-6">
+      <div className="md:w-2/3 p-8">
         <div className="flex items-center mb-2">
           <span className="text-pink-500">
             <MdOutlineCalendarMonth className="inline mr-2" />
@@ -219,8 +221,8 @@ function BlogContent() {
             
   
             {/* Sidebar */}
-            <aside className="space-y-6 ml-[20]">
-              {/* Search */}
+            <aside className="lg:col-span-1 space-y-6 bg-white p-6 rounded-lg shadow-lg sticky top-4">
+            {/* Search */}
               <div className="relative">
                 <input
                   type="text"
@@ -441,7 +443,7 @@ function BlogContent() {
 </div>
 
             </aside>
-          
+            </div>
   
           {/* Comment Section */}
 <div className="mt-8 max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-sm">
@@ -483,7 +485,7 @@ function BlogContent() {
 </div>
 
 
-        </div>
+</div>
       
     );
   }
