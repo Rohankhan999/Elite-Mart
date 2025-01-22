@@ -2,6 +2,8 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+
 
 export default function HektoDemo() {
   const router = useRouter();
@@ -114,23 +116,24 @@ export default function HektoDemo() {
         {/* Right Section: Cart Summary */}
         <div className="w-full md:w-1/3 bg-white p-6 md:p-8 rounded-lg shadow-md">
           <div className="space-y-4">
-            {cartItems.map((item, index) => (
-              <div key={index} className="flex items-center justify-between">
-                <img
-                  src={item.image}
-                  alt={item.name}
-                  width={60}
-                  height={60}
-                  className="rounded border"
-                />
-                <div className="flex-1 mx-4">
-                  <p className="font-semibold">{item.name}</p>
-                  <p className="text-gray-500 text-sm">Color: {item.color}</p>
-                  <p className="text-gray-500 text-sm">Size: {item.size}</p>
-                </div>
-                <p className="font-semibold">${item.price}</p>
-              </div>
-            ))}
+          {cartItems.map((item, index) => (
+  <div key={index} className="flex items-center justify-between">
+    <Image
+      src={item.image?.asset?.url || '/placeholder.jpg'} // Fallback to placeholder
+      alt={item.name}
+      width={60}
+      height={60}
+      className="rounded border object-cover"
+      priority
+    />
+    <div className="flex-1 mx-4">
+      <p className="font-semibold">{item.name}</p>
+      <p className="text-gray-500 text-sm">Color: {item.color}</p>
+      <p className="text-gray-500 text-sm">Size: {item.size}</p>
+    </div>
+    <p className="font-semibold">${item.price}</p>
+  </div>
+))}
           </div>
 
           {/* Cart Totals */}

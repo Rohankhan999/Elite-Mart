@@ -26,10 +26,6 @@ export const metadata: Metadata = {
   alternates: {
     canonical: '/',
   },
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-  },
   verification: {
     google: 'google-site-verification-code',
   },
@@ -43,6 +39,12 @@ export const metadata: Metadata = {
     description: 'Your ecommerce destination',
   }
 };
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1
+}
 
 export default function RootLayout({
   children,
