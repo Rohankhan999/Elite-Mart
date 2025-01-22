@@ -157,7 +157,7 @@ const ShopCartPage = () => {  // Changed from export default function to const
                 <p className="font-semibold">${getCartTotal().toFixed(2)}</p>
               </div>
               <Link
-                href="/checkout"
+                href="/HektoDemo"
                 className="bg-green-500 text-white w-full mt-4 py-2 rounded hover:bg-green-600 transition-colors block text-center"
               >
                 Proceed To Checkout
