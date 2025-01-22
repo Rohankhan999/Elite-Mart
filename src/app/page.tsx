@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import { draftMode } from 'next/headers';
 import { client } from '../sanity/lib/client';
 import Hero from "./components/hero";
 import FeaturedProducts from './components/featured';
@@ -6,25 +6,10 @@ import Latest from "./components/latest";
 import Blog from "./components/blog";
 import Center from "./components/center";
 
-function LoadingState() {
-  return <div>Loading...</div>;
-}
-
-async function HomeContent() {
-  const products = await getProducts();
-  
-  return (
-    <div>
-      <Hero/>
-      <FeaturedProducts products={products} />
-      <Latest/>
-      <Center/>
-      <Blog/>
-    </div>
-  );
-}
+export const revalidate = 60; // Revalidate content every 60 seconds
 
 async function getProducts() {
+  const { isEnabled } = await draftMode();
   const query = `*[_type == "product"]{
     _id,
     name,
@@ -39,13 +24,25 @@ async function getProducts() {
     category
   }`;
 
-  return await client.fetch(query);
+  return client.fetch(query, {}, {
+    cache: isEnabled ? 'no-store' : 'force-cache',
+
+
+  });
 }
 
-export default function Home() {
+export default async function Home() {
+  const products = await getProducts();
+  
+ 
   return (
-    <Suspense fallback={<LoadingState />}>
-      <HomeContent />
-    </Suspense>
+    <main>
+      <Hero/>
+      <FeaturedProducts products={products} />
+      <Latest/>
+      <Center/>
+      <Blog/>
+    
+    </main>
   );
 }
