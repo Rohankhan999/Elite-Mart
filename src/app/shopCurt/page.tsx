@@ -1,14 +1,13 @@
-// src/app/shopCurt/page.tsx
-"use client";
+'use client';
+
 import React from "react";
 import Link from "next/link";
+import Head from "next/head";
 import { useCart } from "../context/CartContext";
 import toast from 'react-hot-toast';
-import Image from 'next/image'; 
-import { urlFor } from '@/sanity/lib/image';
+import Image from 'next/image';
 
-
-const ShopCartPage = () => {
+const ShopCartPage = () => {  // Changed from export default function to const
   const { cart, updateQuantity, removeFromCart, clearCart, getCartTotal } = useCart();
 
   const handleQuantityChange = (productId: string, newQuantity: number) => {
@@ -29,6 +28,12 @@ const ShopCartPage = () => {
   };
 
   return (
+    <>
+    <Head>
+      <title>Shopping Cart</title>
+      <meta name="description" content="View and manage your shopping cart." />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+    </Head>
     <div className="bg-white min-h-screen">
       {/* Hero Section */}
       <div className="w-full h-[200px] md:h-[286px] bg-[#F6F5FF] flex flex-col items-center justify-center">
@@ -70,23 +75,23 @@ const ShopCartPage = () => {
                       className="border-b hover:bg-gray-50 text-sm md:text-base"
                     >
                       <td className="p-4 flex items-center gap-2 md:gap-4">
-  {item.image ? (
-    <Image
-      src={urlFor(item.image).url()}
-      alt={item.name}
-      width={80}
-      height={80}
-      className="rounded object-cover"
-    />
-  ) : (
-    <div className="w-20 h-20 bg-gray-200 rounded flex items-center justify-center">
-      <span className="text-gray-400">No image</span>
-    </div>
-  )}
-  <div>
-    <p className="font-semibold">{item.name}</p>
-  </div>
-</td>
+                        {item.image?.asset?.url && typeof item.image.asset.url === 'string' ? (
+                          <Image
+                            src={item.image.asset.url}
+                            alt={item.name}
+                            width={80}
+                            height={80}
+                            className="rounded object-cover"
+                          />
+                        ) : (
+                          <div className="w-20 h-20 bg-gray-200 rounded flex items-center justify-center">
+                            <span className="text-gray-400">No image</span>
+                          </div>
+                        )}
+                        <div>
+                          <p className="font-semibold">{item.name}</p>
+                        </div>
+                      </td>
                       <td className="p-4">${Number(item.price).toFixed(2)}</td>
                       <td className="p-4">
                         <div className="flex items-center gap-2">
@@ -129,7 +134,7 @@ const ShopCartPage = () => {
                 Clear Cart
               </button>
               <Link
-                href="/products"
+                href="/"
                 className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors text-center"
               >
                 Continue Shopping
@@ -187,6 +192,7 @@ const ShopCartPage = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
