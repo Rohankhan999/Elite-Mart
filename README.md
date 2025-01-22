@@ -67,6 +67,7 @@ my-app/
 │   │   └── schemaTypes/
 │   └── utils/
 └── public/
+```
 
 ## Deployment Steps
 
@@ -87,10 +88,9 @@ SANITY_API_TOKEN=your_token
 ## Performance Testing Result
 
 - GTmetrix Score: 
-![Screenshot](../../public/test-report.png)
-
-![Screenshot](../../public/test-report1.png)
-
+![Screenshot](https://github.com/MrAfoo/Elite-Mart/blob/master/public/test-report.png?raw=true)
+ 
+![Screenshot](https://github.com/MrAfoo/Elite-Mart/blob/master/public/test-report1.png?raw=true) 
 
 ## Security Measures
 
