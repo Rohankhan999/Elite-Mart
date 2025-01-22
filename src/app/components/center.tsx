@@ -107,18 +107,20 @@ export default function Center() {
               <span>Special discount offers</span>
             </li>
           </ul>
-          <div className="flex mt-[150]">
-            <button 
-              onClick={handleAddToCart}
-              className="px-6 py-2 bg-pink-500 text-white rounded-md hover:bg-pink-600"
-            >
-              Add To Cart
-            </button>
-            <p className="text-blue-700 ml-[10] font-bold block">B&B Italian Sofa</p>
-            <div className="mt-[20] -ml-[125]">
-              <p className="text-blue-800 ">$32.00</p>
-            </div>
-          </div>
+        
+          <div className="flex flex-col space-y-2"> 
+  <div className="flex items-center space-x-4"> 
+    <button className="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded">
+      Add to Cart
+    </button>
+    <div className="flex flex-col">
+      <span className="text-lg">B&B Italian Sofa</span>
+      <span className="text-lg ">$32.00</span>
+    </div>
+  </div>
+</div>
+
+
         </div>
       </div>
     </section>
