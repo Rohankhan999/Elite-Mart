@@ -46,7 +46,7 @@ export default function LatestProducts() {
               <img
                 src={urlFor(product.image).width(300).url()}
                 alt={product.name}
-                className="w-[420] h-[220] object-contain"
+                className="w-full h-full object-contain"
               />
             </div>
             <div className="p-4 flex flex-col items-center text-center">
@@ -55,7 +55,7 @@ export default function LatestProducts() {
               <p className="text-sm font-bold text-blue-600 mt-1">${product.price}</p>
               <button
                 onClick={() => handleViewDetails(product._id)}
-                className="mt-2 w-[150] bg-pink-500 text-white py-1 px-3 rounded text-sm hover:bg-pink-600 transition-colors"
+                className="mt-2 w-full max-w-[150px] bg-pink-500 text-white py-1 px-3 rounded text-sm hover:bg-pink-600 transition-colors"
               >
                 View Details
               </button>
