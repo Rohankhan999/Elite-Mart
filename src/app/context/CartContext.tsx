@@ -27,12 +27,14 @@ interface CartContextType {
   updateQuantity: (productId: string, quantity: number) => void;
   clearCart: () => void;
   getCartTotal: () => number;
+  cartItemsCount: number;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [cart, setCart] = useState<CartItem[]>([]);
+  const cartItemsCount = cart.reduce((total, item) => total + item.quantity, 0);
 
   // Load cart from localStorage on initial render
   useEffect(() => {
@@ -100,6 +102,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         updateQuantity,
         clearCart,
         getCartTotal,
+        cartItemsCount, 
       }}
     >
       {children}

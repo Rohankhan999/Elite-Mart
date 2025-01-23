@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import { FaShoppingCart, FaSearch, FaPlus, FaHeart } from "react-icons/fa";
 import {client} from "../../sanity/lib/client";
 import { urlFor } from '../../sanity/lib/image';
+import { toast } from 'react-hot-toast';
+import { useCart } from '../context/CartContext';
 
 
 interface Product {
@@ -25,18 +27,11 @@ const products: Product[] = [
 ];
 
 export default function ShopGridPage() {
-  const [cart, setCart] = useState<Product[]>([]);
+  const { addToCart } = useCart();
   const [selectedOptions, setSelectedOptions] = useState<{ [key: number]: ProductOptions }>({});
   const [visibleProducts, setVisibleProducts] = useState(4);
   const [allProducts, setAllProducts] = useState<any[]>([]);
 
-
-  useEffect(() => {
-    const storedCart = localStorage.getItem("cart");
-    if (storedCart) {
-      setCart(JSON.parse(storedCart));
-    }
-  }, []);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -62,19 +57,32 @@ export default function ShopGridPage() {
   };
 
 
-  const addToCart = (product: Product) => {
-    const options = selectedOptions[product.id];
+  const handleAddToCart = (product: any) => {
+    const options = selectedOptions[product._id];
 
     if (!options?.color || !options?.size) {
-      alert("Please select both color and size before adding to cart.");
+      toast.error("Please select both color and size", {
+        duration: 2000,
+      });
       return;
     }
 
-    const productWithOptions = { ...product, color: options.color, size: options.size };
-    const updatedCart = [...cart, productWithOptions];
-    setCart(updatedCart);
-    localStorage.setItem("cart", JSON.stringify(updatedCart));
-    alert(`${product.title} has been added to the cart!`);
+    const cartItem = {
+      _id: product._id,
+      name: product.name,
+      price: parseFloat(product.price),
+      quantity: 1,
+      image: {
+        asset: {
+          url: urlFor(product.image).url()
+        }
+      }
+    };
+
+    addToCart(cartItem);
+    toast.success(`${product.name} added to cart!`, {
+      duration: 2000,
+    });
   };
 
   return (
@@ -112,9 +120,12 @@ export default function ShopGridPage() {
         />
         {/* Icons Overlay */}
         <div className="absolute bottom-0 left-2 flex flex-col space-y-2 opacity-0 group-hover:opacity-100 transition-opacity">
-          <button onClick={() => addToCart(product)} className="p-2 rounded-full bg-gray-100 hover:bg-white transition-colors">
-            <FaShoppingCart className="text-gray-700 hover:text-gray-900" />
-          </button>
+        <button 
+      onClick={() => handleAddToCart(product)} 
+      className="p-2 rounded-full bg-gray-100 hover:bg-white transition-colors"
+    >
+      <FaShoppingCart className="text-gray-700 hover:text-gray-900" />
+    </button>
           <button className="p-2 rounded-full bg-gray-100 hover:bg-white transition-colors">
             <FaSearch className="text-gray-700 hover:text-gray-900" />
           </button>

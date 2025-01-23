@@ -5,6 +5,8 @@ import { useState, useEffect } from 'react';
 import { client } from '../../sanity/lib/client';
 import imageUrlBuilder from '@sanity/image-url';
 import { FaShoppingCart, FaHeart, FaSearch } from 'react-icons/fa';
+import { toast } from 'react-hot-toast';
+import { useCart } from '../context/CartContext';
 
 
 const builder = imageUrlBuilder(client);
@@ -111,21 +113,31 @@ const ShopListPage: React.FC = () => {
   const handlePriceRangeChange = (min: number, max: number) => {
     setSelectedPriceRange({ min, max });
   };
+
+  const { addToCart, cartItemsCount } = useCart();
   
   const handleAddToCart = (product: Product) => {
     const cartItem = {
-      id: product._id,
-      title: product.name,
-      price: product.price,
+      _id: product._id,  // Changed from id to _id
+      name: product.name,
+      price: parseFloat(product.price),
       quantity: 1,
-      total: product.price,
-      image: urlFor(product.image).url(),
+      image: {  // Match the Product interface structure
+        asset: {
+          url: urlFor(product.image).url()
+        }
+      }
     };
+  
+    addToCart(cartItem);
+    toast.success('Product added to cart!', {
+      duration: 2000,
+      position: 'top-center',
+    });
 
     const existingCart = JSON.parse(localStorage.getItem("cart") || "[]");
     const updatedCart = [...existingCart, cartItem];
     localStorage.setItem("cart", JSON.stringify(updatedCart));
-    alert("Product added to cart successfully!");
   };
   
   const handleFilterChange = (type: keyof Filters, value: string | number) => {
@@ -346,21 +358,23 @@ const ShopListPage: React.FC = () => {
                 alt={product.name}
                 className="w-full h-48 object-contain mb-4"
               />
-              {/* Icons overlay */}
-              <div className="absolute top-4 right-4 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                <button
-                  onClick={() => handleAddToCart(product)}
-                  className="p-2 bg-white rounded-full shadow-md hover:bg-pink-500 hover:text-white transition-colors"
-                >
-                  <FaShoppingCart className="w-5 h-5" />
-                </button>
-                <button className="p-2 bg-white rounded-full shadow-md hover:bg-pink-500 hover:text-white transition-colors">
-                  <FaHeart className="w-5 h-5" />
-                </button>
-                <button className="p-2 bg-white rounded-full shadow-md hover:bg-pink-500 hover:text-white transition-colors">
-                  <FaSearch className="w-5 h-5" />
-                </button>
-              </div>
+            {/* Icons overlay */}
+<div className="absolute top-4 right-4 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+  <button
+    onClick={() => handleAddToCart(product)}
+    className="p-2 bg-white rounded-full shadow-md hover:bg-pink-500 hover:text-white transition-colors"
+  >
+    <FaShoppingCart className="w-5 h-5" />
+  </button>
+  <button className="p-2 bg-white rounded-full shadow-md hover:bg-pink-500 hover:text-white transition-colors">
+    <FaHeart className="w-5 h-5" />
+  </button>
+  <button className="p-2 bg-white rounded-full shadow-md hover:bg-pink-500 hover:text-white transition-colors">
+    <FaSearch className="w-5 h-5" />
+  </button>
+</div>
+
+
             </div>
             <div className="text-center">
               <h3 className="font-semibold text-lg">{product.name}</h3>
