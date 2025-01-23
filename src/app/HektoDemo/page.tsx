@@ -153,7 +153,7 @@ export default function HektoDemo() {
           
 <button 
   className="w-full bg-green-500 text-white py-3 mt-6 rounded hover:bg-green-600 transition"
-  onClick={() => router.push('/ordercompleted')}
+  onClick={() => router.push('/payment')}
 >
   Proceed To Payment
 </button>
