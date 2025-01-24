@@ -73,7 +73,7 @@ export default function Header() {
             <span className="hidden hover:text-white sm:inline text-sm text-white">Login</span>
             <FiUser className="w-4 h-4 text-white hover:text-gray-200" />
           </Link>
-          <Link href="/wishlist" className="flex items-center space-x-1">
+          <Link href="/" className="flex items-center space-x-1">
             <span className="hidden sm:inline text-sm text-white">Wishlist</span>
             <CiHeart className="w-4 h-4 text-white" />
           </Link>
