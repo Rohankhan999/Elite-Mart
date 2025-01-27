@@ -5,8 +5,9 @@ import FeaturedProducts from './components/featured';
 import Latest from "./components/latest";
 import Blog from "./components/blog";
 import Center from "./components/center";
+import { SpeedInsights } from "@vercel/speed-insights/next" 
 
-export const revalidate = 60; // Revalidate content every 60 seconds
+export const revalidate = 60; 
 
 async function getProducts() {
   const { isEnabled } = await draftMode();

@@ -15,6 +15,7 @@
     "@sanity/image-url": "^1.1.0",
     "@sanity/vision": "^3.70.0",
     "@types/paypal__paypal-js": "^1.0.2",
+    "@vercel/speed-insights": "^1.1.0",
     "axios": "^1.7.9",
     "dotenv": "^16.4.7",
     "next": "15.0.4",
@@ -29,7 +30,6 @@
     "styled-components": "^6.1.14"
   },
   "devDependencies": {
-
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
