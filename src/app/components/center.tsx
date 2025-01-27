@@ -141,7 +141,7 @@ export default function Center() {
         <h3 className="text-3xl font-bold text-center mb-12 text-indigo-800">
           Trending Products
         </h3>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 px-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {products.map((product) => (
             <div
               key={product._id}
@@ -182,9 +182,7 @@ export default function Center() {
       </section>
 
 
-      {/* Existing Discount Item Section */}
       <div className="flex flex-col md:flex-row items-center justify-center bg-white p-6 md:p-12 ml-[20]">
-        {/* Left Section */}
         <div className="md:w-1/2 text-center md:text-left">
           <h2 className="text-xl font-bold text-gray-900 mb-4">
             20% Discount Of All Products
@@ -208,7 +206,7 @@ export default function Center() {
         <div className="md:w-1/2 mt-6 md:mt-0 flex justify-center">
           <div className="relative w-[250px] h-[300px]">
             <img
-              src="/brown.jpeg" // Replace with your chair image path
+              src="/brown.jpeg" 
               alt="Discount Chair"
               style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               
@@ -218,12 +216,11 @@ export default function Center() {
         </div>
       </div>
   
-        {/* Section 5: Top Categories */}
         <section className="py-16 bg-gradient-to-b from-gray-50 to-white">
   <h3 className="text-3xl font-bold text-center mb-12 text-indigo-800 relative after:content-[''] after:block after:w-24 after:h-1 after:bg-pink-500 after:mx-auto after:mt-4">
     Top Categories
   </h3>
-  <div className="grid grid-cols-2 md:grid-cols-4 gap-8 px-12 max-w-7xl mx-auto">
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
     {["Minki Chair 1", "Mini Chair 2", "Mini Chair", "Mini Chair"].map((item, index) => (
       <div
         key={index}
@@ -265,7 +262,6 @@ export default function Center() {
   </div>
 </section>
   
-        {/* Section 6: Newsletter */}
         <section className="py-10 px-8 text-center bg-gray-100">
           <h3 className="text-2xl font-bold text-indigo-800 mb-4">
             Get Latest Update By Subscribing To Our Newsletter

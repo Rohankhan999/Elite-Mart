@@ -5,7 +5,9 @@ import Link from "next/link";
 import Head from "next/head";
 import { useCart } from "../context/CartContext";
 import toast from 'react-hot-toast';
+import 'react-toastify/dist/ReactToastify.css';
 import Image from 'next/image';
+import ShippingCalculator from "../components/ShippingCalculator";
 
 const ShopCartPage = () => {  // Changed from export default function to const
   const { cart, updateQuantity, removeFromCart, clearCart, getCartTotal } = useCart();
@@ -166,27 +168,8 @@ const ShopCartPage = () => {  // Changed from export default function to const
 
             {/* Calculate Shipping */}
             <div className="bg-[#F6F5FF] p-6 rounded">
-              <h3 className="text-center text-lg font-bold mb-4">
-                Calculate Shipping
-              </h3>
-              <input
-                type="text"
-                placeholder="Country"
-                className="w-full border rounded p-2 mb-4"
-              />
-              <input
-                type="text"
-                placeholder="City"
-                className="w-full border rounded p-2 mb-4"
-              />
-              <input
-                type="text"
-                placeholder="Postal Code"
-                className="w-full border rounded p-2 mb-4"
-              />
-              <button className="bg-pink-500 text-white w-full py-2 rounded hover:bg-pink-600 transition-colors">
-                Calculate Shipping
-              </button>
+            <ShippingCalculator />
+              
             </div>
           </div>
         </div>

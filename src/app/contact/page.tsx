@@ -1,3 +1,4 @@
+
 export default function Contact() {
   return (
     <div className="bg-white min-h-screen">
@@ -113,7 +114,6 @@ export default function Contact() {
           </form>
         </div>
 
-        {/* Illustration */}
         <div className="flex justify-center items-center">
           <img
             src="/90.jpeg"

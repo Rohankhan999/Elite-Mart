@@ -93,7 +93,6 @@ function BlogContent() {
 
           {/* Two-Column Images */}
           <div className="grid grid-cols-2 gap-4">
-            {/* Image with Play Icon */}
             <div className="relative">
               <img
                 src="/jm.jpeg"

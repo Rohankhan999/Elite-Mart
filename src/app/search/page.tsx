@@ -1,11 +1,11 @@
 'use client';
-
 import { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { client } from '../../sanity/lib/client';
 import { urlFor } from '../../sanity/lib/image';
 import Image from 'next/image';
+
 
 function SearchContent() {
   const searchParams = useSearchParams();
@@ -17,7 +17,7 @@ function SearchContent() {
     async function fetchResults() {
       if (!query) return;
       
-      const searchQuery = `*[_type == "product" && (name match "*${query}*" || description match "*${query}*")] {
+      const searchQuery = `*[_type == "product" && (lower(name) match "*${query.toLowerCase()}*" || lower(description) match "*${query.toLowerCase()}*")] {
         _id,
         name,
         description,
@@ -39,14 +39,16 @@ function SearchContent() {
   }, [query]);
 
   return (
-    <div className="px-4 sm:px-8 md:px-16 lg:px-32 py-8">
-      <h1 className="text-2xl mb-4">Search Results for: {query}</h1>
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-2xl font-bold text-[#FB2E86] mb-6">Search Results for: {query}</h1>
       {loading ? (
-        <p>Loading...</p>
+        <div className="flex justify-center items-center min-h-[200px]">
+          <p className="text-gray-600">Loading...</p>
+        </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {results.map((product: any) => (
-            <div key={product._id} className="border p-4 rounded shadow-md hover:shadow-lg transition-shadow">
+            <div key={product._id} className="border p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow bg-white">
               {product.image && (
                 <div className="relative w-full h-[200px] mb-4">
                   <Image
@@ -58,8 +60,8 @@ function SearchContent() {
                   />
                 </div>
               )}
-              <h2 className="text-xl font-semibold mb-2">{product.name}</h2>
-              <p className="text-gray-600 mb-2">{product.description}</p>
+              <h2 className="text-xl font-semibold mb-2 text-gray-800">{product.name}</h2>
+              <p className="text-gray-600 mb-2 line-clamp-2">{product.description}</p>
               {product.price && (
                 <p className="text-[#FB2E86] font-bold text-lg">${product.price}</p>
               )}
@@ -68,7 +70,9 @@ function SearchContent() {
         </div>
       )}
       {results.length === 0 && !loading && (
-        <p className="text-center text-gray-500">No products found matching your search.</p>
+        <div className="text-center py-8">
+          <p className="text-gray-500 text-lg">No products found matching your search.</p>
+        </div>
       )}
     </div>
   );
@@ -76,7 +80,11 @@ function SearchContent() {
 
 export default function SearchResults() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={
+      <div className="flex justify-center items-center min-h-screen">
+        <p className="text-gray-600">Loading...</p>
+      </div>
+    }>
       <SearchContent />
     </Suspense>
   );

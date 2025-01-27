@@ -1,3 +1,4 @@
+
 import React from "react";
 
 const LatestBlog = () => {
@@ -6,7 +7,7 @@ const LatestBlog = () => {
       title: "Design Trends 2024",
       code: "Blog - D2024",
       description: "Exploring the latest design trends for the upcoming year.",
-      image: "/blog1.jpeg", // Replace with actual image paths
+      image: "/blog1.jpeg", 
     },
     {
       title: "Minimalist Interiors",
@@ -52,7 +53,6 @@ const LatestBlog = () => {
                   {blog.description}
                 </p>
               </div>
-              {/* Optional hover overlay effect */}
                
               <div className="absolute inset-0 bg-purple-500 text-white opacity-0 hover:opacity-100 flex items-center justify-center rounded-xl transition duration-300">
                 <button className="py-2 px-4 bg-white text-purple-500 font-bold rounded-md shadow-md">

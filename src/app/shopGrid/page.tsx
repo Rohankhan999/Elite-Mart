@@ -113,7 +113,7 @@ export default function ShopGridPage() {
     <div key={product._id} className="bg-white shadow-md mb-[20] rounded-lg p-4 flex flex-col h-[500px]">
       {/* Product Image */}
       <div className="group relative overflow-hidden rounded-lg hover:bg-gray-100 transition-color p-2 h-[550px]">
-        <img 
+        <img
           src={urlFor(product.image).url()} 
           alt={product.name} 
           className="w-full h-43 object-cover" 

@@ -127,7 +127,6 @@ export default function ShopListPage() {
             key={index}
             className="flex flex-col items-start gap-4 p-4 border rounded-lg shadow-sm"
           >
-            {/* Product Image */}
             <img
               src={product.image}
               alt={product.title}
@@ -177,33 +176,18 @@ export default function ShopListPage() {
       </div>
 
       {/* Brand Logos Section */}
-      <div className="mt-12 flex justify-center flex-wrap gap-8 px-4 lg:px-16 mb-12">
+      <div className="flex flex-wrap justify-center items-center gap-8 mt-8 mb-8">
+         {['/logz5.jpeg', '/logz1.jpeg', '/logz2.jpeg', '/logz4.jpeg', '/logz3.jpeg'].map(
+      (logo, index) => (
         <img
-          src="/logz5.jpeg"
-          alt="Logo 1"
-          className="w-32 h-32 object-contain"
+          key={index}
+          src={logo}
+          alt={`Logo ${index}`}
+          className="w-24 md:w-40 h-auto object-contain"
         />
-        <img
-          src="/logz1.jpeg"
-          alt="Logo 2"
-          className="w-32 h-32 object-contain"
-        />
-        <img
-          src="/logz2.jpeg"
-          alt="Logo 3"
-          className="w-32 h-32 object-contain"
-        />
-        <img
-          src="/logz4.jpeg"
-          alt="Logo 4"
-          className="w-32 h-32 object-contain"
-        />
-        <img
-          src="/logz3.jpeg"
-          alt="Logo 5"
-          className="w-32 h-32 object-contain"
-        />
-      </div>
+      )
+      )}
+         </div>
     </div>
   );
 }

@@ -119,7 +119,6 @@ export default function ProductDetails() {
       {/* Product Details Section */}
       <div className="max-w-7xl mx-auto mt-[30] p-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Product Images */}
           <div>
             <img
               src={urlFor(product.image).width(600).url()}

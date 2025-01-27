@@ -47,7 +47,6 @@ function HeroSection() {
 
   return (
     <section className="relative bg-purple-50 py-10 md:py-20 px-5 md:px-20 flex flex-col md:flex-row items-center justify-between overflow-hidden">
-      {/* Left Column: Lamp */}
       <div className="md:w-1/4 flex justify-center items-start relative">
         <div className="absolute top-[-350px] left-[-40px] z-10">
           <img
@@ -79,7 +78,7 @@ function HeroSection() {
         </Link>
       </div>
 
-      {/* Right Column: Chair Image */}
+      
       <div className="md:w-1/3 flex justify-center items-center relative">
         <div className="relative bg-gradient-to-r from-pink-100 to-purple-200 rounded-full p-10 shadow-xl mt-10 mx-auto">
           <img

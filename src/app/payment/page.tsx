@@ -1,9 +1,8 @@
 "use client";
-
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { toast } from "react-toastify";
+import { toast } from 'react-hot-toast';
 import "react-toastify/dist/ReactToastify.css";
 
 const PaymentPage = () => {
@@ -12,10 +11,9 @@ const PaymentPage = () => {
     const [isCheckoutEnabled, setIsCheckoutEnabled] = useState(false);
     const router = useRouter();
 
-    const handleApprove = (orderID: string) => {
-        console.log("Payment Successful! Order ID:", orderID);
+    const handleApprove = () => {
         setSuccess(true);
-        setIsCheckoutEnabled(true); // Enable the Checkout button after mock payment
+        setIsCheckoutEnabled(true);
         toast.success("Payment approved! You can now proceed to checkout.", {
             position: "top-right",
         });
@@ -40,38 +38,33 @@ const PaymentPage = () => {
                     <>
                         {error && <p className="text-red-500 mb-4">{error}</p>}
                         <PayPalButtons
-    style={{ layout: "vertical" }}
-    createOrder={(data, actions) => {
-        return actions.order.create({
-            intent: "CAPTURE",
-            purchase_units: [
-                {
-                    amount: {
-                        currency_code: "USD", // Specify the currency
-                        value: "10.00", // Update this value to match your product price
-                    },
-                },
-            ],
-        });
-    }}
-    onApprove={async (data, actions) => {
-        if (actions.order) {
-            await actions.order.capture();
-            handleApprove(data.orderID || "");
-        }
-    }}
-    onError={(err) => {
-        console.error("PayPal Checkout Error:", err);
-        setError("An error occurred during the payment process.");
-        toast.error("Payment failed! Please try again.", {
-            position: "top-right",
-        });
-    }}
-    onClick={() => {
-        setIsCheckoutEnabled(true); // Enable the Checkout button when the user interacts
-    }}
-/>
-
+                            style={{ layout: "vertical" }}
+                            createOrder={(data, actions) => {
+                                setIsCheckoutEnabled(true);
+                                return actions.order.create({
+                                    intent: "CAPTURE",
+                                    purchase_units: [
+                                        {
+                                            amount: {
+                                                currency_code: "USD",
+                                                value: "10.00",
+                                            },
+                                        },
+                                    ],
+                                });
+                            }}
+                            onApprove={async (data, actions) => {
+                                if (actions.order) {
+                                    const order = await actions.order.capture();
+                                    handleApprove();
+                                }
+                            }}
+                            onError={(err) => {
+                                toast.error("Payment failed! Please try again.", {
+                                    position: "top-right",
+                                });
+                            }}
+                        />
                     </>
                 )}
                 <button
@@ -79,11 +72,11 @@ const PaymentPage = () => {
                     disabled={!isCheckoutEnabled}
                     className={`mt-4 px-6 py-3 rounded-lg font-semibold text-white ${
                         isCheckoutEnabled
-                            ? "bg-blue-600 hover:bg-blue-700 cursor-pointer"
+                            ? "bg-[#FB2E86] hover:bg-pink-600 cursor-pointer"
                             : "bg-gray-400 cursor-not-allowed"
                     }`}
                 >
-                    Checkout
+                    Complete Order
                 </button>
             </div>
         </PayPalScriptProvider>

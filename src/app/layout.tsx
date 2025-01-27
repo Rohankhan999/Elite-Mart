@@ -1,11 +1,8 @@
+// Server Component (no 'use client')
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import Navbar from "./components/navbar";
-import Footer from "./components/footer";
 import "./globals.css";
-import { ClientProviderNoSSR } from './components/ClientProvider';
-import { CartProvider } from './context/CartContext';
-import { Toaster } from 'react-hot-toast';
+import ClientLayout from './ClientLayout';
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -53,38 +50,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}
-      >
-        <CartProvider>
-          <ClientProviderNoSSR>
-            <Navbar />
-            <main className="flex-grow">{children}</main>
-            <Footer />
-            <Toaster
-              position="bottom-right"
-              toastOptions={{
-                duration: 2000,
-                style: {
-                  background: '#363636',
-                  color: '#fff',
-                },
-                success: {
-                  duration: 2000,
-                  style: {
-                    background: '#22c55e',
-                  },
-                },
-                error: {
-                  duration: 2000,
-                  style: {
-                    background: '#ef4444',
-                  },
-                },
-              }}
-            />
-          </ClientProviderNoSSR>
-        </CartProvider>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}>
+        <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
   );

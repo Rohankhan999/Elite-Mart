@@ -10,12 +10,15 @@ import { CiSearch } from "react-icons/ci";
 import Link from "next/link";
 import { useState } from "react";
 import { useCart } from '../context/CartContext';
+import { useAuth0 } from "@auth0/auth0-react";
 
 export default function Header() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const { cart } = useCart();
+  const [isLoading, setIsLoading] = useState(false);
+  const { loginWithRedirect, logout, isAuthenticated, user  } = useAuth0();
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,6 +41,7 @@ export default function Header() {
   const toggleMobileMenu = () => setIsMobileMenuOpen((prev) => !prev);
 
   const cartTotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+  
 
   return (
     <div>
@@ -69,23 +73,35 @@ export default function Header() {
             <span className="text-sm text-white">USD</span>
             <RiArrowDropDownLine className="w-4 h-4 text-white" />
           </div>
-          <Link href="/login" className="flex items-center space-x-1">
-            <span className="hidden hover:text-white sm:inline text-sm text-white">Login</span>
-            <FiUser className="w-4 h-4 text-white hover:text-gray-200" />
-          </Link>
           <Link href="/" className="flex items-center space-x-1">
             <span className="hidden sm:inline text-sm text-white">Wishlist</span>
             <CiHeart className="w-4 h-4 text-white" />
           </Link>
+          
+            
+          {isAuthenticated ? (
+            <div className="hidden sm:flex items-center space-x-1">
+            <button className="text-sm text-white hover:text-gray-300" onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}>
+        Log Out</button>
+        </div>
+          ) : (
+            <div  className="flex items-center space-x-1">
+            <button onClick={() => loginWithRedirect()} className="hidden hover:text-gray-300 sm:inline text-sm text-white" >Login</button>
+            <button> <FiUser className="w-4 h-4 text-white hover:text-gray-300" /> </button>
+          </div>
+            )}
+        
+         
           <div className="relative group">
             <Link href="/shopCurt" className="relative">
-              <FiShoppingCart className="w-5 h-5 cursor-pointer text-white hover:text-gray-200" />
+              <FiShoppingCart className="w-5 h-5 cursor-pointer text-white hover:text-gray-300" />
               {cart.length > 0 && (
                 <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
                   {cart.length}
                 </span>
               )}
             </Link>
+            
 
             {/* Mini Cart Preview */}
             <div className="absolute right-0 mt-2 w-72 bg-white rounded-md shadow-lg hidden group-hover:block z-50">
@@ -95,7 +111,7 @@ export default function Header() {
                 {cart.map((item) => (
                     <div key={item._id} className="flex items-center gap-2 mb-2 pb-2 border-b">
                       {item.image?.asset?.url ? (
-                        <img 
+                        <img
                           src={item.image.asset.url} 
                           alt={item.name} 
                           className="w-12 h-12 object-cover rounded"
@@ -143,13 +159,18 @@ export default function Header() {
               </div>
             </div>
           </div>
+          {isAuthenticated && (
+            <div className="hidden sm:flex  flex-col items-center space-x-1">
+              <p className="text-sm text-white">Welcome</p>
+              <p className="text-sm text-white">{user?.name}</p></div>
+            )}
         </div>
       </div>
       {/* Navbar */}
       <div className="w-full h-[60px] bg-white flex items-center justify-between px-4 sm:px-8 md:px-16 lg:px-32">
         {/* Logo */}
         <div className="text-[#0D0E43] font-bold text-lg sm:text-xl mr-4">
-          Elite Mart
+         <Link href="/"> Elite Mart</Link>
         </div>
 
         {/* Navbar Links */}
@@ -177,10 +198,10 @@ export default function Header() {
               </div>
             )}
           </div>
-          <Link href="/pages" className="text-[#0D0E43] text-sm hover:text-pink-500">
+          <Link href="/" className="text-[#0D0E43] text-sm hover:text-pink-500">
             Pages
           </Link>
-          <Link href="/shopList" className="text-[#0D0E43] text-sm hover:text-pink-500">
+          <Link href="/shopGrid" className="text-[#0D0E43] text-sm hover:text-pink-500">
             Products
           </Link>
           <Link href="/blog" className="text-[#0D0E43] text-sm hover:text-pink-500">
@@ -194,22 +215,37 @@ export default function Header() {
           </Link>
         </div>
 
-        {/* Search */}
-        <form onSubmit={handleSearch} className="flex items-center ml-auto">
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search"
-            className="hidden md:block w-[150px] lg:w-[300px] h-[40px] border px-4 text-sm rounded-l"
-          />
-          <button 
-            type="submit"
-            className="w-[40px] h-[40px] bg-[#FB2E86] flex items-center justify-center rounded-r"
-          >
-            <CiSearch className="w-5 h-5 text-white" />
-          </button>
-        </form>
+        
+{/* Search */}
+<form onSubmit={handleSearch} className="flex items-center ml-auto">
+  <label htmlFor="search" className="sr-only">
+    Search
+  </label>
+  <input
+    type="text"
+    id="search"
+    value={searchQuery}
+    onChange={(e) => setSearchQuery(e.target.value)}
+    placeholder="Search"
+    aria-label="Search"
+    className="block w-full md:w-[150px] lg:w-[300px] h-[40px] border px-4 text-sm rounded-l focus:border-[#FB2E86] focus:outline-none"
+  />
+  {isLoading ? (
+    <div className="w-[40px] h-[40px] bg-[#FB2E86] flex items-center justify-center rounded-r">
+      <span className="loader w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+    </div>
+  ) : (
+    <button
+      type="submit"
+      className="w-[40px] h-[40px] bg-[#FB2E86] flex items-center justify-center rounded-r hover:bg-[#e02574]"
+      aria-label="Search"
+    >
+      <CiSearch className="w-5 h-5 text-white" />
+    </button>
+  )}
+</form>
+
+
 
         {/* Mobile Menu Button */}
         <button onClick={toggleMobileMenu} className="sm:hidden">
@@ -223,7 +259,7 @@ export default function Header() {
           <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="text-[#FB2E86]">
             Home
           </Link>
-          <Link href="/pages" onClick={() => setIsMobileMenuOpen(false)} className="text-[#0D0E43]">
+          <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="text-[#0D0E43]">
             Pages
           </Link>
           <Link href="/shopList" onClick={() => setIsMobileMenuOpen(false)} className="text-[#0D0E43]">
@@ -232,7 +268,7 @@ export default function Header() {
           <Link href="/blog" onClick={() => setIsMobileMenuOpen(false)} className="text-[#0D0E43]">
             Blog
           </Link>
-          <Link href="/shopList" onClick={() => setIsMobileMenuOpen(false)} className="text-[#0D0E43]">
+          <Link href="/shopgrid" onClick={() => setIsMobileMenuOpen(false)} className="text-[#0D0E43]">
             Shop
           </Link>
           <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)} className="text-[#0D0E43]">

@@ -1,4 +1,3 @@
-// pages/about.js
 
 export default function aboutUs() {
   return (
@@ -19,7 +18,7 @@ export default function aboutUs() {
       {/* About Us Section */}
       <section className="py-12 px-6 md:px-20">
         <div className="flex flex-col md:flex-row items-center">
-          {/* Image */}
+         
           <div className="w-full md:w-1/2">
             <img
               src="/1.jpeg"
@@ -105,8 +104,7 @@ export default function aboutUs() {
       {/* Client Testimonials */}
       <section className="py-12 px-6 md:px-20 text-center bg-[#F6F5FF] mb-[40px]">
         <h3 className="text-3xl font-bold mb-8">Our Client Say!</h3>
-        <div className="flex flex-col items-center">
-          {/* Testimonial Images */}
+        <div className="flex flex-col items-center">       
           <div className="flex flex-wrap justify-center space-x-4 mb-6">
             <img
               src="/5.jpeg"
