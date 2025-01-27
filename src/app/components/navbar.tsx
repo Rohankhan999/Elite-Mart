@@ -207,7 +207,7 @@ export default function Header() {
           <Link href="/blog" className="text-[#0D0E43] text-sm hover:text-pink-500">
             Blog
           </Link>
-          <Link href="/shopList" className="text-[#0D0E43] text-sm hover:text-pink-500">
+          <Link href="/shopGrid" className="text-[#0D0E43] text-sm hover:text-pink-500">
             Shop
           </Link>
           <Link href="/contact" className="text-[#0D0E43] text-sm hover:text-pink-500">
