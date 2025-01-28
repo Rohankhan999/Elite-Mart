@@ -8,6 +8,7 @@ import toast from 'react-hot-toast';
 import 'react-toastify/dist/ReactToastify.css';
 import Image from 'next/image';
 import ShippingCalculator from "../components/ShippingCalculator";
+import router from "next/router";
 
 const ShopCartPage = () => {  // Changed from export default function to const
   const { cart, updateQuantity, removeFromCart, clearCart, getCartTotal } = useCart();
@@ -28,6 +29,41 @@ const ShopCartPage = () => {  // Changed from export default function to const
     clearCart();
     toast.success('Cart cleared!');
   };
+// Add this to your ShopCartPage component
+const handleCheckout = async () => {
+  try {
+      const orderData = {
+          _type: 'order',
+          items: cart.map(item => ({
+              _type: 'orderItem',
+              productId: item._id,
+              name: item.name,
+              quantity: item.quantity,
+              price: item.price
+          })),
+          total: getCartTotal(),
+          orderDate: new Date().toISOString(),
+          status: 'pending'
+      };
+
+      const response = await fetch('/api/createOrder', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(orderData)
+      });
+
+      if (response.ok) {
+          toast.success('Order placed successfully!');
+          clearCart();
+          // Redirect to success page
+          router.push('/ordercompleted');
+      }
+  } catch (error) {
+      toast.error('Failed to place order');
+  }
+};
 
   return (
     <>
@@ -160,6 +196,7 @@ const ShopCartPage = () => {  // Changed from export default function to const
               </div>
               <Link
                 href="/HektoDemo"
+                onClick={handleCheckout}
                 className="bg-green-500 text-white w-full mt-4 py-2 rounded hover:bg-green-600 transition-colors block text-center"
               >
                 Proceed To Checkout

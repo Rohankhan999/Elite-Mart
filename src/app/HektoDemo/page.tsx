@@ -19,7 +19,7 @@ export default function HektoDemo() {
                 icon: '🚚',
                 style: {
                     background: '#F6F5FF',
-                    color: '#FB2E86',
+                    color: 'black',
                 },
             });
         }, 100);

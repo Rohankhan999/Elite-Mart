@@ -213,6 +213,9 @@ export default function Header() {
           <Link href="/contact" className="text-[#0D0E43] text-sm hover:text-pink-500">
             Contact
           </Link>
+          <Link href="/admin/login" className="text-[#0D0E43] text-sm hover:text-pink-500">
+    Dashboard
+</Link>
         </div>
 
         
@@ -274,6 +277,9 @@ export default function Header() {
           <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)} className="text-[#0D0E43]">
             Contact
           </Link>
+          <Link href="/admin/login" onClick={() => setIsMobileMenuOpen(false)} className="text-[#0D0E43]">
+    Dashboard
+</Link>
         </div>
       )}
     </div>
