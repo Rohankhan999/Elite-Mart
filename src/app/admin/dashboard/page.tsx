@@ -210,7 +210,7 @@ return (
             </div>
         </div>
     </div>
-);
+);}
 
 // ... StatCard component remains the same ...
 
