@@ -1,4 +1,3 @@
-// src/app/context/CartContext.tsx
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
@@ -16,12 +15,14 @@ interface Product {
 quantity?: number;
 }
 
-interface CartItem extends Product {
+export interface CartItem extends Product {
   quantity: number;
 }
 
 interface CartContextType {
   cart: CartItem[];
+  cartItems: CartItem[]; 
+  totalPrice: number;    
   addToCart: (product: Product) => void;
   removeFromCart: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
@@ -97,6 +98,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     <CartContext.Provider
       value={{
         cart,
+        cartItems: cart, 
+        totalPrice: getCartTotal(), 
         addToCart,
         removeFromCart,
         updateQuantity,

@@ -15,11 +15,12 @@ export default function HektoDemo() {
     useEffect(() => {
         const timer = setTimeout(() => {
             toast('Please provide shipping information to continue', {
-                duration: 8000,
+                duration: 7000,
                 icon: '🚚',
                 style: {
                     background: '#F6F5FF',
                     color: 'black',
+                    
                 },
             });
         }, 100);
