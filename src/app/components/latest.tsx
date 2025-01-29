@@ -50,7 +50,7 @@ export default function LatestProducts() {
               />
             </div>
             <div className="p-4 flex flex-col items-center text-center">
-              <h3 className="text-sm font-semibold truncate">{product.name}</h3>
+              <h3 className="text-lg font-semibold text-gray-800">{product.name}</h3>
               <p className="text-xs text-gray-600 mt-1">{product.category}</p>
               <p className="text-sm font-bold text-blue-600 mt-1">${product.price}</p>
               <button

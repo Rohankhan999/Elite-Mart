@@ -1,119 +1,132 @@
+'use client';
 
 import Link from "next/link";
 import { MdOutlineCalendarMonth } from "react-icons/md";
-import { FaPenNib, FaFacebookF, FaTwitter, FaInstagram } from "react-icons/fa";
+import { FaPenNib, FaFacebookF, FaTwitter, FaInstagram, FaSearch } from "react-icons/fa";
 
 export default function Blog() {
   return (
-    <div className="bg-white min-h-screen">
+    <div className="bg-gradient-to-b from-gray-50 to-white min-h-screen">
       {/* Hero Section */}
-      <div className="w-full h-[286px] bg-[#F6F5FF] flex flex-col items-center justify-center px-4">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold text-black mb-4">Blog Page</h1>
-          <p className="text-sm text-gray-500">
-            Home &gt; Pages &gt; <span className="text-pink-500">Blog Page</span>
-          </p>
+      <div className="relative h-[300px] bg-gradient-to-r from-[#F6F5FF] via-[#F8F7FF] to-[#F6F5FF]">
+        <div className="absolute inset-0 bg-[url('/pattern.png')] opacity-10"></div>
+        <div className="container mx-auto h-full flex flex-col items-center justify-center px-4">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">Latest Blog Posts</h1>
+          <nav className="flex items-center space-x-2 text-sm font-medium">
+            <Link href="/" className="text-gray-600 hover:text-pink-500 transition-colors">Home</Link>
+            <span className="text-gray-400">/</span>
+            <span className="text-pink-500">Blog</span>
+          </nav>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="container mx-auto p-4 flex flex-col md:flex-row gap-8">
-        {/* Blog Posts Section */}
-        <div className="w-full md:w-2/3 space-y-8">
-          {/* Blog Card */}
-          {Array.from({ length: 3 }).map((_, index) => (
-            <div key={index} className="border rounded-lg shadow-md">
-              <Link href="/singleblog">
-                <img
-                  src={
-                    index === 0
-                      ? "/iu.jpeg"
-                      : index === 1
-                      ? "/poo.jpeg"
-                      : index === 2
-                      ? "/wty.jpeg"
-                      : `/default-image.jpeg`
-                  }
-                  alt={`Blog ${index + 1}`}
-                  className="w-full h-[200px] md:h-[300px] object-cover rounded-t-lg"
-                />
-              </Link>
-              <div className="p-4 md:p-6">
-                <div className="flex flex-wrap items-center text-sm text-gray-500 space-x-4 mb-2">
-                  <div className="flex items-center text-pink-700">
-                    <FaPenNib />
-                    <span className="ml-1">Surf Axion</span>
-                  </div>
-                  <div className="flex items-center text-orange-500">
-                    <MdOutlineCalendarMonth />
-                    <span className="ml-1">Aug 20, 2023</span>
-                  </div>
-                </div>
-                <h2 className="text-2xl font-bold text-blue-900 mb-2">
+      <div className="container mx-auto px-4 py-12">
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Blog Posts Section */}
+          <div className="lg:w-2/3">
+            <div className="space-y-8">
+              {Array.from({ length: 3 }).map((_, index) => (
+                <article key={index} className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300">
                   <Link href="/singleblog">
-                    Mauris at orci non vulputate diam tincidunt nec.
+                    <div className="relative aspect-[16/9] overflow-hidden rounded-t-xl">
+                      <img
+                        src={index === 0 ? "/iu.jpeg" : index === 1 ? "/poo.jpeg" : "/wty.jpeg"}
+                        alt={`Blog ${index + 1}`}
+                        className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-500"
+                      />
+                    </div>
                   </Link>
-                </h2>
-                <p className="text-gray-600">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit...
-                </p>
-                <Link
-                  href="/singleblog"
-                  className="text-pink-500 font-semibold hover:underline mt-4 inline-block"
-                >
-                  Read More &rarr;
-                </Link>
-              </div>
+                  
+                  <div className="p-6">
+                    <div className="flex items-center gap-4 text-sm text-gray-500 mb-3">
+                      <div className="flex items-center text-pink-500">
+                        <FaPenNib className="mr-2" />
+                        <span>Surf Axion</span>
+                      </div>
+                      <div className="flex items-center text-gray-400">
+                        <MdOutlineCalendarMonth className="mr-2" />
+                        <span>Aug 20, 2023</span>
+                      </div>
+                    </div>
+
+                    <h2 className="text-2xl font-bold text-gray-800 mb-3 hover:text-pink-500 transition-colors">
+                      <Link href="/singleblog">
+                        Mauris at orci non vulputate diam tincidunt nec.
+                      </Link>
+                    </h2>
+
+                    <p className="text-gray-600 mb-4 line-clamp-3">
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    </p>
+
+                    <Link
+                      href="/singleblog"
+                      className="inline-flex items-center text-pink-500 font-semibold hover:text-pink-600 transition-colors"
+                    >
+                      Read More
+                      <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                      </svg>
+                    </Link>
+                  </div>
+                </article>
+              ))}
             </div>
-          ))}
 
-          {/* Pagination */}
-          <div className="flex justify-center items-center space-x-2">
-            {Array.from({ length: 4 }).map((_, i) => (
-              <button
-                key={i}
-                className={`h-10 w-10 flex items-center justify-center rounded border ${
-                  i === 0
-                    ? "bg-pink-500 text-white"
-                    : "text-gray-500 hover:bg-pink-500 hover:text-white"
-                }`}
-              >
-                {i + 1}
-              </button>
-            ))}
+            {/* Pagination */}
+            <div className="flex justify-center mt-12">
+              <nav className="flex items-center space-x-2">
+                {Array.from({ length: 4 }).map((_, i) => (
+                  <button
+                    key={i}
+                    className={`h-10 w-10 rounded-lg transition-colors ${
+                      i === 0
+                        ? "bg-pink-500 text-white"
+                        : "text-gray-600 hover:bg-pink-50 hover:text-pink-500"
+                    }`}
+                  >
+                    {i + 1}
+                  </button>
+                ))}
+              </nav>
+            </div>
           </div>
-        </div>
 
-        {/* Sidebar */}
-        <div className="w-full md:w-1/3 space-y-6">
-          {/* Search */}
-          <div>
-            <h3 className="text-lg font-bold mb-2">Search</h3>
-            <input
-              type="text"
-              placeholder="Search here..."
-              className="w-full border rounded-md p-2 focus:ring-2 focus:ring-pink-500 outline-none"
-            />
-          </div>
+          {/* Sidebar */}
+          <aside className="lg:w-1/3">
+            <div className="space-y-8">
+              {/* Search */}
+              <div className="bg-white p-6 rounded-xl shadow-sm">
+                <div className="relative">
+                  <input
+                    type="text"
+                    placeholder="Search articles..."
+                    className="w-full pl-4 pr-10 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                  />
+                  <FaSearch className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                </div>
+              </div>
 
           {/* Categories */}
-          <div>
-            <h3 className="text-lg font-bold mb-4">Categories</h3>
+          <div className="bg-white p-6 rounded-xl shadow-sm">
+          <h3 className="text-lg font-bold mb-4">Categories</h3>
             <ul className="space-y-2">
-              {["Hobbies (14)", "Women (21)", "Fashion (10)", "Technology (18)", "Sports (12)", "Lifestyle (16)"].map(
-                (category, index) => (
-                  <li key={index}>
-                    <a
-                      href="#"
-                      className="block hover:bg-pink-500 hover:text-white p-2 rounded-md transition"
-                    >
-                      {category}
-                    </a>
-                  </li>
-                )
-              )}
-            </ul>
-          </div>
+            {["Hobbies (14)", "Women (21)", "Fashion (10)", "Technology (18)"].map((category, index) => (
+                    <li key={index}>
+                      <a
+                        href="#"
+                        className="flex items-center justify-between p-3 rounded-lg hover:bg-pink-50 transition-colors group"
+                      >
+                      <span className="text-gray-600 group-hover:text-pink-500">{category}</span>
+                        <svg className="w-4 h-4 text-gray-400 group-hover:text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
           {/* Recent Posts */}
           <div>
@@ -283,19 +296,22 @@ export default function Blog() {
     </div>
   </div>
 </div>
+
+</div>
+          </aside>
         </div>
-      </div>
-  
-        
-         {/* Logos */}
-      <div className="mt-12 flex flex-wrap justify-center gap-8 mb-8">
+        <div className="mt-12 flex flex-wrap justify-center gap-8 mb-8">
       {["/logz5.jpeg", "/logz1.jpeg", "/logz2.jpeg", "/logz4.jpeg", "/logz3.jpeg"].map((src, i) => (
         <img key={i} src={src} alt={`Logo ${i + 1}`} className="w-24 h-24 md:w-40 md:h-40 object-contain" />
       ))}
     </div>
       </div>
-    );
-  }
-  
+    </div>
+  );
+}
+         
+      
+
+
 
  

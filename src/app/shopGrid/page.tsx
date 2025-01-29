@@ -85,112 +85,124 @@ export default function ShopGridPage() {
     });
   };
 
+  
   return (
     <div className="bg-white min-h-screen">
-      {/* Header Section */}
-      <div className="w-full h-[200px] sm:h-[286px] bg-[#F6F5FF] flex flex-col items-start justify-center px-4 md:px-6 lg:px-10">
-        <div className="text-center w-full">
-          <h1 className="text-2xl sm:text-4xl font-bold text-black mb-4">Shop Grid Default</h1>
-          <p className="text-sm text-gray-500 mt-2">
-            Home &gt; Pages &gt; <span className="text-pink-500">Shop Grid Default</span>
-          </p>
+      {/* Enhanced Header Section */}
+      <div className="w-full h-[250px] sm:h-[300px] bg-gradient-to-r from-[#F6F5FF] to-[#F0EEFF] flex flex-col items-start justify-center px-4 md:px-6 lg:px-10 shadow-sm">
+        <div className="text-center w-full space-y-4">
+          <h1 className="text-3xl sm:text-5xl font-bold text-gray-800 mb-4 tracking-tight">
+            Shop Grid Default
+          </h1>
+          <nav className="text-sm font-medium">
+            <ol className="flex justify-center items-center space-x-2">
+              <li className="hover:text-gray-600 cursor-pointer">Home</li>
+              <li className="text-gray-400">/</li>
+              <li className="hover:text-gray-600 cursor-pointer">Pages</li>
+              <li className="text-gray-400">/</li>
+              <li className="text-pink-500">Shop Grid Default</li>
+            </ol>
+          </nav>
         </div>
       </div>
 
+      {/* Enhanced Content Section */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="border-b pb-4 mb-8">
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+            Ecommerce Accessories & Fashion Items
+          </h2>
+          <p className="text-gray-500 text-sm">About 9,620 results (0.62 seconds)</p>
+        </div>
 
+        {/* Enhanced Product Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          {allProducts && allProducts.length > 0 ? (
+            allProducts.slice(0, visibleProducts).map((product) => (
+              <div key={product._id} 
+                   className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
+                {/* Product Image Container */}
+                <div className="group relative aspect-square overflow-hidden bg-gray-100">
+                  <img
+                    src={urlFor(product.image).url()}
+                    alt={product.name}
+                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300"
+                  />
+                  {/* Enhanced Icons Overlay */}
+                  <div className="absolute bottom-4 left-4 flex flex-col space-y-3 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-[-20px] group-hover:translate-x-0">
+                    <button onClick={() => handleAddToCart(product)} 
+                            className="p-3 rounded-full bg-white shadow-md hover:bg-pink-500 hover:text-white transition-all duration-200">
+                      <FaShoppingCart className="text-lg" />
+                    </button>
+                    <button className="p-3 rounded-full bg-white shadow-md hover:bg-pink-500 hover:text-white transition-all duration-200">
+                      <FaSearch className="text-lg" />
+                    </button>
+                    <button className="p-3 rounded-full bg-white shadow-md hover:bg-pink-500 hover:text-white transition-all duration-200">
+                      <FaHeart className="text-lg" />
+                    </button>
+                  </div>
+                </div>
 
-      {/* Content Section */}
-      <div className="mt-10 px-4 sm:px-10">
-        {/* Title */}
-        <h2 className="text-xl sm:text-2xl font-semibold mb-2">Ecommerce Accessories &amp; Fashion Items</h2>
-        <p className="text-gray-600 mt-1">About 9,620 results (0.62 seconds)</p>
-      </div>
+                {/* Enhanced Product Details */}
+                <div className="p-6 space-y-4">
+                  <h3 className="text-lg font-semibold text-gray-800 text-center">
+                    {product.name}
+                  </h3>
 
-      {/* Product Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-8 px-4 sm:px-10">
-      {allProducts && allProducts.length > 0 ? (
-  allProducts.slice(0, visibleProducts).map((product) => (
-    <div key={product._id} className="bg-white shadow-md mb-[20] rounded-lg p-4 flex flex-col h-[500px]">
-      {/* Product Image */}
-      <div className="group relative overflow-hidden rounded-lg hover:bg-gray-100 transition-color p-2 h-[550px]">
-        <img
-          src={urlFor(product.image).url()} 
-          alt={product.name} 
-          className="w-full h-43 object-cover" 
-        />
-        {/* Icons Overlay */}
-        <div className="absolute bottom-0 left-2 flex flex-col space-y-2 opacity-0 group-hover:opacity-100 transition-opacity">
-        <button 
-      onClick={() => handleAddToCart(product)} 
-      className="p-2 rounded-full bg-gray-100 hover:bg-white transition-colors"
-    >
-      <FaShoppingCart className="text-gray-700 hover:text-gray-900" />
-    </button>
-          <button className="p-2 rounded-full bg-gray-100 hover:bg-white transition-colors">
-            <FaSearch className="text-gray-700 hover:text-gray-900" />
-          </button>
-          <button className="p-2 rounded-full bg-gray-100 hover:bg-white transition-colors">
-            <FaPlus className="text-gray-700 hover:text-gray-900" />
-          </button>
-          <button className="p-2 rounded-full bg-gray-100 hover:bg-white transition-colors">
-            <FaHeart className="text-gray-700 hover:text-red-500" />
+                  {/* Enhanced Selectors */}
+                  <div className="space-y-3">
+                    <select
+                      onChange={(e) => handleOptionChange(product._id, "color", e.target.value)}
+                      className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                    >
+                      <option value="">Select Color</option>
+                      <option value="Brown">Brown</option>
+                      <option value="Black">Black</option>
+                      <option value="White">White</option>
+                    </select>
+
+                    <select
+                      onChange={(e) => handleOptionChange(product._id, "size", e.target.value)}
+                      className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                    >
+                      <option value="">Select Size</option>
+                      <option value="S">Small</option>
+                      <option value="M">Medium</option>
+                      <option value="L">Large</option>
+                    </select>
+                  </div>
+
+                  {/* Enhanced Price Display */}
+                  <div className="flex justify-center items-center gap-3">
+                    <span className="text-xl font-bold text-pink-500">
+                      ${product.price}
+                    </span>
+                    {product.discountPercentage && (
+                      <span className="text-sm text-gray-400 line-through">
+                        ${(parseFloat(product.price) * (1 + product.discountPercentage/100)).toFixed(2)}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="col-span-full text-center py-12 text-gray-500">
+              Loading products...
+            </div>
+          )}
+        </div>
+
+        {/* Enhanced View More Button */}
+        <div className="flex justify-center mt-12">
+          <button
+            onClick={handleViewMore}
+            className="px-8 py-3 bg-pink-500 text-white rounded-lg font-semibold hover:bg-pink-600 transform hover:-translate-y-0.5 transition-all duration-200 shadow-md hover:shadow-lg"
+          >
+            View More Products
           </button>
         </div>
       </div>
-
-      {/* Product Details */}
-      <h3 className="text-sm font-bold text-gray-700 mb-2 text-center">{product.name}</h3>
-
-      {/* Color Selection */}
-      <div className="text-center mb-2">
-        <select
-          onChange={(e) => handleOptionChange(product._id, "color", e.target.value)}
-          className="border px-2 py-1 text-sm w-full"
-        >
-          <option value="">Select Color</option>
-          <option value="Brown">Brown</option>
-          <option value="Black">Black</option>
-          <option value="White">White</option>
-        </select>
-      </div>
-
-      {/* Size Selection */}
-      <div className="text-center mb-2">
-        <select
-          onChange={(e) => handleOptionChange(product._id, "size", e.target.value)}
-          className="border px-2 py-1 text-sm w-full"
-        >
-          <option value="">Select Size</option>
-          <option value="S">Small</option>
-          <option value="M">Medium</option>
-          <option value="L">Large</option>
-        </select>
-      </div>
-
-      {/* Price */}
-      <div className="flex justify-center gap-2">
-        <p className="text-sm font-bold text-black">${product.price}</p>
-        {product.discountPercentage && (
-          <p className="text-sm text-pink-500 line-through">
-            ${(parseFloat(product.price) * (1 + product.discountPercentage/100)).toFixed(2)}
-          </p>
-        )}
-      </div>
     </div>
-  ))
-) : (
-  <div>Loading products...</div>
-)}
-
-      </div>
-
-      <div className="flex justify-center mt-8">
-        <button 
-          onClick={handleViewMore}
-          className="bg-[#FB2E86] text-white px-6 py-2 rounded hover:bg-[#E21E80] transition-colors"
-        >
-          View More
-        </button>
-      </div>
-    </div>
-  );}
+  );
+}

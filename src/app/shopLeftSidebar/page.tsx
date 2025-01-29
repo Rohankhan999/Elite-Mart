@@ -186,80 +186,70 @@ const ShopListPage: React.FC = () => {
   }
 
   return (
-    <div className="bg-white min-h-screen">
-       {/* Mobile Sidebar Toggle */}
-       <button 
-        onClick={toggleSidebar}
-        className="md:hidden fixed top-4 left-4 z-20 p-2 bg-pink-500 text-white rounded"
-      >
-        ☰
-      </button>
+    <div className="bg-gradient-to-b from-gray-50 to-white min-h-screen">
       {/* Hero Section */}
-      <div className="w-full h-[286px] bg-[#F6F5FF] flex flex-col items-center justify-center text-center">
-        <h1 className="text-4xl font-bold text-black mb-4">Shop Left Sidebar</h1>
-        <p className="text-sm text-gray-500">
-          Home &gt; Pages &gt; <span className="text-pink-500">Shop Left Sidebar</span>
-        </p>
-      </div>
-
-      {/* Intro Section */}
-      <div className="px-6 md:px-12 lg:px-20 mt-8">
-        <h2 className="text-2xl font-semibold mb-2">
-          Ecommerce Accessories &amp; Fashion Items
-        </h2>
-        <p className="text-gray-600 mt-2">About 9,620 results (0.62 seconds)</p>
-
-        {/* Filters */}
-        <div className="mt-4 flex flex-wrap justify-between items-center gap-4">
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-2">
-              <label htmlFor="per-page" className="text-sm text-gray-700">
-                Per Page:
-              </label>
-              <input
-                type="number"
-                id="per-page"
-                className="w-16 border border-gray-300 rounded-md p-1 text-sm"
-                placeholder="10"
-              />
-            </div>
-            <div className="flex items-center space-x-2">
-              <label htmlFor="sort-by" className="text-sm text-gray-700">
-                Sort By:
-              </label>
-              <select
-                id="sort-by"
-                className="border border-gray-300 rounded-md p-1 text-sm"
-              >
-                <option>Best Match</option>
-                <option>Price Low to High</option>
-                <option>Price High to Low</option>
-              </select>
-            </div>
-            <div className="flex items-center space-x-2">
-              <label htmlFor="view" className="text-sm text-gray-700">
-                View:
-              </label>
-              <input
-                type="text"
-                id="view"
-                className="w-16 border border-gray-300 rounded-md p-1 text-sm"
-                placeholder="Grid"
-              />
-            </div>
+      <div className="relative h-[300px] bg-gradient-to-r from-[#F6F5FF] via-[#F8F7FF] to-[#F6F5FF]">
+        <div className="absolute inset-0 bg-[url('/pattern.png')] opacity-10"></div>
+        <div className="container mx-auto h-full flex flex-col items-center justify-center px-4">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+            Shop Collection
+          </h1>
+          <div className="flex items-center space-x-2 text-sm font-medium">
+            <span className="text-gray-600 hover:text-pink-500 cursor-pointer">Home</span>
+            <span className="text-gray-400">/</span>
+            <span className="text-gray-600 hover:text-pink-500 cursor-pointer">Shop</span>
+            <span className="text-gray-400">/</span>
+            <span className="text-pink-500">Collection</span>
           </div>
         </div>
       </div>
 
-      {/* Content */}
-      <div className="flex flex-col md:flex-row mt-8 gap-8 px-6 md:px-12 lg:px-20">
-        {/* Sidebar */}
-        <div className={`
-    fixed md:relative w-64 h-full bg-white shadow-lg 
-    transform transition-transform duration-300 ease-in-out z-10
-    ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} 
-    md:translate-x-0
-  `}>
+      {/* Filter Controls */}
+      <div className="container mx-auto px-4 py-8">
+        <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
+          <div className="flex flex-wrap justify-between items-center gap-4">
+            <div className="flex flex-wrap items-center gap-6">
+              <div className="relative">
+                <select className="appearance-none bg-transparent pl-4 pr-10 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent">
+                  <option>Latest Products</option>
+                  <option>Best Selling</option>
+                  <option>Price: Low to High</option>
+                  <option>Price: High to Low</option>
+                </select>
+                <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2">
+                  <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </div>
+              
+              <div className="flex items-center space-x-2">
+                <button className="p-2 rounded-lg border border-gray-200 hover:border-pink-500 transition-colors">
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
+                  </svg>
+                </button>
+                <button className="p-2 rounded-lg border border-gray-200 hover:border-pink-500 transition-colors">
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 0h8v12H6V4z" clipRule="evenodd" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            
+            <p className="text-sm text-gray-500">
+              Showing <span className="font-medium">{visibleProducts}</span> of{" "}
+              <span className="font-medium">{filteredProducts.length}</span> products
+            </p>
+          </div>
+        </div>
+
+        {/* Main Content */}
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Sidebar */}
+          <aside className="lg:w-64 flex-shrink-0">
+          <div className="bg-white rounded-xl shadow-sm p-6 sticky top-4 space-y-8">
+
   <div className="p-4 overflow-y-auto h-full">
     {/* Product Brand */}
     <h2 className="text-lg font-semibold mb-4">Product Brand</h2>
@@ -347,19 +337,20 @@ const ShopListPage: React.FC = () => {
 </div>
 </div>
 </div>
-      {/* Product Section */}
-      <div className="flex-1">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {filteredProducts.slice(0, visibleProducts).map((product) => (
-          <div key={product._id} className="border rounded-lg p-4 shadow-sm">
-            <div className="relative group">
-              <img
-                src={urlFor(product.image).width(300).url()}
-                alt={product.name}
-                className="w-full h-48 object-contain mb-4"
-              />
-            {/* Icons overlay */}
-<div className="absolute top-4 right-4 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+</aside>
+         {/* Product Grid */}
+         <main className="flex-1">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredProducts.slice(0, visibleProducts).map((product) => (
+                <div key={product._id} className="group bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300">
+                  <div className="relative aspect-square overflow-hidden rounded-t-xl">
+                    <img
+                      src={urlFor(product.image).url()}
+                      alt={product.name}
+                      className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300">
+                    <div className="absolute top-4 right-4 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
   <button
     onClick={() => handleAddToCart(product)}
     className="p-2 bg-white rounded-full shadow-md hover:bg-pink-500 hover:text-white transition-colors"
@@ -373,36 +364,33 @@ const ShopListPage: React.FC = () => {
     <FaSearch className="w-5 h-5" />
   </button>
 </div>
-
-
+                    </div>
             </div>
-            <div className="text-center">
-              <h3 className="font-semibold text-lg">{product.name}</h3>
-              <p className="text-gray-600 mt-1">{product.category}</p>
-              <p className="text-pink-500 font-bold text-lg mt-2">${product.price}</p>
+            <div className="p-6">
+                    <h3 className="font-semibold text-lg text-gray-800 mb-2">{product.name}</h3>
+                    <p className="text-pink-500 font-bold">${product.price}</p>
+                  </div>
+                </div>
+              ))}
             </div>
-          </div>
-        ))}
-</div>
-
-{/* View More Button in a separate container */}
-{/* View More Button */}
-{/* View More Button */}
-{hasMore && filteredProducts.length > visibleProducts && (
-          <div className="w-full flex justify-center mt-8 mb-8">
-            <button
-              onClick={handleLoadMore}
-              className="bg-pink-500 text-white px-8 py-3 rounded-md hover:bg-pink-600 transition-colors text-lg font-semibold"
-            >
-              View More
-            </button>
-          </div>
-        )}
-</div>
+{/* Load More Button */}
+{hasMore && (
+              <div className="flex justify-center mt-12">
+                <button
+                  onClick={handleLoadMore}
+                  className="px-8 py-3 bg-pink-500 text-white rounded-lg font-semibold hover:bg-pink-600 transform hover:-translate-y-0.5 transition-all duration-200 shadow-sm hover:shadow-md"
+                >
+                  Load More Products
+                </button>
+              </div>
+            )}
+          </main>
+        </div>
       </div>
     </div>
   );
-}
+};
+
 export default ShopListPage;
 
 

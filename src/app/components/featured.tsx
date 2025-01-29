@@ -117,7 +117,7 @@ const FeaturedProducts = ({ products = [] }: FeaturedProductsProps) => {
               onClick={handleViewMore}
               className="bg-purple-500 text-white px-6 py-2 rounded-md hover:bg-purple-600 transition duration-300"
             >
-              View More
+              Load More Products
             </button>
           </div>
         )}

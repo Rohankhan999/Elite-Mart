@@ -1,122 +1,143 @@
 
+'use client';
+
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import { FaChevronDown, FaPaperPlane } from 'react-icons/fa';
+
 export default function FAQ() {
+  const [activeQuestion, setActiveQuestion] = useState<number | null>(null);
+
+  const questions = [
+    {
+      title: "Eu dictumst cum at sed euismod condimentum?",
+      content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tristique sed tristique nulla vitae, consequat gravida sagittis."
+    },
+    {
+      title: "Magna bibendum est fermentum eros?",
+      content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tristique sed tristique nulla vitae, consequat gravida sagittis."
+    },{
+      title: "Odio muskana hak eris consequat scelerisque?",
+      content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tristique sed tristique nulla vitae, consequat gravida sagittis."
+    },
+    {
+      title: "Elit id blandit sabora bol velit qua maro?",
+      content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tristique sed tristique nulla vitae, consequat gravida sagittis."
+    },
+  ];
   return (
-    <div className="bg-white min-h-screen">
+    <div className="bg-gradient-to-b from-gray-50 to-white min-h-screen">
       {/* Hero Section */}
-      <div className="w-full h-[200px] md:h-[286px] bg-[#F6F5FF] flex flex-col items-center justify-center px-4">
-        <div className="text-center w-full max-w-7xl">
-          <h1 className="text-3xl sm:text-4xl font-bold text-black mb-2">FAQs</h1>
-          <p className="text-sm text-gray-500">
-            Home &gt; Pages &gt; <span className="text-pink-500">FAQs</span>
-          </p>
+      <div className="relative h-[300px] bg-gradient-to-r from-[#F6F5FF] via-[#F8F7FF] to-[#F6F5FF]">
+        <div className="absolute inset-0 bg-[url('/pattern.png')] opacity-10"></div>
+        <div className="container mx-auto h-full flex flex-col items-center justify-center px-4">
+          <motion.h1 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-4xl md:text-5xl font-bold text-gray-800 mb-4"
+          >
+            Frequently Asked Questions
+          </motion.h1>
+          <nav className="flex items-center space-x-2 text-sm font-medium">
+            <span className="text-gray-600 hover:text-pink-500 cursor-pointer">Home</span>
+            <span className="text-gray-400">/</span>
+            <span className="text-pink-500">FAQs</span>
+          </nav>
         </div>
       </div>
 
-      {/* Content Section */}
-      <div className="container mx-auto px-4 py-10 grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Left Side - General Information */}
-        <div>
-          <h2 className="text-2xl font-bold text-black mb-6 text-center lg:text-left">
-            General Information
-          </h2>
-
+      {/* Main Content */}
+      <div className="container mx-auto px-4 py-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          {/* FAQ Section */}
           <div className="space-y-6">
-            {/* Question 1 */}
-            <div>
-              <h3 className="font-bold text-lg text-[#171717] mb-2">
-                Eu dictumst cum at sed euismod condimentum?
-              </h3>
-              <p className="text-gray-500 text-sm leading-relaxed">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tristique sed tristique nulla vitae, consequat gravida sagittis.
-              </p>
-            </div>
+            <h2 className="text-3xl font-bold text-gray-800 mb-8">
+              General Information
+            </h2>
 
-            {/* Question 2 */}
-            <div>
-              <h3 className="font-bold text-lg text-[#171717] mb-2">
-                Magna bibendum est fermentum eros?
-              </h3>
-              <p className="text-gray-500 text-sm leading-relaxed">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tristique sed tristique nulla vitae, consequat gravida sagittis.
-              </p>
-            </div>
+            {questions.map((question, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+                className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300"
+              >
+                <button
+                  onClick={() => setActiveQuestion(activeQuestion === index ? null : index)}
+                  className="w-full px-6 py-4 flex justify-between items-center"
+                >
+                  <h3 className="font-semibold text-lg text-gray-800">{question.title}</h3>
+                  <FaChevronDown
+                    className={`transform transition-transform duration-300 ${
+                      activeQuestion === index ? 'rotate-180' : ''
+                    }`}
+                  />
+                </button>
+                {activeQuestion === index && (
+                  <div className="px-6 pb-4">
+                    <p className="text-gray-600">{question.content}</p>
+                  </div>
+                )}
+              </motion.div>
+            ))}
+          </div>
 
-            {/* Question 3 */}
-            <div>
-              <h3 className="font-bold text-lg text-[#171717] mb-2">
-                Odio muskana hak eris consequat scelerisque?
-              </h3>
-              <p className="text-gray-500 text-sm leading-relaxed">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tristique sed tristique nulla vitae, consequat gravida sagittis.
-              </p>
-            </div>
+          {/* Ask a Question Form */}
+          <div>
+            <div className="bg-white rounded-xl shadow-lg p-8">
+              <h2 className="text-3xl font-bold text-gray-800 mb-6">
+                Ask a Question
+              </h2>
 
-            {/* Question 4 */}
-            <div>
-              <h3 className="font-bold text-lg text-[#171717] mb-2">
-                Elit id blandit sabora bol velit qua maro?
-              </h3>
-              <p className="text-gray-500 text-sm leading-relaxed">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tristique sed tristique nulla vitae, consequat gravida sagittis.
-              </p>
+              <form className="space-y-6">
+                <div className="space-y-4">
+                  <input
+                    type="text"
+                    placeholder="Your Name*"
+                    className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all duration-300"
+                  />
+                  <input
+                    type="email"
+                    placeholder="Your Email*"
+                    className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all duration-300"
+                  />
+                  <textarea
+                    rows={5}
+                    placeholder="Your Question*"
+                    className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all duration-300"
+                  ></textarea>
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full bg-pink-500 hover:bg-pink-600 text-white py-3 px-6 rounded-lg font-semibold flex items-center justify-center space-x-2 transform hover:-translate-y-0.5 transition-all duration-300"
+                >
+                  <span>Send Question</span>
+                  <FaPaperPlane />
+                </button>
+              </form>
             </div>
           </div>
         </div>
-
-        {/* Right Side - Ask a Question */}
-        <div className="bg-gray-50 p-6 rounded-md shadow-sm">
-          <h2 className="text-2xl font-bold text-black mb-6 text-center lg:text-left">
-            Ask a Question
-          </h2>
-
-          <form action="#" method="post" className="space-y-4">
-            <div>
-              <input
-                type="text"
-                placeholder="Your Name*"
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-pink-500 focus:outline-none"
-                required
-              />
-            </div>
-
-            <div>
-              <input
-                type="text"
-                placeholder="Subject*"
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-pink-500 focus:outline-none"
-                required
-              />
-            </div>
-
-            <div>
-              <textarea
-                placeholder="Type Your Message*"
-                rows={5}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-pink-500 focus:outline-none"
-                required
-              ></textarea>
-            </div>
-
-            <div>
-              <button
-                type="submit"
-                className="w-full bg-pink-500 text-white py-2 rounded-md hover:bg-pink-600 transition duration-300"
-              >
-                Send Mail
-              </button>
-            </div>
-          </form>
-        </div>
       </div>
 
-      {/* Logo Section */}
-      <div className="container mx-auto px-4 mt-12 mb-8">
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 justify-items-center">
-          <img src="/logz5.jpeg" alt="Logo 1" className="w-24 h-24 object-contain" />
-          <img src="/logz1.jpeg" alt="Logo 2" className="w-24 h-24 object-contain" />
-          <img src="/logz2.jpeg" alt="Logo 3" className="w-24 h-24 object-contain" />
-          <img src="/logz4.jpeg" alt="Logo 4" className="w-24 h-24 object-contain" />
-          <img src="/logz3.jpeg" alt="Logo 5" className="w-24 h-24 object-contain" />
+      {/* Partners Section */}
+      <div className="bg-gray-50 py-16">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-8 items-center">
+            {["/logz5.jpeg", "/logz1.jpeg", "/logz2.jpeg", "/logz4.jpeg", "/logz3.jpeg"].map((logo, index) => (
+              <motion.img
+                key={index}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: index * 0.2 }}
+                src={logo}
+                alt={`Partner ${index + 1}`}
+                className="w-32 h-32 object-contain filter grayscale hover:grayscale-0 transition-all duration-300"
+              />
+            ))}
+          </div>
         </div>
       </div>
     </div>
