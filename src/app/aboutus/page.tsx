@@ -5,10 +5,10 @@ export default function aboutUs() {
       {/* Hero Section */}
       <div className="w-full h-[286px] bg-[#F6F5FF] flex flex-col items-center justify-center px-4">
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-black mb-4 md:mr-[720px]">
+          <h1 className="text-5xl font-bold text-black mb-4 ">
             About us
           </h1>
-          <p className="text-sm text-gray-500 md:mr-[720px]">
+          <p className="text-sm text-gray-500 ">
             Home &gt; Pages &gt;{" "}
             <span className="text-pink-500">About Us</span>
           </p>

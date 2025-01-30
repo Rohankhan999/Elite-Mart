@@ -64,7 +64,7 @@ export default function ShopListPage() {
     <div className="bg-white min-h-screen">
       {/* Header Section */}
       <div className="w-full h-[286px] bg-[#F6F5FF] flex flex-col items-center justify-center px-6 text-center">
-        <h1 className="text-4xl font-bold text-black mb-4">Shop List</h1>
+        <h1 className="text-5xl font-bold text-black mb-4">Shop List</h1>
         <p className="text-sm text-gray-500 mt-4">
           Home &gt; Pages &gt; <span className="text-pink-500">Shop List</span>
         </p>

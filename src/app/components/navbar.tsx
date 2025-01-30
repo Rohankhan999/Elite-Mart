@@ -73,7 +73,7 @@ export default function Header() {
             <span className="text-sm text-white">USD</span>
             <RiArrowDropDownLine className="w-4 h-4 text-white" />
           </div>
-          <Link href="/" className="flex items-center space-x-1">
+          <Link href="/gy7" className="flex items-center space-x-1">
             <span className="hidden sm:inline text-sm text-white">Wishlist</span>
             <CiHeart className="w-4 h-4 text-white" />
           </Link>

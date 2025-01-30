@@ -39,7 +39,7 @@ function BlogContent() {
       {/* Hero Section */}
       <div className="w-full h-[286px] bg-[#F6F5FF] flex flex-col items-center justify-center">
         <div className="text-center px-4">
-          <h1 className="text-4xl font-bold text-black mb-4">Single Blog</h1>
+          <h1 className="text-5xl font-bold text-black mb-4">Single Blog</h1>
           <p className="text-sm text-gray-500">
             Home &gt; Pages &gt;{" "}
             <span className="text-pink-500">Single Blog</span>

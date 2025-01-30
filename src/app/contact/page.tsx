@@ -5,7 +5,7 @@ export default function Contact() {
       {/* Hero Section */}
       <div className="w-full h-[200px] md:h-[286px] bg-[#F6F5FF] flex flex-col items-center justify-center px-4">
         <div className="text-center w-full max-w-7xl">
-          <h1 className="text-3xl md:text-4xl font-bold text-black mb-2">
+          <h1 className="text-4xl md:text-5xl font-bold text-black mb-2">
             Contact Us
           </h1>
           <p className="text-sm text-gray-500">
