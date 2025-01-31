@@ -91,9 +91,9 @@ const handleCheckout = async () => {
           <div className="flex-1 bg-white shadow-md rounded-lg overflow-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b text-left bg-gray-50">
+                <tr className="border-b bg-gray-50">
                   <th className="p-4 text-xs md:text-base">Product</th>
-                  <th className="p-4 text-xs md:text-base">Price</th>
+                  <th className="p-6  text-xs md:text-base">Price</th>
                   <th className="p-4 text-xs md:text-base">Quantity</th>
                   <th className="p-4 text-xs md:text-base">Total</th>
                   <th className="p-4 text-xs md:text-base">Remove</th>
@@ -126,11 +126,11 @@ const handleCheckout = async () => {
                             <span className="text-gray-400">No image</span>
                           </div>
                         )}
-                        <div>
-                          <p className="font-semibold">{item.name}</p>
+                          <div className="  items-center ">
+                          <p className="font-semibold ">{item.name}</p>
                         </div>
                       </td>
-                      <td className="p-4">${Number(item.price).toFixed(2)}</td>
+                      <td className="p-7">${Number(item.price).toFixed(2)}</td>
                       <td className="p-4">
                         <div className="flex items-center gap-2">
                           <button

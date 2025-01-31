@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from 'react-hot-toast';
 import "react-toastify/dist/ReactToastify.css";
-import { client } from '@/sanity/lib/client';
 import { useCart } from '../context/CartContext';
 
 const PaymentPage = () => {
@@ -12,7 +11,7 @@ const PaymentPage = () => {
     const [error, setError] = useState<string | null>(null);
     const [isCheckoutEnabled, setIsCheckoutEnabled] = useState(false);
     const router = useRouter();
-    
+    const { clearCart } = useCart(); 
 
     const handleApprove = () => {
         setSuccess(true);
@@ -24,13 +23,14 @@ const PaymentPage = () => {
 
     const handleCheckout = () => {
         if (isCheckoutEnabled) {
-            toast.success("Redirecting to Order Completed page...", {
+            clearCart(); 
+            toast.success("Order completed! Cart has been cleared.", {
                 position: "top-right",
             });
             router.push("/ordercompleted");
         }
     };
-    
+
     return (
         <PayPalScriptProvider options={{ clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || "" }}>
             <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">

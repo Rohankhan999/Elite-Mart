@@ -1,7 +1,7 @@
 
 export default function aboutUs() {
   return (
-    <div className="bg-white min-h-screen">
+    <div className="bg-gray-50 min-h-screen">
       {/* Hero Section */}
       <div className="w-full h-[286px] bg-[#F6F5FF] flex flex-col items-center justify-center px-4">
         <div className="text-center">
