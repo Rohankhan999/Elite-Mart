@@ -212,7 +212,6 @@ return (
     </div>
 );}
 
-// ... StatCard component remains the same ...
 
 function StatCard({ 
     title, 

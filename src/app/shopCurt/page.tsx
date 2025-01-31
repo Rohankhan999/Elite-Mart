@@ -89,16 +89,16 @@ const handleCheckout = async () => {
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Product Table */}
           <div className="flex-1 bg-white shadow-md rounded-lg overflow-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b bg-gray-50">
-                  <th className="p-4 text-xs md:text-base">Product</th>
-                  <th className="p-6  text-xs md:text-base">Price</th>
-                  <th className="p-4 text-xs md:text-base">Quantity</th>
-                  <th className="p-4 text-xs md:text-base">Total</th>
-                  <th className="p-4 text-xs md:text-base">Remove</th>
-                </tr>
-              </thead>
+          <table className="w-full "> {/* Add table-fixed */}
+  <thead>
+    <tr className="border-b bg-gray-50">
+      <th className="p-4 text-xs md:text-base w-[40%]">Product</th> {/* Add width */}
+      <th className="p-6 text-xs md:text-base w-[15%]">Price</th>
+      <th className="p-4 text-xs md:text-base w-[15%]">Quantity</th>
+      <th className="p-4 text-xs md:text-base w-[15%]">Total</th>
+      <th className="p-4 text-xs md:text-base w-[15%]">Remove</th>
+    </tr>
+  </thead>
               <tbody>
                 {cart.length === 0 ? (
                   <tr>
@@ -112,24 +112,29 @@ const handleCheckout = async () => {
                       key={item._id}
                       className="border-b hover:bg-gray-50 text-sm md:text-base"
                     >
-                      <td className="p-4 flex items-center gap-2 md:gap-4">
-                        {item.image?.asset?.url && typeof item.image.asset.url === 'string' ? (
-                          <Image
-                            src={item.image.asset.url}
-                            alt={item.name}
-                            width={80}
-                            height={80}
-                            className="rounded object-cover"
-                          />
-                        ) : (
-                          <div className="w-20 h-20 bg-gray-200 rounded flex items-center justify-center">
-                            <span className="text-gray-400">No image</span>
-                          </div>
-                        )}
-                          <div className="  items-center ">
-                          <p className="font-semibold ">{item.name}</p>
-                        </div>
-                      </td>
+                      <td className="p-4">
+  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 md:gap-4">
+    {item.image?.asset?.url && typeof item.image.asset.url === 'string' ? (
+      <Image
+        src={item.image.asset.url}
+        alt={item.name}
+        width={80}
+        height={80}
+        className="rounded object-cover"
+      />
+    ) : (
+      <div className="w-20 h-20 bg-gray-200 rounded flex items-center justify-center">
+        <span className="text-gray-400">No image</span>
+      </div>
+    )}
+    <div className="min-w-0"> {/* Add this wrapper */}
+      <p className="font-semibold truncate max-w-[150px] sm:max-w-[200px]">
+        {item.name}
+      </p>
+    </div>
+  </div>
+</td>
+
                       <td className="p-7">${Number(item.price).toFixed(2)}</td>
                       <td className="p-4">
                         <div className="flex items-center gap-2">
