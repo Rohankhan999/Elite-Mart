@@ -52,7 +52,7 @@ export default function Header() {
           <div className="flex items-center space-x-2">
             <RxEnvelopeClosed className="w-4 h-4" />
             <span className="hidden sm:inline font-[Josefin Sans] text-sm">
-              mhhasanul@gmail.com
+              Admin@gmail.com
             </span>
           </div>
           <div className="flex items-center space-x-2">
@@ -170,7 +170,7 @@ export default function Header() {
       <div className="w-full h-[60px] bg-white flex items-center justify-between px-4 sm:px-8 md:px-16 lg:px-32">
         {/* Logo */}
         <div className="text-[#0D0E43] font-bold text-lg sm:text-xl mr-4">
-         <Link href="/"> Elite Mart</Link>
+         <Link href="/">Seating hub</Link>
         </div>
 
         {/* Navbar Links */}
