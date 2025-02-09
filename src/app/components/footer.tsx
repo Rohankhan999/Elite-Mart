@@ -88,7 +88,7 @@ const Footer = () => {
     <p className="text-sm text-[#9DA0AE] sm:ml-6 sm:mt-0 mt-4">
         © 2024 Hekto —
         <a
-          href="https://twitter.com/knyttnev"
+          href="https://twitter.com/"
           rel="noopener noreferrer"
           className="text-[#9DA0AE] ml-1"
           target="_blank"
@@ -98,9 +98,9 @@ const Footer = () => {
       </p>
       <span className="flex flex-row sm:ml-auto sm:mt-0 mt-4 justify-center sm:justify-start">
 
-     <div className="w-5 h-5 " ><a href="https://www.facebook.com/profile.php?id=100080688785803"><FaFacebook  /></a></div> 
+     <div className="w-5 h-5 " ><a href="https://www.facebook.com"><FaFacebook  /></a></div> 
       <div className="w-5 h-5  ml-3 text-gray-900"><a href="https://www.instagram.com"><RxInstagramLogo /></a></div>
-        <div className="w-5 h-5  ml-3 text-gray-900"><a href="https://www.linkedin.com/in/affoo-bhai-37b929300/"><FaLinkedin  /></a></div>
+        <div className="w-5 h-5  ml-3 text-gray-900"><a href="https://www.linkedin.com"><FaLinkedin  /></a></div>
 
     </span>
     </div>
