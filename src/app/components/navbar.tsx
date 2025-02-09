@@ -170,7 +170,7 @@ export default function Header() {
       <div className="w-full h-[60px] bg-white flex items-center justify-between px-4 sm:px-8 md:px-16 lg:px-32">
         {/* Logo */}
         <div className="text-[#0D0E43] font-bold text-lg sm:text-xl mr-4">
-         <Link href="/">Seating hub</Link>
+         <Link href="/">Charify</Link>
         </div>
 
         {/* Navbar Links */}
